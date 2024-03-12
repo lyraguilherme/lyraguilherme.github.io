@@ -6,7 +6,7 @@ theme: ["PaperMod"]
 params:
   homeInfoParams:
     title: "Welcome"
-    content: "A blog about networking, automation and technology"
+    content: "A blog about networking and technology in general"
   socialIcons:
     - name: Linkedin
       url: https://linkedin.com/in/guilhermelv
