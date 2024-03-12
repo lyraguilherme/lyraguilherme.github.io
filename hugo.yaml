@@ -1,0 +1,18 @@
+baseURL: ""
+languageCode: en-us
+title: "Guilherme Lyra"
+theme: ["PaperMod"]
+
+menu:
+  main:
+    - identifier: Blog
+      name: Blog
+      url: /blog/
+      weight: 20
+
+module:
+  mounts:
+    - source: static
+      target: static
+    - source: images
+      target: static/images

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on Guilherme Lyra</title>
+    <link>//localhost:1313/posts/</link>
+    <description>Recent content in Posts on Guilherme Lyra</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 10 Mar 2024 14:07:09 -0300</lastBuildDate>
+    <atom:link href="//localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Minha Jornada ao CCIE</title>
+      <link>//localhost:1313/posts/jornada-ccie/</link>
+      <pubDate>Sun, 10 Mar 2024 14:07:09 -0300</pubDate>
+      <guid>//localhost:1313/posts/jornada-ccie/</guid>
+      <description>Oficialmente comecei minha carreira em TI em 2006, mas, meus primeiros passos com redes ocorreram alguns anos antes disso, entre 2002 e 2003.
+Em 2006 comecei como estagiário no suporte a usuários em um órgão do governo. Comecei formatando computadores e progredi rapidamente até um ponto em que lidava com toda a infraestrutrua de rede incluindo switches, firewalls, proxy, file servers, AD, etc.
+Após finalizar esse estágio, fui para outra empresa, novamente como estagiário, onde passei mais 2 anos antes de ser oficialmente contratado.</description>
+    </item>
+  </channel>
+</rss>
