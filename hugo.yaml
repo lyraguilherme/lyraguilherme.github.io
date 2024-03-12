@@ -3,12 +3,23 @@ languageCode: en-us
 title: "Guilherme Lyra"
 theme: ["PaperMod"]
 
+params:
+  homeInfoParams:
+    title: "Welcome"
+    content: "A blog about networking, automation and technology"
+  socialIcons:
+    - name: Linkedin
+      url: https://linkedin.com/in/guilhermelv
+    - name: GitHub
+      url: https://github.com/lyraguilherme
+  ShowBreadCrumbs: true
+
 menu:
   main:
-    - identifier: Blog
-      name: Blog
-      url: /blog/
-      weight: 20
+    - identifier: Archives
+      name: "Archives"
+      url: /archives/
+      weight: 10
 
 module:
   mounts:
