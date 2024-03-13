@@ -20,10 +20,19 @@ Após finalizar esse estágio, fui para outra empresa, novamente como estagiári
     <item>
       <title>Cisco IOS XE Model-Driven Telemetry</title>
       <link>//localhost:1313/posts/ios-xe-telemetry/</link>
-      <pubDate>Fri, 02 Feb 2024 14:07:09 -0300</pubDate>
+      <pubDate>Thu, 02 Feb 2023 14:07:09 -0300</pubDate>
       <guid>//localhost:1313/posts/ios-xe-telemetry/</guid>
       <description>There is a ton of content available on Cisco DevNet explaining Model-Driven Telemetry theory in great detail, so I highly suggest you take some time to browse through the links I&amp;rsquo;ve listed under the Reference of this post.
 Summary My lab router is a Cisco ISR C1111-4G running IOS XE 17.6.3a. The same environment can be set up on a CSR1000v or Catalyst 8000v running on Cisco CML for example.</description>
+    </item>
+    <item>
+      <title>Cisco Community Live Event - Cisco SD-WAN</title>
+      <link>//localhost:1313/posts/cisco-community-sdwan-event/</link>
+      <pubDate>Sun, 22 Jan 2023 14:07:09 -0300</pubDate>
+      <guid>//localhost:1313/posts/cisco-community-sdwan-event/</guid>
+      <description>In November 2020 I had the honor of being invited by Cisco Community to present a live event about Cisco SD-WAN (Viptela). The event had more than 300 participants, from 9 different countries.
+For those who want to know more about this excellent Cisco solution, the recording is available on the link below (presentation language is Brazilian Portuguese).
+Watch the video on YouTube: https://www.youtube.com/watch?v=xtTHjDv1r-M</description>
     </item>
   </channel>
 </rss>

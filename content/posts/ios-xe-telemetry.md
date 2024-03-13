@@ -1,6 +1,6 @@
 ---
 title: 'Cisco IOS XE Model-Driven Telemetry'
-date: 2024-02-02T14:07:09-03:00
+date: 2023-02-02T14:07:09-03:00
 draft: false
 cover:
     image: /images/ios-xe-telemetry/mdt_dashboard.jpeg
