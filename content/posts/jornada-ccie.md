@@ -28,6 +28,8 @@ Então, resumindo, comecei oficialmente os estudos para o CCIE em 2017, ao concl
 
 ---
 
+## Iniciando os estudos
+
 O primeiro ponto a entender é que para que você possa agendar o CCIE LAB você precisa ter sido aprovado na prova 350-401 ENCOR dentro do período de 3 anos. Se você estiver elegível, basta agendar o lab através da ferramenta de agendamento: https://ccie.cloudapps.cisco.com/CCIE/Schedule_Lab/CCIEOnline/CCIEOnline
 
 Muita gente não sabe, mas, ao contrário de provas como o CCNA e CCNP, que são realizados em centros credenciados de treinamento, o CCIE LAB é realizado de forma presencial em algum laboratório da própria Cisco, nas localidades abaixo:
