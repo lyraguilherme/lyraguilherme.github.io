@@ -5,25 +5,34 @@
     <link>//localhost:1313/posts/</link>
     <description>Recent content in Posts on Guilherme Lyra</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>en-US</language>
     <lastBuildDate>Sat, 24 Feb 2024 14:07:09 -0300</lastBuildDate>
     <atom:link href="//localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Minha Jornada ao CCIE</title>
-      <link>//localhost:1313/posts/jornada-ccie/</link>
+      <title>My Journey to CCIE</title>
+      <link>//localhost:1313/posts/journey-to-ccie/</link>
       <pubDate>Sat, 24 Feb 2024 14:07:09 -0300</pubDate>
-      <guid>//localhost:1313/posts/jornada-ccie/</guid>
-      <description>Oficialmente comecei minha carreira em TI em 2006, mas, meus primeiros passos com redes ocorreram alguns anos antes disso, entre 2002 e 2003.
-Em 2006 comecei como estagiário no suporte a usuários em um órgão do governo. Comecei formatando computadores e progredi rapidamente até um ponto em que lidava com toda a infraestrutrua de rede incluindo switches, firewalls, proxy, file servers, AD, etc.
-Após finalizar esse estágio, fui para outra empresa, novamente como estagiário, onde passei mais 2 anos antes de ser oficialmente contratado.</description>
+      <guid>//localhost:1313/posts/journey-to-ccie/</guid>
+      <description>I officially started my career in IT in 2006, but my first steps with networks occurred a few years before that, between 2002 and 2003.
+In 2006, I began as an intern in user support at a government agency. I started by formatting computers and quickly progressed to a point where I dealt with the entire network infrastructure including switches, firewalls, proxy, file servers, AD, etc.
+After completing this internship, I went to another company, again as an intern, where I spent another 2 years before being officially hired.</description>
     </item>
     <item>
       <title>Cisco IOS XE Model-Driven Telemetry</title>
       <link>//localhost:1313/posts/ios-xe-telemetry/</link>
-      <pubDate>Fri, 02 Feb 2024 14:07:09 -0300</pubDate>
+      <pubDate>Thu, 02 Feb 2023 14:07:09 -0300</pubDate>
       <guid>//localhost:1313/posts/ios-xe-telemetry/</guid>
       <description>There is a ton of content available on Cisco DevNet explaining Model-Driven Telemetry theory in great detail, so I highly suggest you take some time to browse through the links I&amp;rsquo;ve listed under the Reference of this post.
 Summary My lab router is a Cisco ISR C1111-4G running IOS XE 17.6.3a. The same environment can be set up on a CSR1000v or Catalyst 8000v running on Cisco CML for example.</description>
+    </item>
+    <item>
+      <title>Cisco Community Live Event - Cisco SD-WAN</title>
+      <link>//localhost:1313/posts/cisco-community-sdwan-event/</link>
+      <pubDate>Sun, 22 Jan 2023 14:07:09 -0300</pubDate>
+      <guid>//localhost:1313/posts/cisco-community-sdwan-event/</guid>
+      <description>In November 2020 I had the honor of being invited by Cisco Community to present a live event about Cisco SD-WAN (Viptela). The event had more than 300 participants, from 9 different countries.
+For those who want to know more about this excellent Cisco solution, the recording is available on the link below (presentation language is Brazilian Portuguese).
+Watch the video on YouTube: https://www.youtube.com/watch?v=xtTHjDv1r-M</description>
     </item>
   </channel>
 </rss>
