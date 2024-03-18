@@ -30,7 +30,6 @@ languages:
     disabled: false
     languageName: "Português"
     languageCode: pt-BR
-    contentDir: content/pt-br
     weight: 20
     menus:
       main:
