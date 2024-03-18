@@ -10,4 +10,5 @@ cover:
 
 Em Novembro de 2020 tive a honra de ser convidado pela Comunidade Cisco em Portugues para apresentar um evento sobre **Cisco SD-WAN (Viptela) **. O evento contou com a participação de mais de 300 pessoas, de 9 países diferente!
 
-**A gravação está disponivel no YouTube:** https://www.youtube.com/watch?v=xtTHjDv1r-M
+**A gravação está disponivel no YouTube:** 
+https://www.youtube.com/watch?v=xtTHjDv1r-M
