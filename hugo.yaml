@@ -7,12 +7,12 @@ params:
   homeInfoParams:
     title: "Welcome"
     content: "A blog about networking, automation and technology-related stuff"
+    ShowBreadCrumbs: true
   socialIcons:
     - name: Linkedin
       url: https://linkedin.com/in/guilhermelv
     - name: GitHub
       url: https://github.com/lyraguilherme
-  ShowBreadCrumbs: true
 
 languages:
   en:
