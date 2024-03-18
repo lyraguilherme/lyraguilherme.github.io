@@ -1,7 +1,7 @@
 baseURL: ""
-languageCode: en-us
 title: "Guilherme Lyra"
 theme: ["PaperMod"]
+defaultContentLanguage: en
 
 params:
   homeInfoParams:
@@ -14,12 +14,29 @@ params:
       url: https://github.com/lyraguilherme
   ShowBreadCrumbs: true
 
-menu:
-  main:
-    - identifier: Archives
-      name: "Archives"
-      url: /archives/
-      weight: 10
+languages:
+  en:
+    disabled: false
+    languageName: "English"
+    languageCode: en-US
+    weight: 10
+    menus:
+      main:
+        - identifier: Archives
+          name: "Blog posts"
+          url: /archives/
+          weight: 10
+  pt-br:
+    disabled: false
+    languageName: "Português"
+    languageCode: pt-BR
+    weight: 20
+    menus:
+      main:
+        - identifier: Arquivos
+          name: "Todos os posts"
+          url: /arquivos/
+          weight: 10
 
 module:
   mounts:
