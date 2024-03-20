@@ -166,10 +166,10 @@ The issue with running SD-WAN running "on-premises" is that you will need a robu
 
 ## DNA Center, SD-Access e ISE ##
 
-* No meu caso, eu já tinha experiência com essas soluções em ambientes de produção. Fui responsável por implementar projetos de SD-Access e isso ajudou muito na hora da prova.
-* Para laboratórios, não tem como fugir: você vai precisar de acesso a um DNA Center e switches da linha Catalyst 9000. No meu caso, usei diversas sessões no CCIE Practice Labs (CCIE Enterprise Infrastructure Practice Labs). O acesso ao lab tem que ser agendado previamente. Além disso, o valor é cobrado em dólar e se não me engano tem um limite de 4h por sessão. Gastei bastante dinheiro aqui, mas vale muito a pena.
+* In my case, I already had experience with these solutions in production environments. I was responsible for implementing SD-Access projects, and that helped a lot during the exam.
+* For labs, there's no way around it: you'll need access to a DNA Center and Catalyst 9000 series switches. In my case, I used several sessions in the CCIE Practice Labs (CCIE Enterprise Infrastructure Practice Labs). Lab access needs to be scheduled in advance. Additionally, the fee is charged in dollars and if I'm not mistaken, there's a limit of 4 hours per session. I spent a lot of money here, but it's definitely worth it.
 
-## Automação ##
+## Automation ##
 
 * **Python:** a machine running Linux (can be a VM) and with connectivity to a topology with routers running IOS XE. If you have no knowledge of Python, start with the basics before interacting with equipment.
 * **EEM Applets and Guestshell:** I suggest using a virtual router running IOS XE. It can be CSR 1000v or Catalyst 8000v.
