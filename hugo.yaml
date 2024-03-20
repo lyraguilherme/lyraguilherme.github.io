@@ -23,7 +23,7 @@ languages:
     menus:
       main:
         - identifier: Archives
-          name: "Blog posts"
+          name: "All posts"
           url: /archives/
           weight: 10
   pt-br:
