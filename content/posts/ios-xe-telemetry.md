@@ -8,6 +8,8 @@ cover:
     caption: 'Cisco IOS XE Model-Driven Telemetry'
 ---
 
+In this post we're going to explore some Cisco IOS XE capabilities such as **Streaming Telemetry** and **Guestshell**.
+
 There is a ton of content available on **Cisco DevNet** explaining **Model-Driven Telemetry** theory in great detail, so I highly suggest you take some time to browse through the links I've listed under the **Reference** of this post.
 
 ## Summary ##
