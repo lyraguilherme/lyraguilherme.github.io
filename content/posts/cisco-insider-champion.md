@@ -12,3 +12,5 @@ cover:
 I'm now part of the **Cisco Insider Champion** group!
 
 Really glad to become part of this team of amazing IT professionals!
+
+My badge URL: https://www.credly.com/badges/f66fb7c6-b852-47c3-b9d2-42e8554e58c7/public_url
