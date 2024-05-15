@@ -54,12 +54,9 @@ OSPFv2 Header
 
 ### LSA Type 1
 **LSA Name:** Router LSA
-
 **Route Type:** Intra-Area
-
 **CLI:**
 - show ip ospf database router
-
 **Description:**
 - Each router within the area will flood a Type 1 Router LSA within the area 
 - This LSA describes all of a router's interfaces
