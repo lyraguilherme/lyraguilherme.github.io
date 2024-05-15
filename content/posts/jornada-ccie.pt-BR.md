@@ -2,11 +2,15 @@
 title: 'Minha Jornada ao CCIE'
 date: 2024-02-24T14:07:09-03:00
 draft: false
+ShowToC: true
+TocOpen: true
 cover:
     image: /images/ccie/CCIE-66666.jpeg
     alt: 'Guilherme Lyra, CCIE #66666'
     caption: 'Guilherme Lyra, CCIE #66666'
 ---
+
+# Resumo sobre a minha carreira
 
 Oficialmente comecei minha carreira em TI em 2006, mas, meus primeiros passos com redes ocorreram alguns anos antes disso, entre 2002 e 2003.
 
@@ -28,7 +32,7 @@ Então, resumindo, comecei oficialmente os estudos para o **CCIE** em **2017**, 
 
 ---
 
-## Elegibilidade ao CCIE LAB
+# Elegibilidade ao CCIE LAB
 
 O primeiro ponto a entender é que para que você possa agendar o CCIE LAB você precisa ter sido aprovado na prova 350-401 ENCOR dentro do período de 3 anos. Se você estiver elegível, basta agendar o lab através da ferramenta de agendamento: https://ccie.cloudapps.cisco.com/CCIE/Schedule_Lab/CCIEOnline/CCIEOnline
 
@@ -60,6 +64,9 @@ Os valores de scores mínimos não são divulgados. O importante é entender que
 
 Outra detalhe crítico é que não existe score parcial. Ou seja, digamos que em determinada task você configurou tudo corretamente mas usou um nome de ACL diferente do que a questão pedia. Nesse caso, você não terá nenhum ponto naquela questão. Esse é um dos fatores que torna a prova tão difícil: você precisa fazer 100% da questão para ter a pontuação. Atenção aos detalhes é algo fundamental.
 
+
+# Formato da prova
+
 ## Module 1: Design (3 hours)
 
 O objetivo deste módulo é medir a capacidade de criar, analisar, validar e otimizar projetos de rede, que é a base para todas as atividades de implantação. Os candidatos precisarão:
@@ -89,6 +96,8 @@ Fonte: https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format
 
 --- 
 
+# Dicas de estudos
+
 ## Primeiros passos ##
 
 Baixe a planilha CCIE Enterprise Infrastructure Learning Matrix no link abaixo. Essa planilha foi criada e é mantida pela própria Cisco. Nela, você vai encontrar todos os tópicos da prova com algumas indicações de materiais de estudo. 
@@ -97,7 +106,7 @@ Baixe a planilha CCIE Enterprise Infrastructure Learning Matrix no link abaixo. 
 
 Na Perceba que a primeira coluna da planilha (chamada "Level") é justamente para que você atribua uma nota de 1 a 5 para o seu conhecimento em cada um desses tópicos. A planilha vem preenchida, mas, altere de acordo com o seu nível de conhecimento. Seja sincero, pois é assim que você saberá onde precisa dar mais ou menos foco nos estudos. Revise periodicamente essa planilha e atualize seu nível a medida que vai evoluindo.
 
-## Dicas gerais ##
+## Considerações importantantes ##
 
 1. Aprenda inglês. Não precisa ser fluente no idioma, mas, a prova é toda em inglês e você precisa ter a capacidade de interpretar todos os detalhes possíveis do que está sendo solicitado, identificar pontos de atenção, "pegadinhas", etc.
 
@@ -125,7 +134,7 @@ Na Perceba que a primeira coluna da planilha (chamada "Level") é justamente par
 
 13. Na reta final dos estudos para o Lab, considero que aproximadamente 3 meses antes da sua data do lab, nesse ponto sim você deve conseguir estudar pelo menos 8 horas por dia. Nessa fase você deve estar focando em configuração e troubleshooting de topologias complexas. Lembre-se que a prova terá duração de 8 horas. Crie uma estratégia para conseguir manter a concentração e o foco em condições de stress e cansaço.
 
-## Livros ##
+## Sugestões de livros ##
 
 Alguns dos que usei e considero bastante relevantes:
 
