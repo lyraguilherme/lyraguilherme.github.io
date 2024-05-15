@@ -63,12 +63,9 @@ OSPFv2 Header
 
 ### LSA Type 2
 **LSA Name:** Network LSA
-
 **Route Type:** Intra-Area
-
 **CLI:**
 - show ip ospf database network
-
 **Description:**
 - Network LSAs are produced by the DR on every multi-access networks.
 - The DR represents the multi-access network and all attached routers as a pseudonode, or a single virtual router. 
@@ -129,7 +126,6 @@ OSPFv2 Header
 ## N Bit
 - This bit is used in hello packets for OSPF NSSA routers. When the N-bit is not supported, the routers won’t become neighbors.
 
-
 ## P Bit
 - The P-bit (P stands for propagate) is set in the Options field of an LSA type 7. 
 - P-bit tells the ABR if the LSA type 7 should be translated into a LSA type 5 or not.
@@ -142,24 +138,19 @@ Note:
 - If a router is attached to another AS and is also an NSSA ABR, it may originate a both a Type 5 and a Type 7 LSA for the same network. 
 - The Type 5 LSA will be flooded to the backbone and the Type 7 will be flooded into the NSSA. If this is the case, the P-bit must be reset (P=0) in the Type 7 LSA so the Type 7 LSA isn’t again translated into a Type 5 LSA by another NSSA ABR.
 
-
 ## Routing Bit
 - The routing bit is not a part of the LSA itself. Routing Bit is an internal maintenance bit used by IOS indicating that the route to the destination advertised by this LSA is valid. So when you see "Routing Bit Set on this LSA," it means that the route to this destination is in the routing table.
 
-
 ---
-
 
 ## Demand Circuit
 - Per RFC 1793, Extending OSPF to Support Demand Circuits,  “OSPF Hellos and the refresh of OSPF routing information are suppressed on demand circuits, allowing the underlying data-link connections to be closed when not carrying application traffic.”  This feature allows low-speed and pay-per-use links, such as analog dial and ISDN, to run OSPF without the need for periodic hellos and LSA flooding. Periodic hellos are only suppressed for point-to-point and point-to-multipoint OSPF network types. 
 - This feature is enabled with the interface-level command ip ospf demand-circuit and is negotiated as part of the neighbor adjacency establishment, thus only one OSPF router on the segment requires that the feature be enabled. If routers on the segment do not support it, it will just ignore the option in the HELLO packet, but OSPF neighbors will still be established. 
 
-
 ## Flood Reduction
 - Per RFC 2328, OSPF Version 2, “an LSA's LS age is never incremented past the value MaxAge.", so when the Link State Age reaches MaxAge, "the router must attempt to flush the LSA... by reflooding the MaxAge LSA just as if it was a newly originated LSA". 
 - In Cisco’s IOS implementation of OSPF, the MaxAge value is 3600 seconds, or 60 minutes. To ensure that an LSA is not aged out, which means it will be flushed from the OSPF database, each LSA is reflooded after 30 minutes, regardless of whether the topology is stable or not. This periodic flooding behavior is commonly referred to as the “paranoid update.” 
 - The ip ospf flood-reduction feature stops unnecessary LSA flooding by setting the DoNotAge (DNA) bit in the LSA, removing the requirement for the periodic refresh. This needs to be enabled on links with OSPF neighbors attached, as on the other links, as there are no neighbors, no LSAs are sent anyways.
-
 
 ## Stub Router Feature
 - Prevents a router from becoming a transit router (nontransit router). 
@@ -171,7 +162,6 @@ max-metric router-lsa include-stub
 - transit networks + stub networks (ex: loopback)
 max-metric router-lsa on-startup announce-time 
 max-metric router-lsa on-startup wait-for-bgp
-
 
 ## OSPF Graceful Shutdown
 Similar to using the shutdown command on an  interface, there is also a shutdown command for OSPF. This allows you to  gracefully stop the OSPF routing process without removing the  configuration from your router. You can do this globally or on the  interface level.
@@ -188,9 +178,7 @@ If you shut OSPF on the interface level with the ip ospf shutdown command, it wi
 - Send hello packets with the DR/BDR set to 0.0.0.0 and an empty neighbor list. This will trigger other OSPF router to fall back to init state
 - Stop sending/receiving OSPF packets
 
-
 ---
-
 
 ## OSPF Filtering
 
@@ -200,7 +188,6 @@ If you shut OSPF on the interface level with the ip ospf shutdown command, it wi
 - Administrative Distance
 - RIB filtering does not stop the flooding of LSAs within the area
 
-
 ### Inter Area Routes
 - area X range 10.0.0.0 not-advertise
 	- Only effective when ABR is translating from Type 1 LSA to a Type 3 LSA (learn from INTRA Area and advertise INTER Area)
@@ -208,7 +195,6 @@ If you shut OSPF on the interface level with the ip ospf shutdown command, it wi
 	- prevent routes from being advertised TO the specified area
 - area X filter-list prefix XXX out
 	- prevent routes from being advertised FROM the specified area
-
 
 ### External Routes (LSA Type 5/7)
 Effective to filter when going between areas
@@ -238,6 +224,5 @@ And that leads us to the answer to the question:
 Because inter-area OSPF is distance vector, it is vulnerable to routing loops. It avoids loops by mandating a loop-free inter-area topology, in which traffic from one area can only reach another area through area 0. 
 
 https://www.networkworld.com/article/2348778/my-favorite-interview-question.html
-
 
 ---
