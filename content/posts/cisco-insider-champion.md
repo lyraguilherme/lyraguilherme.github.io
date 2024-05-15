@@ -1,5 +1,5 @@
 ---
-title: "I'm now a member of the Cisco Insider Champions group!"
+title: "Cisco Insider Champion 2024"
 date: 2024-04-20T14:00:00-03:00
 draft: false
 cover:
