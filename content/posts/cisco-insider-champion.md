@@ -8,8 +8,7 @@ cover:
     caption: 'Cisco Insider Champion'
 ---
 
-
-I'm now part of the **Cisco Insider Champion** group!
+I'm now a member of the **Cisco Insider Champion** group!
 
 Really glad to become part of this team of amazing IT professionals!
 
