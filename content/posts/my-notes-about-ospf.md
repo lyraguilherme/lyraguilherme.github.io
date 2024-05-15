@@ -1,11 +1,13 @@
 ---
-title: 'OSPF Zero-to-Hero'
+title: 'My notes about OSPF'
 date: 2023-02-22T14:07:09-03:00
 draft: true
+ShowToC: true
+TocOpen: true
 cover:
     image: 
-    alt: 'OSPF Zero-to-Hero'
-    caption: 'OSPF Zero-to-Hero'
+    alt: 'My notes about OSPF'
+    caption: 'My notes about OSPF'
 ---
 
 # OSPFv2
