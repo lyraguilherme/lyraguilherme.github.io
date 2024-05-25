@@ -2,6 +2,8 @@
 title: 'My Journey to CCIE'
 date: 2024-02-24T14:07:09-03:00
 draft: false
+ShowToC: true
+TocOpen: true
 cover:
     image: /images/ccie/CCIE-66666.jpeg
     alt: 'Guilherme Lyra, CCIE #66666'
