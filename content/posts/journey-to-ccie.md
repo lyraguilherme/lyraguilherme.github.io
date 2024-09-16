@@ -12,6 +12,8 @@ cover:
     caption: 'Guilherme Lyra, CCIE #66666'
 ---
 
+## My journey
+
 I officially started my career in IT in 2006, but my first steps with networks occurred a few years before that, between 2002 and 2003.
 
 In 2006, I began as an intern in user support at a government agency. I started by formatting computers and quickly progressed to a point where I dealt with the entire network infrastructure including switches, firewalls, proxy, file servers, AD, etc.
@@ -32,7 +34,9 @@ So, in summary, I officially started studying for the **CCIE** in **2017**, afte
 
 ---
 
-## Eligibility to the CCIE LAB
+## Understanding the CCIE exam
+
+### Eligibility to the CCIE LAB
 
 The first point to understand is that in order to schedule the CCIE LAB, you need to have passed the **350-401 ENCOR** exam within a period of **3 years**. If you are eligible, simply schedule the lab through the scheduling tool: https://ccie.cloudapps.cisco.com/CCIE/Schedule_Lab/CCIEOnline/CCIEOnline
 
@@ -64,7 +68,7 @@ The minimum score values are not disclosed. The important thing is to understand
 
 Another critical detail is that there is **no partial scoring**. For example: let's say in a certain task you configured everything correctly but used a different ACL name than what the question asked for. In this case, you won't get any points for that question. This is one of the factors that makes the exam so difficult: attention to details is essential.
 
-## Module 1: Design (3 hours)
+### Module 1: Design (3 hours)
 
 The objective of this module is to measure the ability to create, analyze, validate, and optimize network designs, which is the foundation for all deployment activities. Candidates will need to:
 
@@ -77,14 +81,14 @@ The module is scenario-based, with no access to any devices. Candidates will rec
 Examples of documentation include email threads, high-level designs, network topology diagrams, customer requirements and constraints, etc. Examples of questions include drag and drop, single-choice multiple-answer, multiple-choice, etc. During this module, backward navigation will be disabled. Therefore, candidates will not have full visibility of all questions in this module. The point values associated with each item are not displayed in this module.
 
 
-## Module 2: Deploy, Operate and Optimize (5 hours)
+### Module 2: Deploy, Operate and Optimize (5 hours)
 
 In this module, candidates will deploy, operate, and optimize network technologies and solutions.
 
-### Deploy ###
+#### Deploy ####
 Candidates will build the network according to project specifications, customer requirements, and constraints. All steps necessary for a successful network implementation will be covered, including configuration, integration, and troubleshooting in the commissioning of technologies and solutions, as per the exam topics.
 
-### Operate and Optimize ###
+#### Operate and Optimize ####
 Candidates will operate and optimize network technologies and solutions. This includes monitoring network health and performance, configuring the network to improve service quality, reduce outages, mitigate disruptions, lower operational costs, and maintain high availability, reliability, and security, as well as diagnosing potential issues and adjusting configurations to align with business objectives and/or technical requirements. This module provides a setup very close to a real production network environment and will consist of practical items (device access) as well as web-based items. Whenever possible, a virtualized lab environment will be used in this module.
 
 During this module, backward navigation will be enabled. Candidates will have full visibility of all questions in this module. Point values associated with each item are displayed in this module.
