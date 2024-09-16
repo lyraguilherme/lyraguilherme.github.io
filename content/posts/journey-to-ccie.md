@@ -156,15 +156,13 @@ Here are some books that I personally used and consider highly relevant:
 - Traditional protocols still make up a significant portion of the exam.
 - I recommend INE’s older materials for Routing & Switching (CCIE R&S v5.0), including both videos and workbooks. They provide unbeatable content.
 - I also used EVE-NG and Cisco CML for labs.
-- Make sure to study using the software versions that will be used in the exam. You can find this information in the **CCIE Enterprise Infrastructure (v1.1) Equipment and Software List** on Cisco's website:  
-  [Exam Format and Equipment](https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format)
+- Make sure to study using the software versions that will be used in the exam. You can find this information in the **CCIE Enterprise Infrastructure (v1.1) Equipment and Software List** on Cisco's website: [Cisco CCIE Exam Format and Equipment](https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format)
 
 ### SD-WAN
 
 - Start with Cisco's **Configuration Guides** and **Design Guides**.
 - Cisco Live presentations are another valuable resource (available on **ciscolive.com**).
-- For lab practice, if you have the hardware, you can use VMware to virtualize SD-WAN components. If not, consider renting lab sessions from Cisco's **CCIE Enterprise Infrastructure Practice Labs**:  
-  [Practice Labs](https://learningnetwork.cisco.com/s/article/ccie-enterprise-infrastructure-practice-labs)
+- For lab practice, if you have the hardware, you can use VMware to virtualize SD-WAN components. If not, consider renting lab sessions from Cisco's **CCIE Enterprise Infrastructure Practice Labs**: [Cisco CCIE Practice Labs](https://learningnetwork.cisco.com/s/article/ccie-enterprise-infrastructure-practice-labs)
 
 ### DNA Center / SD-Access / ISE
 
