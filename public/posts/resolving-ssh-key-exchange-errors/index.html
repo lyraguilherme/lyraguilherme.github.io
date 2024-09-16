@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-br" dir="auto">
+<html lang="en" dir="auto">
 
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Todos os posts | Guilherme Lyra</title>
+<title>Resolving SSH Key Exchange Errors | Guilherme Lyra</title>
 <meta name="keywords" content="">
-<meta name="description" content="arquivos">
+<meta name="description" content="In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.
+While working on a network automation task, I encountered an error while trying to establish connections to some legacy devices: Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.
+The error message indicates that the only available key exchange methods are diffie-hellman-group-exchange-sha1 and diffie-hellman-group14-sha1.">
 <meta name="author" content="">
-<link rel="canonical" href="//localhost:1313/pt-br/arquivos/">
+<link rel="canonical" href="//localhost:1313/posts/resolving-ssh-key-exchange-errors/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
 <link rel="icon" href="//localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="//localhost:1313/favicon-16x16.png">
@@ -18,8 +20,7 @@
 <link rel="mask-icon" href="//localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="//localhost:1313/archives/">
-<link rel="alternate" hreflang="pt-br" href="//localhost:1313/pt-br/arquivos/">
+<link rel="alternate" hreflang="en" href="//localhost:1313/posts/resolving-ssh-key-exchange-errors/">
 <noscript>
     <style>
         #theme-toggle,
@@ -59,7 +60,7 @@
 </noscript>
 </head>
 
-<body class="list" id="top">
+<body class="" id="top">
 <script>
     if (localStorage.getItem("pref-theme") === "dark") {
         document.body.classList.add('dark');
@@ -74,7 +75,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="//localhost:1313/pt-br/" accesskey="h" title="Guilherme Lyra (Alt + H)">Guilherme Lyra</a>
+            <a href="//localhost:1313/" accesskey="h" title="Guilherme Lyra (Alt + H)">Guilherme Lyra</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -98,16 +99,16 @@
                 </button>
                 <ul class="lang-switch"><li>|</li>
                     <li>
-                        <a href="//localhost:1313/" title="English"
-                            aria-label="English">En</a>
+                        <a href="//localhost:1313/pt-br/" title="Português"
+                            aria-label="Português">Pt-Br</a>
                     </li>
                 </ul>
             </div>
         </div>
         <ul id="menu">
             <li>
-                <a href="//localhost:1313/pt-br/arquivos/" title="Todos os posts">
-                    <span class="active">Todos os posts</span>
+                <a href="//localhost:1313/archives/" title="All posts">
+                    <span>All posts</span>
                 </a>
             </li>
         </ul>
@@ -115,56 +116,40 @@
 </header>
 <main class="main">
 
-<header class="page-header">
-  <h1>
-    Todos os posts
-  </h1>
-</header>
-<div class="archive-year">
-  <h2 class="archive-year-header">2024<sup class="archive-count">&nbsp;&nbsp;2</sup>
-  </h2>
-  <div class="archive-month">
-    <h3 class="archive-month-header">abril<sup class="archive-count">&nbsp;&nbsp;1</sup></h3>
-    <div class="archive-posts">
-      <div class="archive-entry">
-        <h3 class="archive-entry-title entry-hint-parent">Cisco Insider Champion 2024
-        </h3>
-        <div class="archive-meta"><span title='2024-04-20 14:00:00 -0300 -03'>abril 20, 2024</span></div>
-        <a class="entry-link" aria-label="post link to Cisco Insider Champion 2024" href="//localhost:1313/pt-br/posts/cisco-insider-champion/"></a>
-      </div>
-    </div>
-  </div>
-  <div class="archive-month">
-    <h3 class="archive-month-header">fevereiro<sup class="archive-count">&nbsp;&nbsp;1</sup></h3>
-    <div class="archive-posts">
-      <div class="archive-entry">
-        <h3 class="archive-entry-title entry-hint-parent">Minha Jornada ao CCIE
-        </h3>
-        <div class="archive-meta"><span title='2024-02-24 14:07:09 -0300 -03'>fevereiro 24, 2024</span></div>
-        <a class="entry-link" aria-label="post link to Minha Jornada ao CCIE" href="//localhost:1313/pt-br/posts/journey-to-ccie/"></a>
-      </div>
-    </div>
-  </div>
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Resolving SSH Key Exchange Errors
+    </h1>
+    <div class="post-meta"><span title='2024-09-15 16:00:00 -0300 -03'>September 15, 2024</span>
+
 </div>
-<div class="archive-year">
-  <h2 class="archive-year-header">2023<sup class="archive-count">&nbsp;&nbsp;1</sup>
-  </h2>
-  <div class="archive-month">
-    <h3 class="archive-month-header">janeiro<sup class="archive-count">&nbsp;&nbsp;1</sup></h3>
-    <div class="archive-posts">
-      <div class="archive-entry">
-        <h3 class="archive-entry-title entry-hint-parent">Cisco Community Live Event - Cisco SD-WAN
-        </h3>
-        <div class="archive-meta"><span title='2023-01-22 14:07:09 -0300 -03'>janeiro 22, 2023</span></div>
-        <a class="entry-link" aria-label="post link to Cisco Community Live Event - Cisco SD-WAN" href="//localhost:1313/pt-br/posts/cisco-community-sdwan-event/"></a>
-      </div>
-    </div>
+  </header> 
+<figure class="entry-cover"><img loading="eager" src="//localhost:1313/images/key-exchange/key-exchange.png" alt="Resolving SSH Key Exchange Errors">
+        <p>Resolving SSH Key Exchange Errors</p>
+</figure>
+  <div class="post-content"><p>In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.</p>
+<p>While working on a network automation task, I encountered an error while trying to establish connections to some legacy devices:
+<code>Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.</code></p>
+<p>The error message indicates that the only available key exchange methods are <strong>diffie-hellman-group-exchange-sha1</strong> and <strong>diffie-hellman-group14-sha1</strong>. To address this, simply update your <code>ssh_config</code> file by adding the following lines at the end:</p>
+<pre tabindex="0"><code>HostKeyAlgorithms +ssh-rsa,ssh-dss
+KexAlgorithms +diffie-hellman-group1-sha1,diffie-hellman-group14-sha1
+</code></pre><p>Make sure to enable the required key exchange methods for your use case and save the <code>ssh_config</code> file before attemping a new connection.</p>
+<p>By following these steps, you should be able to resolve the key exchange issues and maintain stable SSH connections with legacy devices. If you encounter any further issues, checking the SSH logs for additional details can provide further insights into the problem.</p>
+
+
   </div>
-</div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="//localhost:1313/pt-br/">Guilherme Lyra</a></span>
+    <span>&copy; 2024 <a href="//localhost:1313/">Guilherme Lyra</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
