@@ -138,7 +138,7 @@ The first column in the spreadsheet, labeled **"Level"**, is for rating your kno
 
 ### Recommended Books
 
-Here are some books that are highly relevant for your preparation:
+Here are some books that I personally used and consider highly relevant:
 
 - **CCIE Routing & Switching v5.0, Volume 1, 5th Edition** [Kocharians & Paluch]
 - **CCIE Routing & Switching v5.0, Volume 2, 5th Edition** [Kocharians & Paluch]
