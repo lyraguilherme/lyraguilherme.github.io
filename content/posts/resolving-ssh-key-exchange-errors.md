@@ -24,4 +24,4 @@ KexAlgorithms +diffie-hellman-group1-sha1,diffie-hellman-group14-sha1
 
 Make sure to enable the required key exchange methods for your use case and save the `ssh_config` file before attemping a new connection.
 
-By following these steps, you should be able to resolve the key exchange issues and maintain stable SSH connections with legacy devices. If you encounter any further issues, checking the SSH logs for additional details can provide further insights into the problem.
+By following these steps, you should be able to resolve the key exchange issues and maintain stable SSH connections with legacy devices. However, **keep in mind that you're enabling deprecated and weaker cryptographic algorithms**.
