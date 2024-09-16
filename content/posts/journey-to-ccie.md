@@ -36,7 +36,7 @@ So, in summary, I officially started studying for the **CCIE** in **2017**, afte
 
 ## Understanding the CCIE exam
 
-### Eligibility to the CCIE LAB
+## Eligibility to the CCIE LAB
 
 The first point to understand is that in order to schedule the CCIE LAB, you need to have passed the **350-401 ENCOR** exam within a period of **3 years**. If you are eligible, simply schedule the lab through the scheduling tool: https://ccie.cloudapps.cisco.com/CCIE/Schedule_Lab/CCIEOnline/CCIEOnline
 
