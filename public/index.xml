@@ -6,8 +6,17 @@
     <description>Recent content on Guilherme Lyra</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 20 Apr 2024 14:00:00 -0300</lastBuildDate>
+    <lastBuildDate>Sun, 15 Sep 2024 16:00:00 -0300</lastBuildDate>
     <atom:link href="//localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Resolving SSH Key Exchange Errors</title>
+      <link>//localhost:1313/posts/resolving-ssh-key-exchange-errors/</link>
+      <pubDate>Sun, 15 Sep 2024 16:00:00 -0300</pubDate>
+      <guid>//localhost:1313/posts/resolving-ssh-key-exchange-errors/</guid>
+      <description>In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.
+While working on a network automation task, I encountered an error while trying to establish connections to some legacy devices: Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.
+The error message indicates that the only available key exchange methods are diffie-hellman-group-exchange-sha1 and diffie-hellman-group14-sha1.</description>
+    </item>
     <item>
       <title>Cisco Insider Champion 2024</title>
       <link>//localhost:1313/posts/cisco-insider-champion/</link>
