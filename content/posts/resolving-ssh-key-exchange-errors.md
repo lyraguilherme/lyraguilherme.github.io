@@ -15,7 +15,7 @@ In this post, I’ll walk you through a few simple steps to resolve SSH Key Exch
 While working on a network automation task, I encountered an error while trying to establish connections to some legacy devices: 
 `Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.`
 
-The error message indicates that the only available key exchange methods are **diffie-hellman-group-exchange-sha1** and **diffie-hellman-group14-sha1**. To address this, simply update your `ssh_config` file by adding the following lines at the end:
+The error message indicates that the only available key exchange methods are **diffie-hellman-group-exchange-sha1** and **diffie-hellman-group14-sha1**. To address this, simply update your `/etc/ssh/ssh_config` file by adding the following lines at the end:
 
 ```
 HostKeyAlgorithms +ssh-rsa,ssh-dss
