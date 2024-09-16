@@ -100,7 +100,7 @@ During this module, backward navigation will be enabled. Candidates will have fu
 
 Start by downloading the **CCIE Enterprise Infrastructure Learning Matrix** spreadsheet from the link below. Created and maintained by Cisco, this spreadsheet lists all exam topics with recommended study materials.
 
-> [Cisco Learning Matrix](https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/expert/ccie-enterprise-infrastructure.html#~exams)
+> [Cisco CCIE Enterprise Learning Matrix](https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/expert/ccie-enterprise-infrastructure.html#~exams)
 
 The first column in the spreadsheet, labeled **"Level"**, is for rating your knowledge from 1 to 5 on each topic. Although it comes pre-filled, adjust it honestly to reflect your actual knowledge. This way, you'll know where to focus your studies. Update it regularly as you progress.
 
