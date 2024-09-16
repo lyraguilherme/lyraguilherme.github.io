@@ -3,6 +3,9 @@ title: "Guilherme Lyra"
 theme: ["PaperMod"]
 defaultContentLanguage: en
 
+sitemap:
+  changeFreq: daily
+
 params:
   homeInfoParams:
     title: "Welcome"
