@@ -13,9 +13,9 @@
       <link>//localhost:1313/posts/resolving-ssh-key-exchange-errors/</link>
       <pubDate>Sun, 15 Sep 2024 16:00:00 -0300</pubDate>
       <guid>//localhost:1313/posts/resolving-ssh-key-exchange-errors/</guid>
-      <description>While working on a network automation task, I encountered an error while trying to establish connections to some legacy devices: &amp;ldquo;Unable to negotiate with 10.2.100.22 port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.&amp;rdquo;
-In this post, I’ll walk you through a few simple steps to resolve this issue and ensure smooth SSH connections.
-resolving-ssh-key-exchange-errors</description>
+      <description>In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.
+While working on a network automation task, I encountered an error while trying to establish connections to some legacy devices: Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.
+The error message indicates that the only available key exchange methods are diffie-hellman-group-exchange-sha1 and diffie-hellman-group14-sha1.</description>
     </item>
     <item>
       <title>Cisco Insider Champion 2024</title>

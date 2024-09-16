@@ -94,90 +94,84 @@ During this module, backward navigation will be enabled. Candidates will have fu
 
 --- 
 
-## First steps ##
+## Study Tips
 
-Download the CCIE Enterprise Infrastructure Learning Matrix spreadsheet from the link below. This spreadsheet was created and is maintained by Cisco itself. In it, you will find all the topics of the exam with some study materials recommendations.
+### First Steps
 
-> On the following link, at the bottom of the page, under Resources, there is a link to the CCIE Enterprise Infrastructure Learning Matrix:
- https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/expert/ccie-enterprise-infrastructure.html#~exams
+Start by downloading the **CCIE Enterprise Infrastructure Learning Matrix** spreadsheet from the link below. Created and maintained by Cisco, this spreadsheet lists all exam topics with recommended study materials.
 
-Note that the first column of the spreadsheet (called "Level") is precisely for you to assign a rating from 1 to 5 to your knowledge in each of these topics. The spreadsheet comes pre-filled, but change it according to your level of knowledge. Be honest, as this is how you will know where you need to focus more or less on your studies. Periodically review this spreadsheet and update your level as you progress.
+> [Cisco Learning Matrix](https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/expert/ccie-enterprise-infrastructure.html#~exams)
 
-## General Tips ##
+The first column in the spreadsheet, labeled **"Level"**, is for rating your knowledge from 1 to 5 on each topic. Although it comes pre-filled, adjust it honestly to reflect your actual knowledge. This way, you'll know where to focus your studies. Update it regularly as you progress.
 
-1. If English isn't your native language, make sure to learn it. You must be able to interpret all possible details of what is being asked, identify points of attention, traps, etc.
+### General Tips
 
-2. Don't believe in ready-made recipes. Studying dozens of hours a day without having a solid strategy and without knowing where you need to focus will be a waste of time.
+1. **Master English**  
+   If English isn't your native language, prioritize learning it. Understanding all details and avoiding exam traps is critical.
 
-3. The CCIE Enterprise Infrastructure Learning Matrix spreadsheet will be your greatest ally in this journey. Use it to find your weak points and know which content you need to study more or less. Go back and read what I wrote in the "first steps" item.
+2. **Avoid Mindless Study**  
+   Studying hours without strategy or focus is counterproductive. Develop a plan and use the **Learning Matrix** to find weak spots.
 
-4. Start by studying a few hours a day and gradually increase your study time. Making a huge effort at the beginning and giving up halfway through the journey won't help. Read item 4 again.
+3. **Start Small**  
+   Begin with a few hours of study each day, gradually increasing your time. Burnout is a real risk if you push too hard at the start.
 
-5. At the beginning of your studies, focus on specific topics and create simple topologies to study. Avoid starting the journey by working with a very large topology. What's the point of working with 2 or 3 protocols at the same time if you don't understand any of them deeply? You'll need that in the final phase when you're close to scheduling the lab, but there's a long way to go until then.
+4. **Focus on Specific Topics**  
+   At the beginning, create simple topologies. Avoid working with large topologies that use multiple protocols until you have a solid understanding of each individually.
 
-6. While studying theory, you don't need to take the book and read from start to finish. By doing that, you'll probably forget most of the content. Focus on individual technologies/protocols.
+5. **Selective Reading**  
+   Don’t try to read books from cover to cover. Instead, focus on individual technologies and protocols.
 
-7. Don't get frustrated when you need to read and reread the same subject countless times. This is part of the learning process.
+6. **Embrace Repetition**  
+   Re-reading topics is normal. Accept that learning requires revisiting concepts multiple times.
 
-8. I particularly like to consult the theory while I'm doing a specific configuration. Digital books help a lot with this.
+7. **Hands-on Configuration**  
+   Refer back to theory while configuring networks. This approach helps solidify learning.
 
-9. Understand how a specific command or functionality will reflect at the protocol level. Make a habit of analyzing packet captures.
+8. **Analyze Packet Captures**  
+   Learn how commands affect protocols by analyzing packet captures. Examine layers in depth and understand how configurations alter specific bits or attributes.
 
-10. Still on packet captures, analyze all layers in depth. Understand what changes when performing or modifying a specific configuration, which bits or attributes are changed, how the information is propagated, etc.
+9. **Study Design**  
+   Explore different design methods. There are many ways to reach the same result—understand the pros and cons of each to make informed decisions.
 
-11. Look for information on a particular subject in various different sources. When studying a specific topic, review Cisco's documentation and also books from different authors. Read item 10 again.
+10. **Final Study Phase**  
+    Approximately three months before the lab exam, aim for at least 8 hours of daily study, focusing on configuring and troubleshooting complex topologies. Train yourself to maintain focus during long, stressful exam conditions.
 
-12. Study network design. There are usually several paths to achieve the same result. Why implement something in one way and not another? What will be the differences? Which one best meets your goal?
+### Recommended Books
 
-13. In the final stretch of studies for the Lab, I consider that approximately 3 months before your lab date, at this point, you should be able to study at least 8 hours a day. At this stage, you should focus on configuring and troubleshooting complex topologies. Remember that the exam will last 8 hours. Create a strategy to maintain concentration and focus under stressful and tired conditions.
+Here are some books that are highly relevant for your preparation:
 
+- **CCIE Routing & Switching v5.0, Volume 1, 5th Edition** [Kocharians & Paluch]
+- **CCIE Routing & Switching v5.0, Volume 2, 5th Edition** [Kocharians & Paluch]
+- **Definitive MPLS Network Designs** [Guichard]
+- **IP Multicast, Volume I** [Loveless, Blair, Durai]
+- **IPv6 Fundamentals, 2nd Edition** [Graziani]
+- **MPLS Fundamentals** [De Ghein]
+- **Optimal Routing Design** [White, Slice, Rentana]
+- **Routing TCP/IP, Volume 1, 2nd Edition** [Doyle & Carrol]
+- **Routing TCP/IP, Volume 2, 2nd Edition** [Doyle]
+- **Troubleshooting BGP** [Edgeworth, Jain]
 
-## Books ##
+### Routing & Switching
 
-Some of the books I've used and consider quite relevant:
+- Traditional protocols still make up a significant portion of the exam.
+- I recommend INE’s older materials for Routing & Switching (CCIE R&S v5.0), including both videos and workbooks. They provide unbeatable content.
+- I also used EVE-NG and Cisco CML for labs.
+- Make sure to study using the software versions that will be used in the exam. You can find this information in the **CCIE Enterprise Infrastructure (v1.1) Equipment and Software List** on Cisco's website:  
+  [Exam Format and Equipment](https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format)
 
-* CCIE Routing & Switching v5.0, Volume 1, 5th Edition [Kocharians & Paluch]
-* CCIE Routing & Switching v5.0, Volume 2, 5th Edition [Kocharians & Paluch]
-* Definitive MPLS Network Designs [Guichard]
-* IP Multicast, Volume I [Loveless, Blair, Durai]
-* IPv6 Fundamentals, 2nd Edition [Graziani]
-* MPLS Fundamentals [De Ghein]
-* Optimal Routing Design [White, Slice, Rentana]
-* Routing TCP/IP, Volume 1, 2nd Edition [Doyle & Carrol]
-* Routing TCP/IP, Volume 2, 2nd Edition [Doyle]
-* Troubleshooting BGP [Edgeworth, Jain]
+### SD-WAN
 
-## Routing & Switching ##
+- Start with Cisco's **Configuration Guides** and **Design Guides**.
+- Cisco Live presentations are another valuable resource (available on **ciscolive.com**).
+- For lab practice, if you have the hardware, you can use VMware to virtualize SD-WAN components. If not, consider renting lab sessions from Cisco's **CCIE Enterprise Infrastructure Practice Labs**:  
+  [Practice Labs](https://learningnetwork.cisco.com/s/article/ccie-enterprise-infrastructure-practice-labs)
 
-* Remember that traditional protocols still account for a large part of the exam.
-* For my R&S studies, I used the old materials from INE, both the videos and the workbook from the old version of the exam (CCIE R&S v5.0). In my opinion, their content is unbeatable for the R&S part. I still use the workbook topologies today to study or simulate something.
-* For R&S, I also used old materials from the now-defunct IPExpert.
-* For R&S labs, I used EVE-NG and Cisco CML.
-* Try to study using the same software versions that will be used in the exam. This information can be found here:
- https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format --> in the Equipment and Software list, you will find a PDF with the images and respective versions used in the exam: CCIE Enterprise Infrastructure (v1.1) Equipment and Software List.
-* Do not ask me to send any images to you. If you do not have access to the images, you can use them legally through Cisco CML.
+### DNA Center / SD-Access / ISE
 
+- If you lack access to these in production environments, you’ll need lab sessions using Cisco's **CCIE Practice Labs**. These can be scheduled in advance and usually last four hours per session. It’s a worthwhile investment.
 
-## SD-WAN ##
+### Automation
 
-* Start with the Configuration Guides and Design Guides from Cisco.
-* There is a lot of content in Cisco presentations available at ciscolive.com.
-* I usually recommend studying all the material in English, but if speak Portuguese and are starting to study about SD-WAN, I recommend watching this presentation I did at the invitation of the Cisco Community: https://www.youtube.com/watch?v=xtTHjDv1r-M
-* Review the topics covered in the CCIE Enterprise Infrastructure Learning Matrix carefully. Don't waste time studying features that won't be tested in the lab.
-* I recommend the content from INE (updated for CCIE Enterprise v1.0). Within the INE platform, after completing a certain module, there are usually some labs they provide to reinforce the content.
-* For labs, if you have available hardware, you can use VMware to virtualize SD-WAN components. Remember to use the same software versions that are tested in the exam. This information can be found here: https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format --> in the Equipment and Software list, you will find a PDF with the images and respective versions used in the exam: https://learningcontent.cisco.com/documents/marketing/exam-topics/CCIEEIv1.1-equipment_and_SW.pdf
-The issue with running SD-WAN running "on-premises" is that you will need a robust machine. If you don't have one at home or work, seek an alternative to rent a laboratory online that has these images and sufficient resources. An option is to rent some sessions in Cisco's own environment, called **CCIE Enterprise Infrastructure Practice Labs**: https://learningnetwork.cisco.com/s/article/ccie-enterprise-infrastructure-practice-labs
-
-## DNA Center, SD-Access e ISE ##
-
-* In my case, I already had experience with these solutions in production environments. I was responsible for implementing SD-Access projects, and that helped a lot during the exam.
-* For labs, there's no way around it: you'll need access to a DNA Center and Catalyst 9000 series switches. In my case, I used several sessions in the CCIE Practice Labs (CCIE Enterprise Infrastructure Practice Labs). Lab access needs to be scheduled in advance. Additionally, the fee is charged in dollars and if I'm not mistaken, there's a limit of 4 hours per session. I spent a lot of money here, but it's definitely worth it.
-
-## Automation ##
-
-* **Python:** a machine running Linux (can be a VM) and with connectivity to a topology with routers running IOS XE. If you have no knowledge of Python, start with the basics before interacting with equipment.
-* **EEM Applets and Guestshell:** I suggest using a virtual router running IOS XE. It can be CSR 1000v or Catalyst 8000v.
-* **vManage and DNA Center APIs:** 
-    * **vManage:** You can virtualize it "in-house" or use a lab from the Cisco **DevNet Sandbox**.
-    * **DNA Center:** Specifically regarding APIs, I recommend using a Cisco DevNet Sandbox, where you can use the tool without having to pay.
-    * The **DevNet Sandbox** labs are usually read-only, so if you want to manipulate any configuration, I suggest scheduling a session in the **CCIE Enterprise Infrastructure Practice Labs**: https://learningnetwork.cisco.com/s/article/ccie-enterprise-infrastructure-practice-labs
+- **Python:** Use a Linux machine (physical or virtual) to connect to routers running IOS XE. Start with basic Python skills if you’re new to the language.
+- **EEM Applets and Guestshell:** Practice on virtual routers like CSR 1000v or Catalyst 8000v.
+- **APIs (vManage and DNA Center):** Utilize **Cisco DevNet Sandbox** for free access, but for full lab control, schedule sessions in the **CCIE Practice Labs**.
