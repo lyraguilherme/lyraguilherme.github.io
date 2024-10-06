@@ -361,7 +361,7 @@ Open the ```terraform.tfstate``` file and manually search for the sensitive data
 
 One of Terraform's key benefits is how easily changes can be reverted with the ```terraform destroy``` command.
 
-To rever the changes we previously applied, the sintax is:
+If you need to revert the changes we previously applied, use the following syntax:
 
 ```
 terraform destroy \
