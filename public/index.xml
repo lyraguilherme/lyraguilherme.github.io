@@ -2,53 +2,62 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Guilherme Lyra</title>
-    <link>//localhost:1313/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on Guilherme Lyra</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sun, 15 Sep 2024 16:00:00 -0300</lastBuildDate>
-    <atom:link href="//localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 06 Oct 2024 18:00:00 -0300</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Automating AWS site-to-site VPNs with Terraform</title>
+      <link>http://localhost:1313/posts/terraform-aws-vpn/</link>
+      <pubDate>Sun, 06 Oct 2024 18:00:00 -0300</pubDate>
+      <guid>http://localhost:1313/posts/terraform-aws-vpn/</guid>
+      <description>Introduction In this post, I&amp;rsquo;ll walk you through how to use Terraform to set up a VPN site-to-site connection on AWS, leveraging Infrastructure as Code (IaC) to make the process quicker, easier, and fully repeatable.
+For the examples below, we’ll build a cloud infrastructure using a Virtual Private Gateway (VGW). In a future post, we’ll explore using a Transit Gateway (TGW) for more complex setups.
+I’m running everything on a MacBook, but you can easily replicate these steps on a Linux jump host or any similar environment.</description>
+    </item>
     <item>
       <title>Resolving SSH Key Exchange Errors</title>
-      <link>//localhost:1313/posts/resolving-ssh-key-exchange-errors/</link>
+      <link>http://localhost:1313/posts/resolving-ssh-key-exchange-errors/</link>
       <pubDate>Sun, 15 Sep 2024 16:00:00 -0300</pubDate>
-      <guid>//localhost:1313/posts/resolving-ssh-key-exchange-errors/</guid>
+      <guid>http://localhost:1313/posts/resolving-ssh-key-exchange-errors/</guid>
       <description>In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.
 While working on a network automation task, I encountered an error while trying to establish connections to some legacy devices: Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.
 The error message indicates that the only available key exchange methods are diffie-hellman-group-exchange-sha1 and diffie-hellman-group14-sha1.</description>
     </item>
     <item>
       <title>Cisco Insider Champion 2024</title>
-      <link>//localhost:1313/posts/cisco-insider-champion/</link>
+      <link>http://localhost:1313/posts/cisco-insider-champion/</link>
       <pubDate>Sat, 20 Apr 2024 14:00:00 -0300</pubDate>
-      <guid>//localhost:1313/posts/cisco-insider-champion/</guid>
+      <guid>http://localhost:1313/posts/cisco-insider-champion/</guid>
       <description>I&amp;rsquo;m now a member of the Cisco Insider Champion group!
 Really glad to become part of this team of amazing IT professionals!
 My badge URL: https://www.credly.com/badges/f66fb7c6-b852-47c3-b9d2-42e8554e58c7/public_url</description>
     </item>
     <item>
       <title>My Journey to CCIE</title>
-      <link>//localhost:1313/posts/journey-to-ccie/</link>
+      <link>http://localhost:1313/posts/journey-to-ccie/</link>
       <pubDate>Sat, 24 Feb 2024 14:07:09 -0300</pubDate>
-      <guid>//localhost:1313/posts/journey-to-ccie/</guid>
+      <guid>http://localhost:1313/posts/journey-to-ccie/</guid>
       <description>My journey I officially started my career in IT in 2006, but my first steps with networks occurred a few years before that, between 2002 and 2003.
 In 2006, I began as an intern in user support at a government agency. I started by formatting computers and quickly progressed to a point where I dealt with the entire network infrastructure including switches, firewalls, proxy, file servers, AD, etc.
 After completing this internship, I went to another company, again as an intern, where I spent another 2 years before being officially hired.</description>
     </item>
     <item>
       <title>Cisco IOS XE Model-Driven Telemetry</title>
-      <link>//localhost:1313/posts/ios-xe-telemetry/</link>
+      <link>http://localhost:1313/posts/ios-xe-telemetry/</link>
       <pubDate>Thu, 02 Feb 2023 14:07:09 -0300</pubDate>
-      <guid>//localhost:1313/posts/ios-xe-telemetry/</guid>
+      <guid>http://localhost:1313/posts/ios-xe-telemetry/</guid>
       <description>In this post we&amp;rsquo;re going to explore some Cisco IOS XE capabilities such as Streaming Telemetry and Guestshell.
 There is a ton of content available on Cisco DevNet explaining Model-Driven Telemetry theory in great detail, so I highly suggest you take some time to browse through the links I&amp;rsquo;ve listed under the Reference of this post.
 Summary My lab router is a Cisco ISR C1111-4G running IOS XE 17.6.3a. The same environment can be set up on a CSR1000v or Catalyst 8000v running on Cisco CML for example.</description>
     </item>
     <item>
       <title>Cisco Community Live Event - Cisco SD-WAN</title>
-      <link>//localhost:1313/posts/cisco-community-sdwan-event/</link>
+      <link>http://localhost:1313/posts/cisco-community-sdwan-event/</link>
       <pubDate>Sun, 22 Jan 2023 14:07:09 -0300</pubDate>
-      <guid>//localhost:1313/posts/cisco-community-sdwan-event/</guid>
+      <guid>http://localhost:1313/posts/cisco-community-sdwan-event/</guid>
       <description>In November 2020 I had the honor of being invited by Cisco Community to present a live event about Cisco SD-WAN (Viptela). The event had more than 300 participants, from 9 different countries.
 For those who want to know more about this excellent Cisco solution, the recording is available on the link below (presentation language is Brazilian Portuguese).
 Watch the video on YouTube: https://www.youtube.com/watch?v=xtTHjDv1r-M</description>
