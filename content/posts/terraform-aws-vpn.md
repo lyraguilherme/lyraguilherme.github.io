@@ -138,6 +138,11 @@ This command should return information about your AWS account, confirming that y
 
 # Diving into Automation
 
+![Diving into automation](/images/terraform-aws-vpn/neom-n7SdozgzvyA-unsplash.jpg)
+
+Photo by [NEOM](https://unsplash.com/@neom?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/a-person-swimming-in-a-deep-blue-ocean-n7SdozgzvyA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
+
+
 ## Terraform configuration
 
 I'm considering you already have Terraform installed. If you don't, the process is quite simple and there's a ton of content on the Internet on how to do it.
