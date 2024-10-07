@@ -8,6 +8,12 @@ cover:
     image: /images/terraform-aws-vpn/awsterraform1.png
     alt: 'Automating AWS site-to-site VPNs with Terraform'
     caption: 'Automating AWS site-to-site VPNs with Terraform'
+tags:
+ - Automation
+ - AWS
+ - IaC
+ - Terraform
+ - VPN
 ---
 
 # Introduction
