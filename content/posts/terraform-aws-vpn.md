@@ -396,7 +396,7 @@ terraform destroy \
 
 # Configuring our VPN peer (Cisco Router)
 
-To wrap up, below is a Python script I created, to generate a config script for a Cisco router based on the Terraform outputs. Make sure to use with caution and always double-check before using this in a prodution environment.
+To wrap up, below is a Python script I created. This script generates configuration for a Cisco router based on Terraform outputs. Please use with caution and always double-check before applying it in a production environment.
 
 ***Key points:***
 - AWS uses by default BGP ASN 64512
