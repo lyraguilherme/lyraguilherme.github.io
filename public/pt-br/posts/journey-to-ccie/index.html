@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Minha Jornada ao CCIE | Guilherme Lyra</title>
+<meta name="keywords" content="">
+<meta name="description" content="Resumo sobre a minha carreira Oficialmente comecei minha carreira em TI em 2006, mas, meus primeiros passos com redes ocorreram alguns anos antes disso, entre 2002 e 2003.
+Em 2006 comecei como estagiário no suporte a usuários em um órgão do governo. Comecei formatando computadores e progredi rapidamente até um ponto em que lidava com toda a infraestrutrua de rede incluindo switches, firewalls, proxy, file servers, AD, etc.
+Após finalizar esse estágio, fui para outra empresa, novamente como estagiário, onde passei mais 2 anos antes de ser oficialmente contratado.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/pt-br/posts/journey-to-ccie/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/journey-to-ccie/">
+<link rel="alternate" hreflang="pt-br" href="http://localhost:1313/pt-br/posts/journey-to-ccie/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/pt-br/" accesskey="h" title="Guilherme Lyra (Alt + H)">Guilherme Lyra</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                    <li>
+                        <a href="http://localhost:1313/" title="English"
+                            aria-label="English">En</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/pt-br/arquivos/" title="Todos os posts">
+                    <span>Todos os posts</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Minha Jornada ao CCIE
+    </h1>
+    <div class="post-meta"><span title='2024-02-24 14:07:09 -0300 -03'>fevereiro 24, 2024</span>&nbsp;|&nbsp;Translations:
+<ul class="i18n_list">
+    <li>
+        <a href="http://localhost:1313/posts/journey-to-ccie/">En</a>
+    </li>
+</ul>
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="eager" src="http://localhost:1313/images/CCIE-66666.jpeg" alt="Guilherme Lyra, CCIE #66666">
+        <p>Guilherme Lyra, CCIE #66666</p>
+</figure><div class="toc">
+    <details  open>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#resumo-sobre-a-minha-carreira" aria-label="Resumo sobre a minha carreira">Resumo sobre a minha carreira</a></li>
+                <li>
+                    <a href="#elegibilidade-ao-ccie-lab" aria-label="Elegibilidade ao CCIE LAB">Elegibilidade ao CCIE LAB</a></li>
+                <li>
+                    <a href="#formato-da-prova" aria-label="Formato da prova">Formato da prova</a><ul>
+                        
+                <li>
+                    <a href="#module-1-design-3-hours" aria-label="Module 1: Design (3 hours)">Module 1: Design (3 hours)</a></li>
+                <li>
+                    <a href="#module-2-deploy-operate-and-optimize-5-hours" aria-label="Module 2: Deploy, Operate and Optimize (5 hours)">Module 2: Deploy, Operate and Optimize (5 hours)</a><ul>
+                        
+                <li>
+                    <a href="#deploy" aria-label="Deploy">Deploy</a></li>
+                <li>
+                    <a href="#operate-and-optimize" aria-label="Operate and Optimize">Operate and Optimize</a></li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#dicas-de-estudos" aria-label="Dicas de estudos">Dicas de estudos</a><ul>
+                        
+                <li>
+                    <a href="#primeiros-passos" aria-label="Primeiros passos">Primeiros passos</a></li>
+                <li>
+                    <a href="#considera%c3%a7%c3%b5es-importantantes" aria-label="Considerações importantantes">Considerações importantantes</a></li>
+                <li>
+                    <a href="#sugest%c3%b5es-de-livros" aria-label="Sugestões de livros">Sugestões de livros</a></li>
+                <li>
+                    <a href="#routing--switching" aria-label="Routing &amp; Switching">Routing &amp; Switching</a></li>
+                <li>
+                    <a href="#sd-wan" aria-label="SD-WAN">SD-WAN</a></li>
+                <li>
+                    <a href="#dna-center-sd-access-e-ise" aria-label="DNA Center, SD-Access e ISE">DNA Center, SD-Access e ISE</a></li>
+                <li>
+                    <a href="#automa%c3%a7%c3%a3o" aria-label="Automação">Automação</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="resumo-sobre-a-minha-carreira">Resumo sobre a minha carreira<a hidden class="anchor" aria-hidden="true" href="#resumo-sobre-a-minha-carreira">#</a></h1>
+<p>Oficialmente comecei minha carreira em TI em 2006, mas, meus primeiros passos com redes ocorreram alguns anos antes disso, entre 2002 e 2003.</p>
+<p>Em 2006 comecei como estagiário no suporte a usuários em um órgão do governo. Comecei formatando computadores e progredi rapidamente até um ponto em que lidava com toda a infraestrutrua de rede incluindo switches, firewalls, proxy, file servers, AD, etc.</p>
+<p>Após finalizar esse estágio, fui para outra empresa, novamente como estagiário, onde passei mais 2 anos antes de ser oficialmente contratado. No total, trabalhei lá por quase 10 anos e tive a oportunidade de aprender com profissionais excepcionais. Enquanto trabalhava lá, obtive a certificação <strong>CCNA</strong> em <strong>2008</strong>, depois a certificação <strong>CCDA</strong> em <strong>2013</strong> e concluí a trilha da certificação <strong>CCNP Routing &amp; Switching</strong> em <strong>2017</strong>.</p>
+<p>Logo depois de finalizar a última prova da track e obter a certificação CCNP R&amp;S, comprei alguns livros e comecei a estudar o conteúdo da INE e da extinta IPExpert. Quando iniciei os estudos, a prova ainda era a <strong>CCIE Routing &amp; Switching v5.0</strong>. Em determinado momento o exame foi atualizado para a versão <strong>CCIE Routing &amp; Switching v5.1</strong> e, pouco tempo depois, eu troquei de emprego. Era Fevereiro de <strong>2018</strong> e eu passei a atuar como Líder Técnico de um time composto por engenheiros de redes e segurança. Devido ao grande volume de trabalho, infelizmente tive que reduzir o ritmo dos estudos. Não cheguei a parar completamente de estudar, mas, já estava em um ritmo bastante devagar.</p>
+<p>Ainda na mesma empresa, no final de <strong>2019</strong> passei a integrar uma equipe recém-criada que chamamos de equipe de Arquitetura de Soluções. Eu passei a ser o responsável não apenas pela implementação, mas também pelo Design de todos os projetos de redes da empresa. Ainda em 2019, precisei renovar minhas certificações e foi assim obtive a certificação <strong>Cisco CCDP</strong>, que na época ainda era uma certificação a parte e posteriormente se transformou em uma especialização, atualmente chamada <strong>Cisco Certified Specialist - Enterprise Design</strong>.</p>
+<p>Em <strong>2020</strong>, com o início da pandemia e o trabalho remoto, consegui reorganizar minha rotina de forma a retomar os estudos para o <strong>CCIE</strong> com foco total. A prova já estava em uma terceira versão desde que eu havia iniciado os estudos, não se chamava mais CCIE Routing &amp; Switching e sim <strong>CCIE Enterprise Infrastructure v1.0</strong>.</p>
+<p>Então, resumindo, comecei oficialmente os estudos para o <strong>CCIE</strong> em <strong>2017</strong>, ao concluir o <strong>CCNP</strong>, época em que a prova ainda era a <strong>CCIE R&amp;S v5.0</strong>. Devido a questões de rotina, diminuí o ritmo de estudos e só consegui retomar em <strong>2020</strong>. Basicamente, do início de <strong>2020</strong> até dezembro de <strong>2022</strong> (data em que realizei o lab), o meu foco foi exclusivamente em estudar. Na sequência desse post entrarei em maiores detalhes sobre estratégias, horas de estudos, entre outros.</p>
+<hr>
+<blockquote>
+<p>Todas as informações a respeito da prova que você vai encontrar aqui são públicas e estão disponíveis no site da Cisco.</p>
+</blockquote>
+<hr>
+<h1 id="elegibilidade-ao-ccie-lab">Elegibilidade ao CCIE LAB<a hidden class="anchor" aria-hidden="true" href="#elegibilidade-ao-ccie-lab">#</a></h1>
+<p>O primeiro ponto a entender é que para que você possa agendar o CCIE LAB você precisa ter sido aprovado na prova 350-401 ENCOR dentro do período de 3 anos. Se você estiver elegível, basta agendar o lab através da ferramenta de agendamento: <a href="https://ccie.cloudapps.cisco.com/CCIE/Schedule_Lab/CCIEOnline/CCIEOnline">https://ccie.cloudapps.cisco.com/CCIE/Schedule_Lab/CCIEOnline/CCIEOnline</a></p>
+<p>Muita gente não sabe, mas, ao contrário de provas como o CCNA e CCNP, que são realizados em centros credenciados de treinamento, o CCIE LAB é realizado de forma presencial em algum laboratório da própria Cisco, nas localidades abaixo:</p>
+<p><img loading="lazy" src="/images/ccie/ccie_lab_locations.png" alt="CCIE Lab Locations"  />
+
+<em>Fonte: <a href="https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/expert/ccie-lab-exam-locations.html">https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/expert/ccie-lab-exam-locations.html</a></em></p>
+<p>Perceba na tabela acima que existem os chamados Mobile Labs que, como o nome já diz, são labs temporários que ocorrem em determinados locais. No momento em que escrevo esse post (janeiro de 2024), vi que existem algumas datas em que o lab estará no Brasil, em abril de 2024. Porém, consultando pela ferramenta de agendamento, não encontrei vagas disponíveis. O lado ruim dos Mobile Labs é esse: as vagas costumam fechar rapidamente. Você pode consultar as datas dos Mobile Labs aqui: <a href="https://learningnetwork.cisco.com/s/mobile-lab-scheduler">https://learningnetwork.cisco.com/s/mobile-lab-scheduler</a></p>
+<p>Por uma questão de logística, eu optei por fazer o lab em um local fixo e agendei minha prova no temido Building 5 da Cisco na cidade de Richardson, Texas.</p>
+<p><img loading="lazy" src="/images/ccie/Richardson_Building_5.jpg" alt="Cisco Building 5, Richardson TX"  />
+
+<em>Cisco Building 5 - Richardson, Texas - Dezembro de 2022</em></p>
+<p>Fazendo dessa forma, não tive nenhuma dificuldade para conseguir disponibilidade de agenda para o LAB. O que precisa ser considerado aqui são os custos de viagem. Coloque todos os itens na balança e decida como fica mais adequado para o seu caso.</p>
+<p>Continuando, o CCIE LAB tem duração de 8 horas e está dividido em 2 módulos:</p>
+<p><img loading="lazy" src="/images/ccie/labexam-modules.png" alt="CCIE Lab Modules"  />
+
+<em>CCIE Lab Modules</em></p>
+<p>Para ser aprovado, você precisa atingir um score mínimo em cada um dos módulos e também um score mínimo final (pass score). Não adianta tirar o score máximo em um módulo e ficar abaixo do mínimo no outro módulo: nessa condição, você não vai ser aprovado.</p>
+<p>Os valores de scores mínimos não são divulgados. O importante é entender que esse é o formato de pontuação da prova:</p>
+<p><img loading="lazy" src="/images/ccie/labexam-scoreevaluation.png" alt="CCIE Lab Modules"  />
+
+<em>CCIE Score Evaluation</em></p>
+<p>Outra detalhe crítico é que não existe score parcial. Ou seja, digamos que em determinada task você configurou tudo corretamente mas usou um nome de ACL diferente do que a questão pedia. Nesse caso, você não terá nenhum ponto naquela questão. Esse é um dos fatores que torna a prova tão difícil: você precisa fazer 100% da questão para ter a pontuação. Atenção aos detalhes é algo fundamental.</p>
+<h1 id="formato-da-prova">Formato da prova<a hidden class="anchor" aria-hidden="true" href="#formato-da-prova">#</a></h1>
+<h2 id="module-1-design-3-hours">Module 1: Design (3 hours)<a hidden class="anchor" aria-hidden="true" href="#module-1-design-3-hours">#</a></h2>
+<p>O objetivo deste módulo é medir a capacidade de criar, analisar, validar e otimizar projetos de rede, que é a base para todas as atividades de implantação. Os candidatos precisarão:</p>
+<ul>
+<li>Compreender as capacidades de diferentes tecnologias, soluções e serviços.</li>
+<li>Traduzir os requisitos do cliente em soluções.</li>
+<li>Avaliar a prontidão da infraestrutura para apoiar as soluções propostas.</li>
+</ul>
+<p>O módulo é baseado em cenários, sem acesso a nenhum dispositivo. Os candidatos receberão um conjunto de documentação necessária para discernir antes de responder as questões.</p>
+<p>Exemplos de documentação incluem threads de e-mail, design de alto nível, diagramas de topologia de rede, requisitos e restrições do cliente, etc. Exemplos de questões incluem arrastar e soltar (drag &amp; drop), resposta única de múltipla escolha, múltipla escolha, etc. Durante este módulo, a navegação para trás será desativada. Como tal, os candidatos não terão visibilidade total sobre todas as questões deste módulo. Os valores de pontos associados a cada item não são exibidos neste módulo.</p>
+<h2 id="module-2-deploy-operate-and-optimize-5-hours">Module 2: Deploy, Operate and Optimize (5 hours)<a hidden class="anchor" aria-hidden="true" href="#module-2-deploy-operate-and-optimize-5-hours">#</a></h2>
+<p>Neste módulo, os candidatos irão implantar, operar e otimizar tecnologias e soluções de rede.</p>
+<h3 id="deploy">Deploy<a hidden class="anchor" aria-hidden="true" href="#deploy">#</a></h3>
+<p>Os candidatos construirão a rede de acordo com as especificações do projeto, requisitos e restrições do cliente. Todas as etapas necessárias para uma implementação de rede bem-sucedida serão abordadas, incluindo configuração, integração e solução de problemas no comissionamento de tecnologias e soluções, conforme os tópicos do exame.</p>
+<h3 id="operate-and-optimize">Operate and Optimize<a hidden class="anchor" aria-hidden="true" href="#operate-and-optimize">#</a></h3>
+<p>Os candidatos irão operar e otimizar tecnologias e soluções de rede. Isso inclui monitorar a integridade e o desempenho da rede, configurar a rede para melhorar a qualidade do serviço, reduzir interrupções, mitigar interrupções, reduzir custos operacionais e manter alta disponibilidade, confiabilidade e segurança, bem como diagnosticar possíveis problemas e ajustar configurações para se alinhar às mudanças. objetivos de negócios e/ou requisitos técnicos.Este módulo fornece uma configuração muito próxima de um ambiente de rede de produção real e consistirá em itens práticos (acesso ao dispositivo) e também em itens baseados na Web. Sempre que possível, um ambiente de laboratório virtualizado será utilizado neste módulo.</p>
+<p>Durante este módulo a navegação para trás será habilitada. Os candidatos terão total visibilidade de todas as questões deste módulo. Os valores de pontos associados a cada item são exibidos neste módulo.</p>
+<p>Fonte: <a href="https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format">https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format</a></p>
+<hr>
+<h1 id="dicas-de-estudos">Dicas de estudos<a hidden class="anchor" aria-hidden="true" href="#dicas-de-estudos">#</a></h1>
+<h2 id="primeiros-passos">Primeiros passos<a hidden class="anchor" aria-hidden="true" href="#primeiros-passos">#</a></h2>
+<p>Baixe a planilha CCIE Enterprise Infrastructure Learning Matrix no link abaixo. Essa planilha foi criada e é mantida pela própria Cisco. Nela, você vai encontrar todos os tópicos da prova com algumas indicações de materiais de estudo.</p>
+<blockquote>
+<p>No link a seguir, no final da página, em Resources, tem um link para a CCIE Enterprise Infrastructure Learning Matrix: <a href="https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/expert/ccie-enterprise-infrastructure.html#~exams">https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/expert/ccie-enterprise-infrastructure.html#~exams</a></p>
+</blockquote>
+<p>Na Perceba que a primeira coluna da planilha (chamada &ldquo;Level&rdquo;) é justamente para que você atribua uma nota de 1 a 5 para o seu conhecimento em cada um desses tópicos. A planilha vem preenchida, mas, altere de acordo com o seu nível de conhecimento. Seja sincero, pois é assim que você saberá onde precisa dar mais ou menos foco nos estudos. Revise periodicamente essa planilha e atualize seu nível a medida que vai evoluindo.</p>
+<h2 id="considerações-importantantes">Considerações importantantes<a hidden class="anchor" aria-hidden="true" href="#considerações-importantantes">#</a></h2>
+<ol>
+<li>
+<p>Aprenda inglês. Não precisa ser fluente no idioma, mas, a prova é toda em inglês e você precisa ter a capacidade de interpretar todos os detalhes possíveis do que está sendo solicitado, identificar pontos de atenção, &ldquo;pegadinhas&rdquo;, etc.</p>
+</li>
+<li>
+<p>Não acredite em receitas prontas. Não adianta ficar estudando X horas por dia sem ter uma estratégia e sem saber onde você precisa focar. Você só estará perdendo tempo.</p>
+</li>
+<li>
+<p>A planilha CCIE Enterprise Infrastructure Learning Matrix será sua maior aliada nessa jornada. Utilize-a para encontrar seus pontos fracos e saber quais conteúdos você precisa estudar mais ou menos. Volte e leia novamente o que eu escrevi no item &ldquo;primeiros passos&rdquo;.</p>
+</li>
+<li>
+<p>Comece estudando poucas horas por dia e aumente de forma gradual o seu tempo de estudos. Não adianta fazer um esforço enorme no início e desistir no meio da jornada. Leia novamente o item 4.</p>
+</li>
+<li>
+<p>No início dos estudos, se concentre em tópicos específicos e crie topologias simples para estudar. Evite de começar a jornada trabalhando com uma topologia muito grande. Qual o objetivo de trabalhar com 2 ou 3 protocolos ao mesmo tempo se você não entende nenhum deles de forma profunda? Você precisará disso na fase final, quando estiver perto de agendar o lab, mas há um caminho longo a ser percorrido até chegar lá</p>
+</li>
+<li>
+<p>Enquanto estiver estudando teoria, não precisa pegar o livro e ler do inicio ao fim. Fazendo isso você provavelmente vai esquecer a maior parte do conteúdo. Procure focar em tecnologias/protocolos individualmente.</p>
+</li>
+<li>
+<p>Não se frustre quando precisar ler e reler o mesmo assunto inúmeras vezes. Isso é parte do processo de aprendizado.</p>
+</li>
+<li>
+<p>Eu particularmente gosto de consultar a teoria enquanto estou fazendo alguma configuração específica. Os livros em formato digital ajudam bastante nisso.</p>
+</li>
+<li>
+<p>Entenda como determinado comando ou funcionalidade vai se refletir a nível de protocolo. Crie o hábito de analisar capturas de pacotes.</p>
+</li>
+<li>
+<p>Ainda sobre capturas de pacotes, analise todas as camadas de forma aprofundada. Entenda o que muda ao realizar ou modificar determinada configuração, quais bits ou atributos são alterados, como a informação é propagada, etc.</p>
+</li>
+<li>
+<p>Procure ler sobre um determinado assunto em diversas fontes diferentes. Ao estudar determinado tópico, revise as documentações da Cisco e também livros de diferentes autores. Leia novamente o item 10.</p>
+</li>
+<li>
+<p>Estude sobre Design de redes. Normalmente existem vários caminhos para se chegar até o mesmo resultado. Por que implementar algo de um jeito e não de outro? Quais serão as diferenças? Qual delas atende de forma mais adequada o seu objetivo?</p>
+</li>
+<li>
+<p>Na reta final dos estudos para o Lab, considero que aproximadamente 3 meses antes da sua data do lab, nesse ponto sim você deve conseguir estudar pelo menos 8 horas por dia. Nessa fase você deve estar focando em configuração e troubleshooting de topologias complexas. Lembre-se que a prova terá duração de 8 horas. Crie uma estratégia para conseguir manter a concentração e o foco em condições de stress e cansaço.</p>
+</li>
+</ol>
+<h2 id="sugestões-de-livros">Sugestões de livros<a hidden class="anchor" aria-hidden="true" href="#sugestões-de-livros">#</a></h2>
+<p>Alguns dos que usei e considero bastante relevantes:</p>
+<ul>
+<li>CCIE Routing &amp; Switching v5.0, Volume 1, 5th Edition [Kocharians &amp; Paluch]</li>
+<li>CCIE Routing &amp; Switching v5.0, Volume 2, 5th Edition [Kocharians &amp; Paluch]</li>
+<li>Definitive MPLS Network Designs [Guichard]</li>
+<li>IP Multicast, Volume I [Loveless, Blair, Durai]</li>
+<li>IPv6 Fundamentals, 2nd Edition [Graziani]</li>
+<li>MPLS Fundamentals [De Ghein]</li>
+<li>Optimal Routing Design [White, Slice, Rentana]</li>
+<li>Routing TCP/IP, Volume 1, 2nd Edition [Doyle &amp; Carrol]</li>
+<li>Routing TCP/IP, Volume 2, 2nd Edition [Doyle]</li>
+<li>Troubleshooting BGP [Edgeworth, Jain]</li>
+</ul>
+<h2 id="routing--switching">Routing &amp; Switching<a hidden class="anchor" aria-hidden="true" href="#routing--switching">#</a></h2>
+<ul>
+<li>Lembre-se que os protocolos tradicionais ainda correspondem a uma grande parte da prova.</li>
+<li>Para os meus estudos de R&amp;S usei os materiais antigos da INE, tanto os vídeos quanto o workbook da versão antiga da prova (CCIE R&amp;S v5.0). Na minha opinião, o conteúdo deles é imbatível para a parte de R&amp;S. Continuo utilizando até hoje as topologias do workbook para estudar ou simular algo.</li>
+<li>Para R&amp;S, também utilizei materiais antigos da extinta IPExpert.</li>
+<li>Para laboratórios de R&amp;S, usei o EVE-NG e Cisco CML.</li>
+<li>Procure estudar utilizando as mesmas versões de software que serão utilizadas na prova. Essas informações podem ser encontradas aqui: <a href="https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format">https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format</a> na lista Equipment and Software você encontrará um PDF com as imagens e respectivas versões utilizadas na prova: CCIE Enterprise Infrastructure (v1.1) Equipment and Software List</li>
+<li>Não me peça para enviar alguma imagem para você. Caso não tenha acesso as imagens, você pode utiliza-las de forma legal através do Cisco CML.</li>
+</ul>
+<h2 id="sd-wan">SD-WAN<a hidden class="anchor" aria-hidden="true" href="#sd-wan">#</a></h2>
+<ul>
+<li>Comece pelos Configuration Guides e Design Guides da Cisco.</li>
+<li>Há bastante conteúdo em apresentações do Cisco, disponíveis em ciscolive.com</li>
+<li>Eu geralmente recomendo que a pessoa estude todo o material em inglês, mas, se estiver começando a estudar sobre SD-WAN, recomendo essa apresentação que eu fiz a convite da Comunidade Cisco: <a href="https://guilhermelyra.com/cisco-sd-wan-live-event/">https://guilhermelyra.com/cisco-sd-wan-live-event/</a></li>
+<li>Revise com atenção os tópicos cobrados na CCIE Enterprise Infrastructure Learning Matrix. Não perca tempo estudando features que não serão cobradas no lab.</li>
+<li>Recomendo o conteúdo da INE (atualizado para CCIE Enterprise v1.0). Dentro da plataforma da INE, após concluir determinado módulo, geralmente tem alguns labs que eles disponibilizam para reforçar o conteúdo.</li>
+<li>Para laboratórios, caso tenha hardware disponível, pode utilizar o próprio VMware para virtualizar os componentes de SD-WAN. Lembre-se de utilizar as mesmas versões de software que caem na prova. Essas informações podem ser encontradas aqui: <a href="https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format">https://learningnetwork.cisco.com/s/article/ccie-practical-exam-format</a> na lista Equipment and Software você encontrará um PDF com as imagens e respectivas versões utilizadas na prova: <a href="https://learningcontent.cisco.com/documents/marketing/exam-topics/CCIEEIv1.1-equipment_and_SW.pdf">https://learningcontent.cisco.com/documents/marketing/exam-topics/CCIEEIv1.1-equipment_and_SW.pdf</a></li>
+<li>O problema para rodar SD-WAN &ldquo;dentro de casa&rdquo; é que você vai precisar de uma máquina robusta. Caso não possua em casa ou no trabalho, busque alguma alternativa para alugar online um laboratório que possua essas imagens e recursos suficientes. Uma alternativa é alugar algumas sessões no ambiente da própria Cisco, chamado CCIE Enterprise Infrastructure Practice Labs: <a href="https://learningnetwork.cisco.com/s/article/ccie-enterprise-infrastructure-practice-labs">https://learningnetwork.cisco.com/s/article/ccie-enterprise-infrastructure-practice-labs</a></li>
+</ul>
+<h2 id="dna-center-sd-access-e-ise">DNA Center, SD-Access e ISE<a hidden class="anchor" aria-hidden="true" href="#dna-center-sd-access-e-ise">#</a></h2>
+<ul>
+<li>No meu caso, eu já tinha experiência com essas soluções em ambientes de produção. Fui responsável por implementar projetos de SD-Access e isso ajudou muito na hora da prova.</li>
+<li>Para laboratórios, não tem como fugir: você vai precisar de acesso a um DNA Center e switches da linha Catalyst 9000. No meu caso, usei diversas sessões no CCIE Practice Labs (CCIE Enterprise Infrastructure Practice Labs). O acesso ao lab tem que ser agendado previamente. Além disso, o valor é cobrado em dólar e se não me engano tem um limite de 4h por sessão. Gastei bastante dinheiro aqui, mas vale muito a pena.</li>
+</ul>
+<h2 id="automação">Automação<a hidden class="anchor" aria-hidden="true" href="#automação">#</a></h2>
+<ul>
+<li><strong>Python:</strong> uma máquina rodando Linux (pode ser uma VM) e com conectividade a alguma topologia com routers rodando IOS XE. Se você não tem conhecimento nenhum em Python, comece pelo básico antes de sair interagindo com equipamentos.</li>
+<li><strong>EEM Applets e Guestshell:</strong> sugiro utilizar algum router virtual rodando IOS XE. Pode ser CSR 1000v ou Catalyst 8000v.</li>
+<li><strong>APIs do vManage e DNA Center:</strong>
+<ul>
+<li><strong>vManage:</strong> é possível virtualizar &ldquo;dentro de casa&rdquo; ou usar algum lab do <strong>DevNet Sandbox</strong> da Cisco.</li>
+<li><strong>DNA Center:</strong> falando especificamente das APIs, recomendo algum DevNet Sandbox da Cisco, onde você consegue utilizar a ferramenta sem ter que pagar.</li>
+<li>Os labs do <strong>DevNet Sandbox</strong> costumam ser read-only, então, caso queira manipular alguma configuração, sugiro que agende uma sessão no <strong>CCIE Enterprise Infrastructure Practice Labs:</strong> <a href="https://learningnetwork.cisco.com/s/article/ccie-enterprise-infrastructure-practice-labs">https://learningnetwork.cisco.com/s/article/ccie-enterprise-infrastructure-practice-labs</a></li>
+</ul>
+</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/pt-br/">Guilherme Lyra</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
