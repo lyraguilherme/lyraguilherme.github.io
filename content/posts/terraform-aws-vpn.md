@@ -390,55 +390,128 @@ terraform destroy \
 
 # Configuring our VPN peer (Cisco Router)
 
-To wrap up, below is an example configuration script for a Cisco router. This script will establish the VPN tunnels to AWS and configure the necessary settings for BGP over IPsec.
+To wrap up, below is a Python script I created, to generate a config script for a Cisco router based on the Terraform outputs. Make sure to use with caution and always double-check before using this in a prodution environment.
 
-In this example, I'm setting up only one of the VPN tunnels (AWS will create two for redundancy). To complete the configuration, simply replicate these settings using the information provided for the second tunnel.
+***Key points:***
+- AWS uses by default BGP ASN 64512
+- On my lab environment I'm using BGP ASN 65000 on the VPN peer
 
-***Some key points to remember:***
-- AWS uses by default BGP ASN of 64512.
-- When configuring BGP over an IPsec VPN connection on AWS, by default, AWS assigns two inside IP addresses per tunnel from a private IP range for each of the two tunnels that are created for high availability.
+Both of the settings mentioned above are hardcoded on the script. Change as needed.
 
-```shell
-crypto isakmp policy 1
- encryption aes 128
- authentication pre-share
-  group 2
-  lifetime 28800
-  hash sha
+```python
+import subprocess
+import json
 
-crypto keyring aws_vpn_keyring1
- pre-shared-key address <aws tunnel 1 public ip> key <psk for tunnel 1>
+def get_terraform_outputs():
+    try:
+        # Get the JSON output from Terraform output
+        result = subprocess.run(
+            ["terraform", "output", "-json"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        return json.loads(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"Error: {e}")
+        return {}
 
-crypto isakmp profile aws_vpn_isakmp_profile1
-  match identity address <aws tunnel 1 public ip>
-  keyring aws_vpn_keyring1
+def generate_cisco_config(outputs):
 
-crypto ipsec transform-set aws_vpn_tset esp-aes 128 esp-sha-hmac
- mode tunnel
+    # Sets variables based on Terraform outputs
+    tunnel1_aws_bgp_ip = outputs.get("tunnel1_aws_bgp_ip", {}).get("value", "")
+    tunnel2_aws_bgp_ip = outputs.get("tunnel2_aws_bgp_ip", {}).get("value", "")
+    tunnel1_customer_bgp_ip = outputs.get("tunnel1_customer_bgp_ip", {}).get("value", "")
+    tunnel2_customer_bgp_ip = outputs.get("tunnel2_customer_bgp_ip", {}).get("value", "")    
+    tunnel1_aws_public_ip = outputs.get("tunnel1_aws_public_ip", {}).get("value", "")
+    tunnel2_aws_public_ip = outputs.get("tunnel2_aws_public_ip", {}).get("value", "")    
+    tunnel1_preshared_key = outputs.get("tunnel1_preshared_key", {}).get("value", "")
+    tunnel2_preshared_key = outputs.get("tunnel2_preshared_key", {}).get("value", "")
 
-crypto ipsec profile aws_vpn_ipsec_profile1
- set pfs group2
- set security-association lifetime seconds 3600
- set transform-set aws_vpn_tset
+    # Cisco config block
+    config = f'''
 
-interface Tunnel1
- ip address <tunnel 1 private ip> 255.255.255.252
- ip tcp adjust-mss 1360
- ip virtual-reassembly
- tunnel source <your tunnel source ip/interface>
- tunnel destination <aws tunnel 1 public ip>
- tunnel mode ipsec ipv4
- tunnel protection ipsec profile aws_vpn_ipsec_profile1
- no shutdown
- exit
+    !!! DOUBLE-CHECK BEFORE APPLYING IN PRODUCTION !!!
+    
+    crypto isakmp policy 1
+        encryption aes 128
+        authentication pre-share
+        group 2
+        lifetime 28800
+        hash sha
 
-router bgp 65000
-  neighbor <aws tunnel 1 private ip> remote-as 64512
-  neighbor <aws tunnel 1 private ip> activate
-  neighbor <aws tunnel 1 private ip> timers 10 30 30
-  address-family ipv4 unicast
-    neighbor <aws tunnel 1 private ip> remote-as 64512
-    neighbor <aws tunnel 1 private ip> timers 10 30 30
-    neighbor <aws tunnel 1 private ip> activate
-    neighbor <aws tunnel 1 private ip> soft-reconfiguration inbound
+    crypto keyring aws_vpn_keyring1
+        pre-shared-key address {tunnel1_aws_public_ip} key {tunnel1_preshared_key}
+
+    crypto keyring aws_vpn_keyring2
+        pre-shared-key address {tunnel2_aws_public_ip} key {tunnel2_preshared_key}        
+
+    crypto isakmp profile aws_vpn_isakmp_profile1
+        match identity address {tunnel1_aws_public_ip}
+        keyring aws_vpn_keyring1
+
+    crypto isakmp profile aws_vpn_isakmp_profile2
+        match identity address {tunnel2_aws_public_ip}
+        keyring aws_vpn_keyring2        
+        
+    crypto ipsec transform-set aws_vpn_transform_set esp-aes 128 esp-sha-hmac
+        mode tunnel
+
+    crypto ipsec profile aws_vpn_ipsec_profile
+        set pfs group2
+        set security-association lifetime seconds 3600
+        set transform-set aws_vpn_transform_set
+
+    interface Tunnel1
+        ip address {tunnel1_customer_bgp_ip} 255.255.255.252
+        ip tcp adjust-mss 1360
+        ip virtual-reassembly
+        tunnel source <your tunnel source ip/interface>
+        tunnel destination {tunnel1_aws_public_ip}
+        tunnel mode ipsec ipv4
+        tunnel protection ipsec profile aws_vpn_ipsec_profile
+        no shutdown
+        exit
+
+    interface Tunnel2
+        ip address {tunnel2_customer_bgp_ip} 255.255.255.252
+        ip tcp adjust-mss 1360
+        ip virtual-reassembly
+        tunnel source <your tunnel source ip/interface>
+        tunnel destination {tunnel2_aws_public_ip}
+        tunnel mode ipsec ipv4
+        tunnel protection ipsec profile aws_vpn_ipsec_profile
+        no shutdown
+        exit        
+
+    router bgp 65000
+        neighbor {tunnel1_aws_bgp_ip} remote-as 64512
+        neighbor {tunnel1_aws_bgp_ip} activate
+        neighbor {tunnel1_aws_bgp_ip} timers 10 30 30
+        neighbor {tunnel2_aws_bgp_ip} remote-as 64512
+        neighbor {tunnel2_aws_bgp_ip} activate
+        neighbor {tunnel2_aws_bgp_ip} timers 10 30 30
+        address-family ipv4 unicast
+            neighbor {tunnel1_aws_bgp_ip} remote-as 64512
+            neighbor {tunnel1_aws_bgp_ip} timers 10 30 30
+            neighbor {tunnel1_aws_bgp_ip} activate
+            neighbor {tunnel1_aws_bgp_ip} soft-reconfiguration inbound
+            neighbor {tunnel2_aws_bgp_ip} remote-as 64512
+            neighbor {tunnel2_aws_bgp_ip} timers 10 30 30
+            neighbor {tunnel2_aws_bgp_ip} activate
+            neighbor {tunnel2_aws_bgp_ip} soft-reconfiguration inbound
+            
+        end
+
+    !!! DOUBLE-CHECK BEFORE APPLYING IN PRODUCTION !!!
+
+    '''
+
+    return (config)
+
+if __name__ == "__main__":
+    outputs = get_terraform_outputs()
+    if outputs:
+        cisco_config = generate_cisco_config(outputs)
+        print(cisco_config)
 ```

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on Guilherme Lyra</title>
+    <link>http://localhost:1313/pt-br/posts/</link>
+    <description>Recent content in Posts on Guilherme Lyra</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-BR</language>
+    <lastBuildDate>Sat, 20 Apr 2024 14:00:00 -0300</lastBuildDate>
+    <atom:link href="http://localhost:1313/pt-br/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cisco Insider Champion 2024</title>
+      <link>http://localhost:1313/pt-br/posts/cisco-insider-champion/</link>
+      <pubDate>Sat, 20 Apr 2024 14:00:00 -0300</pubDate>
+      <guid>http://localhost:1313/pt-br/posts/cisco-insider-champion/</guid>
+      <description>Recentemente passei a integrar o grupo Cisco Insider Champion!
+Esse é um grupo composto por profissionais que são apaixonados por tecnologia, que são reconhecidos por compartilhar seus conhecimentos e ideias com a comunidade técnica e com a Cisco.
+Link da minha Badge: https://www.credly.com/badges/f66fb7c6-b852-47c3-b9d2-42e8554e58c7/public_url</description>
+    </item>
+    <item>
+      <title>Minha Jornada ao CCIE</title>
+      <link>http://localhost:1313/pt-br/posts/journey-to-ccie/</link>
+      <pubDate>Sat, 24 Feb 2024 14:07:09 -0300</pubDate>
+      <guid>http://localhost:1313/pt-br/posts/journey-to-ccie/</guid>
+      <description>Resumo sobre a minha carreira Oficialmente comecei minha carreira em TI em 2006, mas, meus primeiros passos com redes ocorreram alguns anos antes disso, entre 2002 e 2003.
+Em 2006 comecei como estagiário no suporte a usuários em um órgão do governo. Comecei formatando computadores e progredi rapidamente até um ponto em que lidava com toda a infraestrutrua de rede incluindo switches, firewalls, proxy, file servers, AD, etc.
+Após finalizar esse estágio, fui para outra empresa, novamente como estagiário, onde passei mais 2 anos antes de ser oficialmente contratado.</description>
+    </item>
+    <item>
+      <title>Cisco Community Live Event - Cisco SD-WAN</title>
+      <link>http://localhost:1313/pt-br/posts/cisco-community-sdwan-event/</link>
+      <pubDate>Sun, 22 Jan 2023 14:07:09 -0300</pubDate>
+      <guid>http://localhost:1313/pt-br/posts/cisco-community-sdwan-event/</guid>
+      <description>Em Novembro de 2020 tive a honra de ser convidado pela Comunidade Cisco em Portugues para apresentar um evento sobre **Cisco SD-WAN (Viptela) **. O evento contou com a participação de mais de 300 pessoas, de 9 países diferente!
+A gravação está disponivel no YouTube: https://www.youtube.com/watch?v=xtTHjDv1r-M</description>
+    </item>
+  </channel>
+</rss>
