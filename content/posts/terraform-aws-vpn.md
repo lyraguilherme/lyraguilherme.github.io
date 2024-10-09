@@ -388,7 +388,7 @@ terraform destroy \
 
 
 
-# Configuring an on-prem Cisco Router
+# Configuring our VPN peer (Cisco Router)
 
 To wrap up, below is an example configuration script for a Cisco router. This script will establish the VPN tunnels to AWS and configure the necessary settings for BGP over IPsec.
 
