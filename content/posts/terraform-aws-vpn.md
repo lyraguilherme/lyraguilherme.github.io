@@ -409,7 +409,7 @@ import json
 
 def get_terraform_outputs():
     try:
-        # Get the JSON output from Terraform output
+        # Get the Terraform output in JSON format
         result = subprocess.run(
             ["terraform", "output", "-json"],
             capture_output=True,
