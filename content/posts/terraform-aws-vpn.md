@@ -76,6 +76,7 @@ For this example, we’ll create a restrictive policy that only grants access to
 Save your access key and secret access key
 
 
+
 ## Installing AWS CLI
 
 The first step is to install AWS CLI. 
