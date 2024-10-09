@@ -245,7 +245,7 @@ variable "vpn_connection_name_tag" {
 }
 ```
 
-And, lastly, our ```outputs.tf``` file. 
+And, lastly, an ```outputs.tf``` file. 
 
 ```shell
 output "vpn_connection_id" {
