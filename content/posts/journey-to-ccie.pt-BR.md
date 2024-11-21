@@ -5,7 +5,7 @@ draft: false
 ShowToC: true
 TocOpen: true
 cover:
-    image: /images/CCIE-66666.jpeg
+    image: /images/ccie/CCIE-66666.jpeg
     alt: 'Guilherme Lyra, CCIE #66666'
     caption: 'Guilherme Lyra, CCIE #66666'
 ---

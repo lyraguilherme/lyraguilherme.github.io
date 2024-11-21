@@ -7,7 +7,8 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Automating AWS site-to-site VPNs with Terraform | Guilherme Lyra</title>
 <meta name="keywords" content="Automation, AWS, IaC, Terraform, VPN">
-<meta name="description" content="Introduction In this post, I&rsquo;ll walk you through how to use Terraform to set up a VPN site-to-site connection on AWS, leveraging Infrastructure as Code (IaC) to make the process quicker, easier, and fully repeatable.
+<meta name="description" content="Introduction
+In this post, I&rsquo;ll walk you through how to use Terraform to set up a VPN site-to-site connection on AWS, leveraging Infrastructure as Code (IaC) to make the process quicker, easier, and fully repeatable.
 For the examples below, we’ll build a cloud infrastructure using a Virtual Private Gateway (VGW). In a future post, we’ll explore using a Transit Gateway (TGW) for more complex setups.
 I’m running everything on a MacBook, but you can easily replicate these steps on a Linux jump host or any similar environment.">
 <meta name="author" content="">
@@ -450,7 +451,7 @@ Open the <code>terraform.tfstate</code> file and manually search for the sensiti
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_terraform_outputs</span>():
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Get the JSON output from Terraform output</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Get the Terraform output in JSON format</span>
 </span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> subprocess<span style="color:#f92672">.</span>run(
 </span></span><span style="display:flex;"><span>            [<span style="color:#e6db74">&#34;terraform&#34;</span>, <span style="color:#e6db74">&#34;output&#34;</span>, <span style="color:#e6db74">&#34;-json&#34;</span>],
 </span></span><span style="display:flex;"><span>            capture_output<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,

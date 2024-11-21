@@ -2,21 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/pt-br/posts/cisco-insider-champion/</loc>
-    <lastmod>2024-04-20T14:00:00-03:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-US"
-                href="http://localhost:1313/posts/cisco-insider-champion/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="pt-BR"
-                href="http://localhost:1313/pt-br/posts/cisco-insider-champion/"
-                />
-  </url><url>
     <loc>http://localhost:1313/pt-br/</loc>
-    <lastmod>2024-04-20T14:00:00-03:00</lastmod>
+    <lastmod>2024-11-21T14:07:09-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
@@ -28,8 +15,11 @@
                 href="http://localhost:1313/pt-br/"
                 />
   </url><url>
+    <loc>http://localhost:1313/pt-br/posts/routing-friends-automation-handson/</loc>
+    <lastmod>2024-11-21T14:07:09-03:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/pt-br/posts/</loc>
-    <lastmod>2024-04-20T14:00:00-03:00</lastmod>
+    <lastmod>2024-11-21T14:07:09-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
@@ -39,6 +29,19 @@
                 rel="alternate"
                 hreflang="pt-BR"
                 href="http://localhost:1313/pt-br/posts/"
+                />
+  </url><url>
+    <loc>http://localhost:1313/pt-br/posts/cisco-insider-champion/</loc>
+    <lastmod>2024-04-20T14:00:00-03:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="http://localhost:1313/posts/cisco-insider-champion/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="pt-BR"
+                href="http://localhost:1313/pt-br/posts/cisco-insider-champion/"
                 />
   </url><url>
     <loc>http://localhost:1313/pt-br/posts/journey-to-ccie/</loc>
