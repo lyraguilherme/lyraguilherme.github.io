@@ -26,7 +26,7 @@ python -m venv venv
 
 Em seguida, instalar as dependências com o comando:
 ```shell
-pip -r install requirements.txt
+pip install -r requirements.txt
 ```
 
 Após instalar todas as dependências, os scripts poderão ser executados.
