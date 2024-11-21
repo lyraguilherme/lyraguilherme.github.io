@@ -26,7 +26,7 @@ python -m venv venv
 
 Then, install the dependencies with the command:
 ```shell
-pip -r install requirements.txt
+pip install -r requirements.txt
 ```
 
 After installing all the dependencies, the scripts can be executed.
