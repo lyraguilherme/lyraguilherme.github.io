@@ -1,6 +1,6 @@
 ---
 title: 'Routing Friends - Network Automation'
-date: 2024-11-21T14:07:09-03:00
+date: 2024-11-21T18:50:09-03:00
 draft: false
 ShowToC: false
 TocOpen: true
@@ -22,6 +22,11 @@ In this repository you will find the presentation, topology and scripts that wer
 To use the scripts, you should preferably create a **venv**:
 ```shell
 python -m venv venv
+```
+
+Activate the venv:
+```shell
+source venv/bin/activate
 ```
 
 Then, install the dependencies with the command:
