@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>IaC on Guilherme Lyra</title>
-    <link>https://guilhermelyra.com/tags/iac/</link>
+    <link>http://localhost:1313/tags/iac/</link>
     <description>Recent content in IaC on Guilherme Lyra</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Sun, 06 Oct 2024 18:00:00 -0300</lastBuildDate>
-    <atom:link href="https://guilhermelyra.com/tags/iac/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/iac/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Automating AWS site-to-site VPNs with Terraform</title>
-      <link>https://guilhermelyra.com/posts/terraform-aws-vpn/</link>
+      <link>http://localhost:1313/posts/terraform-aws-vpn/</link>
       <pubDate>Sun, 06 Oct 2024 18:00:00 -0300</pubDate>
-      <guid>https://guilhermelyra.com/posts/terraform-aws-vpn/</guid>
+      <guid>http://localhost:1313/posts/terraform-aws-vpn/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;In this post, I&amp;rsquo;ll walk you through how to use Terraform to set up a VPN site-to-site connection on AWS, leveraging Infrastructure as Code (IaC) to make the process quicker, easier, and fully repeatable.&lt;/p&gt;
 &lt;p&gt;For the examples below, we’ll build a cloud infrastructure using a Virtual Private Gateway (VGW). In a future post, we’ll explore using a Transit Gateway (TGW) for more complex setups.&lt;/p&gt;
