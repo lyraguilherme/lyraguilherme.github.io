@@ -14,10 +14,11 @@
       <pubDate>Thu, 21 Nov 2024 18:50:09 -0300</pubDate>
       <guid>https://guilhermelyra.com/pt-br/posts/routing-friends-automation-handson/</guid>
       <description>&lt;p&gt;Estamos de volta com mais um episódio emocionante do Routing Friends! Desta vez, vamos conversar sobre automação de redes e trabalhar em um laboratório prático com ferramentas/frameworks específicos para realizar operações com automação!&lt;/p&gt;
+&lt;p&gt;Link para o vídeo:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=V8hF8toSAJ4&#34;&gt;Desvendando a Automação de Redes: Lab Hands-On com Guilherme Lyra, CCIE #66666 | Episódio 167 &lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;guia-de-utilização-do-laboratório&#34;&gt;Guia de utilização do laboratório&lt;/h2&gt;
-&lt;p&gt;Acesse ou faça um clone do seguinte repositório:
-&lt;a href=&#34;https://github.com/lyraguilherme/LabHandsOn-Nov2024/&#34;&gt;lyraguilherme on GitHub&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Nesse repositório você encontrará a apresentação, topologia e scripts que foram utilizados durante o &lt;strong&gt;Routing Friends - Lab Hands-on&lt;/strong&gt; realizado em 21 de novembro de 2024.&lt;/p&gt;</description>
+&lt;h3 id=&#34;1-preparando-seu-host-de-automação&#34;&gt;1. Preparando seu host de automação&lt;/h3&gt;
+&lt;p&gt;O primeiro passo é organizar o seu próprio host de automação, que nada mais é do que o computador onde você vai executar os scripts. O único ponto que deve ser observado é que esse computador precisa ter acesso aos equipamentos de rede do seu laboratório. No exemplo que eu apresentei, o meu &amp;ldquo;automation host&amp;rdquo; estava na mesma rede de gerência dos equipamentos de rede do laboratório, com acesso direto aos equipamentos.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Cisco Insider Champion 2024</title>

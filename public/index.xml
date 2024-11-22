@@ -13,12 +13,12 @@
       <link>https://guilhermelyra.com/posts/routing-friends-automation-handson/</link>
       <pubDate>Thu, 21 Nov 2024 18:50:09 -0300</pubDate>
       <guid>https://guilhermelyra.com/posts/routing-friends-automation-handson/</guid>
-      <description>&lt;p&gt;We&amp;rsquo;re back with another exciting episode of Routing Friends! This time, we&amp;rsquo;ll talk about network automation and work through a hands-on lab with specific tools/frameworks to perform automation operations!&lt;/p&gt;
-&lt;h2 id=&#34;lab-guide&#34;&gt;Lab Guide&lt;/h2&gt;
-&lt;p&gt;Clone the following repository:
-&lt;a href=&#34;https://github.com/lyraguilherme/LabHandsOn-Nov2024/&#34;&gt;lyraguilherme on GitHub&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;In this repository you will find the presentation, topology and scripts that were used during the &lt;strong&gt;Routing Friends - Lab Hands-on&lt;/strong&gt; held on November 21, 2024.&lt;/p&gt;
-&lt;p&gt;To use the scripts, you should preferably create a &lt;strong&gt;venv&lt;/strong&gt;:&lt;/p&gt;</description>
+      <description>&lt;p&gt;We are back with another exciting episode of Routing Friends! This time, we are going to talk about network automation and work in a practical laboratory with specific tools/frameworks to carry out operations with automation!&lt;/p&gt;
+&lt;p&gt;Link to YouTube (content in PT-BR):
+&lt;a href=&#34;https://www.youtube.com/watch?v=V8hF8toSAJ4&#34;&gt;Desvendando a Automação de Redes: Lab Hands-On com Guilherme Lyra, CCIE #66666 | Episódio 167 &lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;laboratory-use-guide&#34;&gt;Laboratory Use Guide&lt;/h2&gt;
+&lt;h3 id=&#34;1-preparing-your-automation-host&#34;&gt;1. Preparing your automation host&lt;/h3&gt;
+&lt;p&gt;The first step is to organize your own automation host, which is nothing more than the computer where you will execute the scripts. The only point that should be noted is that this computer requires access to your laboratory&amp;rsquo;s network equipment.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Automating AWS site-to-site VPNs with Terraform</title>
