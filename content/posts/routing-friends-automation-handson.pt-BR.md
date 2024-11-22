@@ -58,7 +58,7 @@ pip install -r requirements.txt
 ```
 
 
-### 4. Definindo as credênciais como variáveis do SO
+### 4. Definindo as credenciais como variáveis do SO
 
 Após instalar todas as dependências, defina as credênciais em variáveis do seu SO. No meu caso, como mencionei, meu host de automação roda Linux então o procedimento é o seguinte:
 
