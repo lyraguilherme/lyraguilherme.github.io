@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Posts on Guilherme Lyra</title>
-    <link>https://guilhermelyra.com/pt-br/posts/</link>
+    <link>http://localhost:1313/pt-br/posts/</link>
     <description>Recent content in Posts on Guilherme Lyra</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-BR</language>
     <lastBuildDate>Thu, 21 Nov 2024 18:50:09 -0300</lastBuildDate>
-    <atom:link href="https://guilhermelyra.com/pt-br/posts/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/pt-br/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Routing Friends - Network Automation</title>
-      <link>https://guilhermelyra.com/pt-br/posts/routing-friends-automation-handson/</link>
+      <link>http://localhost:1313/pt-br/posts/routing-friends-automation-handson/</link>
       <pubDate>Thu, 21 Nov 2024 18:50:09 -0300</pubDate>
-      <guid>https://guilhermelyra.com/pt-br/posts/routing-friends-automation-handson/</guid>
+      <guid>http://localhost:1313/pt-br/posts/routing-friends-automation-handson/</guid>
       <description>&lt;p&gt;Estamos de volta com mais um episódio emocionante do Routing Friends! Desta vez, vamos conversar sobre automação de redes e trabalhar em um laboratório prático com ferramentas/frameworks específicos para realizar operações com automação!&lt;/p&gt;
 &lt;p&gt;Link para o vídeo:&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=V8hF8toSAJ4&#34;&gt;Desvendando a Automação de Redes: Lab Hands-On com Guilherme Lyra, CCIE #66666 | Episódio 167 &lt;/a&gt;&lt;/p&gt;
@@ -22,18 +22,18 @@
     </item>
     <item>
       <title>Cisco Insider Champion 2024</title>
-      <link>https://guilhermelyra.com/pt-br/posts/cisco-insider-champion/</link>
+      <link>http://localhost:1313/pt-br/posts/cisco-insider-champion/</link>
       <pubDate>Sat, 20 Apr 2024 14:00:00 -0300</pubDate>
-      <guid>https://guilhermelyra.com/pt-br/posts/cisco-insider-champion/</guid>
+      <guid>http://localhost:1313/pt-br/posts/cisco-insider-champion/</guid>
       <description>&lt;p&gt;Recentemente passei a integrar o grupo &lt;strong&gt;Cisco Insider Champion&lt;/strong&gt;!&lt;/p&gt;
 &lt;p&gt;Esse é um grupo composto por profissionais que são apaixonados por tecnologia, que são reconhecidos por compartilhar seus conhecimentos e ideias com a comunidade técnica e com a Cisco.&lt;/p&gt;
 &lt;p&gt;Link da minha Badge: &lt;a href=&#34;https://www.credly.com/badges/f66fb7c6-b852-47c3-b9d2-42e8554e58c7/public_url&#34;&gt;https://www.credly.com/badges/f66fb7c6-b852-47c3-b9d2-42e8554e58c7/public_url&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Minha Jornada ao CCIE</title>
-      <link>https://guilhermelyra.com/pt-br/posts/journey-to-ccie/</link>
+      <link>http://localhost:1313/pt-br/posts/journey-to-ccie/</link>
       <pubDate>Sat, 24 Feb 2024 14:07:09 -0300</pubDate>
-      <guid>https://guilhermelyra.com/pt-br/posts/journey-to-ccie/</guid>
+      <guid>http://localhost:1313/pt-br/posts/journey-to-ccie/</guid>
       <description>&lt;h1 id=&#34;resumo-sobre-a-minha-carreira&#34;&gt;Resumo sobre a minha carreira&lt;/h1&gt;
 &lt;p&gt;Oficialmente comecei minha carreira em TI em 2006, mas, meus primeiros passos com redes ocorreram alguns anos antes disso, entre 2002 e 2003.&lt;/p&gt;
 &lt;p&gt;Em 2006 comecei como estagiário no suporte a usuários em um órgão do governo. Comecei formatando computadores e progredi rapidamente até um ponto em que lidava com toda a infraestrutrua de rede incluindo switches, firewalls, proxy, file servers, AD, etc.&lt;/p&gt;
@@ -41,9 +41,9 @@
     </item>
     <item>
       <title>Cisco Community Live Event - Cisco SD-WAN</title>
-      <link>https://guilhermelyra.com/pt-br/posts/cisco-community-sdwan-event/</link>
+      <link>http://localhost:1313/pt-br/posts/cisco-community-sdwan-event/</link>
       <pubDate>Sun, 22 Jan 2023 14:07:09 -0300</pubDate>
-      <guid>https://guilhermelyra.com/pt-br/posts/cisco-community-sdwan-event/</guid>
+      <guid>http://localhost:1313/pt-br/posts/cisco-community-sdwan-event/</guid>
       <description>&lt;p&gt;Em Novembro de 2020 tive a honra de ser convidado pela Comunidade Cisco em Portugues para apresentar um evento sobre **Cisco SD-WAN (Viptela) **. O evento contou com a participação de mais de 300 pessoas, de 9 países diferente!&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;A gravação está disponivel no YouTube:&lt;/strong&gt;
 &lt;a href=&#34;https://www.youtube.com/watch?v=xtTHjDv1r-M&#34;&gt;https://www.youtube.com/watch?v=xtTHjDv1r-M&lt;/a&gt;&lt;/p&gt;</description>
