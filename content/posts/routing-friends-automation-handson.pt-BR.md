@@ -5,7 +5,7 @@ draft: false
 ShowToC: true
 TocOpen: true
 cover:
-    image: /images/routing-friends/routing-friends.png
+    image: /static/images/routing-friends/routing-friends.png
     alt: 'Routing Friends - Network Automation'
     caption: 'Routing Friends - Network Automation'
 ---
