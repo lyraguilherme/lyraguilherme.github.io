@@ -3,7 +3,7 @@ title: 'Cisco IOS XE Model-Driven Telemetry'
 date: 2023-02-02T14:07:09-03:00
 draft: false
 cover:
-    image: /static/static/images/ios-xe-telemetry/mdt_dashboard.jpeg
+    image: /static/posts/ios-xe-telemetry/mdt_dashboard.jpeg
     alt: 'Model-Driven Telemetry'
     caption: 'Cisco IOS XE Model-Driven Telemetry'
 ---
@@ -172,22 +172,22 @@ sudo systemctl start telegraf
 
 Now that **InfluxDB** is running, let's use the browser to open the GUI at **http://<your_guestshell_ip>:8086**
 
-![InfluxDB Get Started](/static/images/ios-xe-telemetry/image_1.png)
+![InfluxDB Get Started](image_1.png)
 *Click GET STARTED and (1) set up an account, (2) create a bucket and (3) create an API Token for Telegraf*
 
-![InfluxDB Initial User Setup](/static/images/ios-xe-telemetry/image_2.png)
+![InfluxDB Initial User Setup](image_2.png)
 *Click CONFIGURE LATER*
 
-![InfluxDB Getting Started](/static/images/ios-xe-telemetry/image_3.png)
+![InfluxDB Getting Started](image_3.png)
 *Expand the left-side menu and click LOAD DATA*
 
-![InfluxDB Load Data](/static/images/ios-xe-telemetry/image_4.png)
+![InfluxDB Load Data](image_4.png)
 *Go to API TOKENS and click GENERATE API TOKEN*
 
-![InfluxDB Custom API Token](/static/images/ios-xe-telemetry/image_5.png)
+![InfluxDB Custom API Token](image_5.png)
 *Give it read+write permissions under bucket named telegraf and click GENERATE*
 
-![InfluxDB Telegraf API Token](/static/images/ios-xe-telemetry/image_6.png)
+![InfluxDB Telegraf API Token](image_6.png)
 *API Token will be used on Telegraf config*
 
 Now, we need to go back and edit **/etc/telegraf/telegraf.conf** once again to include the API token:
@@ -281,14 +281,14 @@ If you saw my **QoS monitoring** post on LinkedIn, then take a closer look at th
 
 After configuring the **Telemetry Subscriptions** on IOS XE, let's go back to the **InfluxDB** dashboard and check if data is being received:
 
-![InfluxDB Data Explorer](/static/images/ios-xe-telemetry/image_10.png)
+![InfluxDB Data Explorer](image_10.png)
 *Check if MDT streams are being received*
 
 Notice that **Telegraf** is now receiving **Telemetry Streams** from the router. From this point on, you can create a dashboard on **Telegraf** or even use **Grafana** to monitor everything you want.
 
 So, going back to my **QoS monitoring** post, this is the configuration I used to create those nice graphs:
 
-![InfluxDB Data Explorer](/static/images/ios-xe-telemetry/image_11.jpg)
+![InfluxDB Data Explorer](image_11.jpg)
 *Selecting the desired data*
 
 1. On the 1st filter, search for **diffserv**
@@ -299,13 +299,13 @@ So, going back to my **QoS monitoring** post, this is the configuration I used t
 
 If you want to add this specific graph to a dashboard, just click save as (top right of the screen) and create a new dashboard with your new graph:
 
-![InfluxDB Data Explorer](/static/images/ios-xe-telemetry/image_12.jpg)
+![InfluxDB Data Explorer](image_12.jpg)
 *Adding the graph to a new dashboard*
 
-![InfluxDB Data Explorer](/static/images/ios-xe-telemetry/image_13.jpg)
+![InfluxDB Data Explorer](image_13.jpg)
 *Some of the available options*
 
-![InfluxDB MDT Dashboard](/static/images/ios-xe-telemetry/image_14.png)
+![InfluxDB MDT Dashboard](image_14.png)
 *Dashboard example with inbound and outbound QoS traffic statistics*
 
 ## Conclusion ##
