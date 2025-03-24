@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Resolving SSH Key Exchange Errors | Guilherme Lyra</title>
 <meta name="keywords" content="">
 <meta name="description" content="In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.
@@ -12,16 +12,16 @@ While working on a network automation task, I encountered an error while trying 
 Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.
 The error message indicates that the only available key exchange methods are diffie-hellman-group-exchange-sha1 and diffie-hellman-group14-sha1. To address this, simply update your /etc/ssh/ssh_config file by adding the following lines at the end:">
 <meta name="author" content="">
-<link rel="canonical" href="https://guilhermelyra.com/posts/resolving-ssh-key-exchange-errors/">
+<link rel="canonical" href="http://localhost:1313/posts/resolving-ssh-key-exchange-errors/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://guilhermelyra.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://guilhermelyra.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://guilhermelyra.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://guilhermelyra.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://guilhermelyra.com/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://guilhermelyra.com/posts/resolving-ssh-key-exchange-errors/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/resolving-ssh-key-exchange-errors/">
 <noscript>
     <style>
         #theme-toggle,
@@ -58,75 +58,7 @@ The error message indicates that the only available key exchange methods are dif
         }
 
     </style>
-</noscript><meta property="og:title" content="Resolving SSH Key Exchange Errors" />
-<meta property="og:description" content="In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.
-While working on a network automation task, I encountered an error while trying to establish connections to some legacy devices:
-Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.
-The error message indicates that the only available key exchange methods are diffie-hellman-group-exchange-sha1 and diffie-hellman-group14-sha1. To address this, simply update your /etc/ssh/ssh_config file by adding the following lines at the end:" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://guilhermelyra.com/posts/resolving-ssh-key-exchange-errors/" />
-<meta property="og:image" content="https://guilhermelyra.com/images/key-exchange/key-exchange.png" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-09-15T16:00:00-03:00" />
-<meta property="article:modified_time" content="2024-09-15T16:00:00-03:00" />
-
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://guilhermelyra.com/images/key-exchange/key-exchange.png" />
-<meta name="twitter:title" content="Resolving SSH Key Exchange Errors"/>
-<meta name="twitter:description" content="In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.
-While working on a network automation task, I encountered an error while trying to establish connections to some legacy devices:
-Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.
-The error message indicates that the only available key exchange methods are diffie-hellman-group-exchange-sha1 and diffie-hellman-group14-sha1. To address this, simply update your /etc/ssh/ssh_config file by adding the following lines at the end:"/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "https://guilhermelyra.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Resolving SSH Key Exchange Errors",
-      "item": "https://guilhermelyra.com/posts/resolving-ssh-key-exchange-errors/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Resolving SSH Key Exchange Errors",
-  "name": "Resolving SSH Key Exchange Errors",
-  "description": "In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.\nWhile working on a network automation task, I encountered an error while trying to establish connections to some legacy devices: Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.\nThe error message indicates that the only available key exchange methods are diffie-hellman-group-exchange-sha1 and diffie-hellman-group14-sha1. To address this, simply update your /etc/ssh/ssh_config file by adding the following lines at the end:\n",
-  "keywords": [
-    
-  ],
-  "articleBody": "In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.\nWhile working on a network automation task, I encountered an error while trying to establish connections to some legacy devices: Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.\nThe error message indicates that the only available key exchange methods are diffie-hellman-group-exchange-sha1 and diffie-hellman-group14-sha1. To address this, simply update your /etc/ssh/ssh_config file by adding the following lines at the end:\nHostKeyAlgorithms +ssh-rsa,ssh-dss KexAlgorithms +diffie-hellman-group1-sha1,diffie-hellman-group14-sha1 Make sure to enable the required key exchange methods for your use case and save the ssh_config file before attemping a new connection.\nBy following these steps, you should be able to resolve the key exchange issues and maintain stable SSH connections with legacy devices. However, keep in mind that you’re enabling deprecated and weaker cryptographic algorithms.\n",
-  "wordCount" : "150",
-  "inLanguage": "en",
-  "image":"https://guilhermelyra.com/images/key-exchange/key-exchange.png","datePublished": "2024-09-15T16:00:00-03:00",
-  "dateModified": "2024-09-15T16:00:00-03:00",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://guilhermelyra.com/posts/resolving-ssh-key-exchange-errors/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Guilherme Lyra",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://guilhermelyra.com/favicon.ico"
-    }
-  }
-}
-</script>
+</noscript>
 </head>
 
 <body class="" id="top">
@@ -144,7 +76,7 @@ The error message indicates that the only available key exchange methods are dif
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://guilhermelyra.com/" accesskey="h" title="Guilherme Lyra (Alt + H)">Guilherme Lyra</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Guilherme Lyra (Alt + H)">Guilherme Lyra</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -168,7 +100,7 @@ The error message indicates that the only available key exchange methods are dif
                 </button>
                 <ul class="lang-switch"><li>|</li>
                     <li>
-                        <a href="https://guilhermelyra.com/pt-br/" title="Português"
+                        <a href="http://localhost:1313/pt-br/" title="Português"
                             aria-label="Português">Pt-Br</a>
                     </li>
                 </ul>
@@ -176,7 +108,7 @@ The error message indicates that the only available key exchange methods are dif
         </div>
         <ul id="menu">
             <li>
-                <a href="https://guilhermelyra.com/archives/" title="All posts">
+                <a href="http://localhost:1313/archives/" title="All posts">
                     <span>All posts</span>
                 </a>
             </li>
@@ -195,7 +127,7 @@ The error message indicates that the only available key exchange methods are dif
 
 </div>
   </header> 
-<figure class="entry-cover"><img loading="eager" src="https://guilhermelyra.com/images/key-exchange/key-exchange.png" alt="Resolving SSH Key Exchange Errors">
+<figure class="entry-cover"><img loading="eager" src="http://localhost:1313/images/key-exchange/key-exchange.png" alt="Resolving SSH Key Exchange Errors">
         <p>Resolving SSH Key Exchange Errors</p>
 </figure>
   <div class="post-content"><p>In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.</p>
@@ -218,7 +150,7 @@ KexAlgorithms +diffie-hellman-group1-sha1,diffie-hellman-group14-sha1
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="https://guilhermelyra.com/">Guilherme Lyra</a></span>
+    <span>&copy; 2025 <a href="http://localhost:1313/">Guilherme Lyra</a></span>
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

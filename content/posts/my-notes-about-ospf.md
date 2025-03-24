@@ -1,26 +1,25 @@
 ---
 title: 'My notes about OSPF'
 date: 2023-02-22T14:07:09-03:00
-draft: true
+draft: false
 ShowToC: true
 TocOpen: true
 cover:
-    image: 
+    image: /images/ospf/ospf_cover.png
     alt: 'My notes about OSPF'
     caption: 'My notes about OSPF'
 ---
 
+# Introduction
+
+This post is a summary of OSPF that I compiled during my CCIE journey, gathering information from RFCs, books, Cisco documentation, blogs, and other sources.
+
+> **_IMPORTANT:_** I’m still in the process of converting this page from my original notes, so some information may be missing, and the formatting may not yet be fully refined.
+
+
 # OSPFv2
 
-OSPFv2 Header
-- Version
-- Message Type
-- Packet Length
-- Source OSPF Router
-- Area ID
-- Checksum
-- Instance ID
-- Reserved
+## OSPF packet header
 
 ------
 
@@ -206,6 +205,8 @@ Has to be applied on the device that is doing the translation into Type 5 LSA
 
 # Inter-Area OSPF is Distance Vector / OSPF Loop Prevention
 
+Source: https://www.networkworld.com/article/2348778/my-favorite-interview-question.html
+
 Why does OSPF require all traffic between non-backbone areas to pass through a backbone area (area 0)?
 Comparing  three fundamental concepts of link state protocols, concepts that even  most OSPF beginners understand, easily derives the answer to the  question. 
 
@@ -223,6 +224,6 @@ Wait a minute – what that last concept described is not link state, it’s dis
 And that leads us to the answer to the question:
 Because inter-area OSPF is distance vector, it is vulnerable to routing loops. It avoids loops by mandating a loop-free inter-area topology, in which traffic from one area can only reach another area through area 0. 
 
-https://www.networkworld.com/article/2348778/my-favorite-interview-question.html
+
 
 ---
