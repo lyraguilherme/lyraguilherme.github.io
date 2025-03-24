@@ -68,6 +68,7 @@
 &lt;p&gt;This post is a summary of OSPF that I compiled during my CCIE journey, gathering information from RFCs, books, Cisco documentation, blogs, and other sources.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;IMPORTANT:&lt;/em&gt;&lt;/strong&gt; I’m still in the process of converting this page from my original notes, so some information may be missing, and the formatting may not yet be fully refined.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;hr&gt;
 &lt;h1 id=&#34;ospfv2&#34;&gt;OSPFv2&lt;/h1&gt;
 &lt;h2 id=&#34;ospf-packet-header&#34;&gt;OSPF packet header&lt;/h2&gt;
 &lt;hr&gt;

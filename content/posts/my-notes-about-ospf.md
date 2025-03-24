@@ -16,6 +16,7 @@ This post is a summary of OSPF that I compiled during my CCIE journey, gathering
 
 > **_IMPORTANT:_** I’m still in the process of converting this page from my original notes, so some information may be missing, and the formatting may not yet be fully refined.
 
+------
 
 # OSPFv2
 
