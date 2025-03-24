@@ -3,7 +3,7 @@ title: "Resolving SSH Key Exchange Errors"
 date: 2024-09-15T16:00:00-03:00
 draft: false
 cover:
-    image: /static/posts/resolving-ssh-key-exchange-errors/key-exchange.png
+    image: /resolving-ssh-key-exchange-errors/key-exchange.png
     alt: 'Resolving SSH Key Exchange Errors'
     caption: 'Resolving SSH Key Exchange Errors'
 ---
