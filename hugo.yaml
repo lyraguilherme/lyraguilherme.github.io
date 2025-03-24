@@ -1,8 +1,7 @@
-baseURL: ""
+baseURL: https://guilhermelyra.com
 title: "Guilherme Lyra"
 theme: ["PaperMod"]
 defaultContentLanguage: en
-baseURL: https://guilhermelyra.com
 
 params:
   homeInfoParams:
