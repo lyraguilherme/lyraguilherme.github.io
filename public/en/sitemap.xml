@@ -2,146 +2,146 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://guilhermelyra.com/</loc>
     <lastmod>2024-11-21T18:50:09-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt-BR"
-                href="http://localhost:1313/pt-br/"
+                href="https://guilhermelyra.com/pt-br/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="http://localhost:1313/"
+                href="https://guilhermelyra.com/"
                 />
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
+    <loc>https://guilhermelyra.com/posts/</loc>
     <lastmod>2024-11-21T18:50:09-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt-BR"
-                href="http://localhost:1313/pt-br/posts/"
+                href="https://guilhermelyra.com/pt-br/posts/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="http://localhost:1313/posts/"
+                href="https://guilhermelyra.com/posts/"
                 />
   </url><url>
-    <loc>http://localhost:1313/posts/routing-friends-automation-handson/</loc>
+    <loc>https://guilhermelyra.com/posts/routing-friends-automation-handson/</loc>
     <lastmod>2024-11-21T18:50:09-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt-BR"
-                href="http://localhost:1313/pt-br/posts/routing-friends-automation-handson/"
+                href="https://guilhermelyra.com/pt-br/posts/routing-friends-automation-handson/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="http://localhost:1313/posts/routing-friends-automation-handson/"
+                href="https://guilhermelyra.com/posts/routing-friends-automation-handson/"
                 />
   </url><url>
-    <loc>http://localhost:1313/posts/terraform-aws-vpn/</loc>
+    <loc>https://guilhermelyra.com/posts/terraform-aws-vpn/</loc>
     <lastmod>2024-10-06T18:00:00-03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/automation/</loc>
+    <loc>https://guilhermelyra.com/tags/automation/</loc>
     <lastmod>2024-10-06T18:00:00-03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/aws/</loc>
+    <loc>https://guilhermelyra.com/tags/aws/</loc>
     <lastmod>2024-10-06T18:00:00-03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/iac/</loc>
+    <loc>https://guilhermelyra.com/tags/iac/</loc>
     <lastmod>2024-10-06T18:00:00-03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://guilhermelyra.com/tags/</loc>
     <lastmod>2024-10-06T18:00:00-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt-BR"
-                href="http://localhost:1313/pt-br/tags/"
+                href="https://guilhermelyra.com/pt-br/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="http://localhost:1313/tags/"
+                href="https://guilhermelyra.com/tags/"
                 />
   </url><url>
-    <loc>http://localhost:1313/tags/terraform/</loc>
+    <loc>https://guilhermelyra.com/tags/terraform/</loc>
     <lastmod>2024-10-06T18:00:00-03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/vpn/</loc>
+    <loc>https://guilhermelyra.com/tags/vpn/</loc>
     <lastmod>2024-10-06T18:00:00-03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/resolving-ssh-key-exchange-errors/</loc>
+    <loc>https://guilhermelyra.com/posts/resolving-ssh-key-exchange-errors/</loc>
     <lastmod>2024-09-15T16:00:00-03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/cisco-insider-champion/</loc>
+    <loc>https://guilhermelyra.com/posts/cisco-insider-champion/</loc>
     <lastmod>2024-04-20T14:00:00-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt-BR"
-                href="http://localhost:1313/pt-br/posts/cisco-insider-champion/"
+                href="https://guilhermelyra.com/pt-br/posts/cisco-insider-champion/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="http://localhost:1313/posts/cisco-insider-champion/"
+                href="https://guilhermelyra.com/posts/cisco-insider-champion/"
                 />
   </url><url>
-    <loc>http://localhost:1313/posts/journey-to-ccie/</loc>
+    <loc>https://guilhermelyra.com/posts/journey-to-ccie/</loc>
     <lastmod>2024-02-24T14:07:09-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt-BR"
-                href="http://localhost:1313/pt-br/posts/journey-to-ccie/"
+                href="https://guilhermelyra.com/pt-br/posts/journey-to-ccie/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="http://localhost:1313/posts/journey-to-ccie/"
+                href="https://guilhermelyra.com/posts/journey-to-ccie/"
                 />
   </url><url>
-    <loc>http://localhost:1313/posts/my-notes-about-ospf/</loc>
+    <loc>https://guilhermelyra.com/posts/my-notes-about-ospf/</loc>
     <lastmod>2023-02-22T14:07:09-03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/ios-xe-telemetry/</loc>
+    <loc>https://guilhermelyra.com/posts/ios-xe-telemetry/</loc>
     <lastmod>2023-02-02T14:07:09-03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/cisco-community-sdwan-event/</loc>
+    <loc>https://guilhermelyra.com/posts/cisco-community-sdwan-event/</loc>
     <lastmod>2023-01-22T14:07:09-03:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt-BR"
-                href="http://localhost:1313/pt-br/posts/cisco-community-sdwan-event/"
+                href="https://guilhermelyra.com/pt-br/posts/cisco-community-sdwan-event/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="http://localhost:1313/posts/cisco-community-sdwan-event/"
+                href="https://guilhermelyra.com/posts/cisco-community-sdwan-event/"
                 />
   </url><url>
-    <loc>http://localhost:1313/archives/</loc>
+    <loc>https://guilhermelyra.com/archives/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt-BR"
-                href="http://localhost:1313/pt-br/arquivos/"
+                href="https://guilhermelyra.com/pt-br/arquivos/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="http://localhost:1313/archives/"
+                href="https://guilhermelyra.com/archives/"
                 />
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://guilhermelyra.com/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="pt-BR"
-                href="http://localhost:1313/pt-br/categories/"
+                href="https://guilhermelyra.com/pt-br/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="http://localhost:1313/categories/"
+                href="https://guilhermelyra.com/categories/"
                 />
   </url>
 </urlset>
