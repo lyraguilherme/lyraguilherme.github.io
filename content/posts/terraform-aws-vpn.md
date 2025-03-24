@@ -5,7 +5,7 @@ ShowToC: true
 TocOpen: true
 draft: false
 cover:
-    image: /static/posts/terraform-aws-vpn/awsterraform1.png
+    image: /terraform-aws-vpn/awsterraform1.png
     alt: 'Automating AWS site-to-site VPNs with Terraform'
     caption: 'Automating AWS site-to-site VPNs with Terraform'
 tags:
@@ -139,7 +139,7 @@ This command should return information about your AWS account, confirming that y
 
 # Diving into Automation
 
-![Diving into automation](/static/posts/terraform-aws-vpn/neom-n7SdozgzvyA-unsplash.jpg)
+![Diving into automation](neom-n7SdozgzvyA-unsplash.jpg)
 
 Photo by [NEOM](https://unsplash.com/@neom?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/a-person-swimming-in-a-deep-blue-ocean-n7SdozgzvyA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
 

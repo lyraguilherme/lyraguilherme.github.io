@@ -5,7 +5,7 @@ draft: false
 ShowToC: true
 TocOpen: true
 cover:
-    image: /static/posts/my-notes-about-ospf/ospf_cover.png
+    image: /my-notes-about-ospf/ospf_cover.png
     alt: 'My notes about OSPF'
     caption: 'My notes about OSPF'
 ---
