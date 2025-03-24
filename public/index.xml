@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Guilherme Lyra</title>
-    <link>https://guilhermelyra.com/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on Guilherme Lyra</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Thu, 21 Nov 2024 18:50:09 -0300</lastBuildDate>
-    <atom:link href="https://guilhermelyra.com/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Routing Friends - Network Automation</title>
-      <link>https://guilhermelyra.com/posts/routing-friends-automation-handson/</link>
+      <link>http://localhost:1313/posts/routing-friends-automation-handson/</link>
       <pubDate>Thu, 21 Nov 2024 18:50:09 -0300</pubDate>
-      <guid>https://guilhermelyra.com/posts/routing-friends-automation-handson/</guid>
+      <guid>http://localhost:1313/posts/routing-friends-automation-handson/</guid>
       <description>&lt;p&gt;We are back with another exciting episode of Routing Friends! This time, we are going to talk about network automation and work in a practical laboratory with specific tools/frameworks to carry out operations with automation!&lt;/p&gt;
 &lt;p&gt;Link to YouTube (content in PT-BR):
 &lt;a href=&#34;https://www.youtube.com/watch?v=V8hF8toSAJ4&#34;&gt;Desvendando a Automação de Redes: Lab Hands-On com Guilherme Lyra, CCIE #66666 | Episódio 167 &lt;/a&gt;&lt;/p&gt;
@@ -22,9 +22,9 @@
     </item>
     <item>
       <title>Automating AWS site-to-site VPNs with Terraform</title>
-      <link>https://guilhermelyra.com/posts/terraform-aws-vpn/</link>
+      <link>http://localhost:1313/posts/terraform-aws-vpn/</link>
       <pubDate>Sun, 06 Oct 2024 18:00:00 -0300</pubDate>
-      <guid>https://guilhermelyra.com/posts/terraform-aws-vpn/</guid>
+      <guid>http://localhost:1313/posts/terraform-aws-vpn/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;In this post, I&amp;rsquo;ll walk you through how to use Terraform to set up a VPN site-to-site connection on AWS, leveraging Infrastructure as Code (IaC) to make the process quicker, easier, and fully repeatable.&lt;/p&gt;
 &lt;p&gt;For the examples below, we’ll build a cloud infrastructure using a Virtual Private Gateway (VGW). In a future post, we’ll explore using a Transit Gateway (TGW) for more complex setups.&lt;/p&gt;
@@ -32,9 +32,9 @@
     </item>
     <item>
       <title>Resolving SSH Key Exchange Errors</title>
-      <link>https://guilhermelyra.com/posts/resolving-ssh-key-exchange-errors/</link>
+      <link>http://localhost:1313/posts/resolving-ssh-key-exchange-errors/</link>
       <pubDate>Sun, 15 Sep 2024 16:00:00 -0300</pubDate>
-      <guid>https://guilhermelyra.com/posts/resolving-ssh-key-exchange-errors/</guid>
+      <guid>http://localhost:1313/posts/resolving-ssh-key-exchange-errors/</guid>
       <description>&lt;p&gt;In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.&lt;/p&gt;
 &lt;p&gt;While working on a network automation task, I encountered an error while trying to establish connections to some legacy devices:
 &lt;code&gt;Unable to negotiate with x.x.x.x port 22: no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1, diffie-hellman-group14-sha1.&lt;/code&gt;&lt;/p&gt;
@@ -42,18 +42,18 @@
     </item>
     <item>
       <title>Cisco Insider Champion 2024</title>
-      <link>https://guilhermelyra.com/posts/cisco-insider-champion/</link>
+      <link>http://localhost:1313/posts/cisco-insider-champion/</link>
       <pubDate>Sat, 20 Apr 2024 14:00:00 -0300</pubDate>
-      <guid>https://guilhermelyra.com/posts/cisco-insider-champion/</guid>
+      <guid>http://localhost:1313/posts/cisco-insider-champion/</guid>
       <description>&lt;p&gt;I&amp;rsquo;m now a member of the &lt;strong&gt;Cisco Insider Champion&lt;/strong&gt; group!&lt;/p&gt;
 &lt;p&gt;Really glad to become part of this team of amazing IT professionals!&lt;/p&gt;
 &lt;p&gt;My badge URL: &lt;a href=&#34;https://www.credly.com/badges/f66fb7c6-b852-47c3-b9d2-42e8554e58c7/public_url&#34;&gt;https://www.credly.com/badges/f66fb7c6-b852-47c3-b9d2-42e8554e58c7/public_url&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>My Journey to CCIE</title>
-      <link>https://guilhermelyra.com/posts/journey-to-ccie/</link>
+      <link>http://localhost:1313/posts/journey-to-ccie/</link>
       <pubDate>Sat, 24 Feb 2024 14:07:09 -0300</pubDate>
-      <guid>https://guilhermelyra.com/posts/journey-to-ccie/</guid>
+      <guid>http://localhost:1313/posts/journey-to-ccie/</guid>
       <description>&lt;h2 id=&#34;my-journey&#34;&gt;My journey&lt;/h2&gt;
 &lt;p&gt;I officially started my career in IT in 2006, but my first steps with networks occurred a few years before that, between 2002 and 2003.&lt;/p&gt;
 &lt;p&gt;In 2006, I began as an intern in user support at a government agency. I started by formatting computers and quickly progressed to a point where I dealt with the entire network infrastructure including switches, firewalls, proxy, file servers, AD, etc.&lt;/p&gt;
@@ -61,9 +61,9 @@
     </item>
     <item>
       <title>My notes about OSPF</title>
-      <link>https://guilhermelyra.com/posts/my-notes-about-ospf/</link>
+      <link>http://localhost:1313/posts/my-notes-about-ospf/</link>
       <pubDate>Wed, 22 Feb 2023 14:07:09 -0300</pubDate>
-      <guid>https://guilhermelyra.com/posts/my-notes-about-ospf/</guid>
+      <guid>http://localhost:1313/posts/my-notes-about-ospf/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;This post is a summary of OSPF that I compiled during my CCIE journey, gathering information from RFCs, books, Cisco documentation, blogs, and other sources.&lt;/p&gt;
 &lt;blockquote&gt;
@@ -167,9 +167,9 @@
     </item>
     <item>
       <title>Cisco IOS XE Model-Driven Telemetry</title>
-      <link>https://guilhermelyra.com/posts/ios-xe-telemetry/</link>
+      <link>http://localhost:1313/posts/ios-xe-telemetry/</link>
       <pubDate>Thu, 02 Feb 2023 14:07:09 -0300</pubDate>
-      <guid>https://guilhermelyra.com/posts/ios-xe-telemetry/</guid>
+      <guid>http://localhost:1313/posts/ios-xe-telemetry/</guid>
       <description>&lt;p&gt;In this post we&amp;rsquo;re going to explore some Cisco IOS XE capabilities such as &lt;strong&gt;Streaming Telemetry&lt;/strong&gt; and &lt;strong&gt;Guestshell&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;There is a ton of content available on &lt;strong&gt;Cisco DevNet&lt;/strong&gt; explaining &lt;strong&gt;Model-Driven Telemetry&lt;/strong&gt; theory in great detail, so I highly suggest you take some time to browse through the links I&amp;rsquo;ve listed under the &lt;strong&gt;Reference&lt;/strong&gt; of this post.&lt;/p&gt;
 &lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
@@ -179,9 +179,9 @@
     </item>
     <item>
       <title>Cisco Community Live Event - Cisco SD-WAN</title>
-      <link>https://guilhermelyra.com/posts/cisco-community-sdwan-event/</link>
+      <link>http://localhost:1313/posts/cisco-community-sdwan-event/</link>
       <pubDate>Sun, 22 Jan 2023 14:07:09 -0300</pubDate>
-      <guid>https://guilhermelyra.com/posts/cisco-community-sdwan-event/</guid>
+      <guid>http://localhost:1313/posts/cisco-community-sdwan-event/</guid>
       <description>&lt;p&gt;In November 2020 I had the honor of being invited by Cisco Community to present a live event about &lt;strong&gt;Cisco SD-WAN (Viptela)&lt;/strong&gt;. The event had more than 300 participants, from 9 different countries.&lt;/p&gt;
 &lt;p&gt;For those who want to know more about this excellent Cisco solution, the recording is available on the link below (presentation language is Brazilian Portuguese).&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Watch the video on YouTube:&lt;/strong&gt; &lt;a href=&#34;https://www.youtube.com/watch?v=xtTHjDv1r-M&#34;&gt;https://www.youtube.com/watch?v=xtTHjDv1r-M&lt;/a&gt;&lt;/p&gt;</description>
