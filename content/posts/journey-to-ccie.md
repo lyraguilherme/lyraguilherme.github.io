@@ -5,7 +5,7 @@ draft: false
 ShowToC: true
 TocOpen: true
 cover:
-    image: CCIE-66666.jpeg
+    image: /journey-to-ccie/CCIE-66666.jpeg
     alt: 'Guilherme Lyra, CCIE #66666'
     caption: 'Guilherme Lyra, CCIE #66666'
 ---
@@ -40,28 +40,28 @@ The first point to understand is that in order to schedule the CCIE LAB, you nee
 
 Many people don't know but unlike exams like CCNA and CCNP, which are conducted at accredited training centers, the CCIE LAB is conducted in person at specific Cisco's testing facilities listed below:
 
-![CCIE Lab Locations](ccie_lab_locations.png)
+![CCIE Lab Locations](/journey-to-ccie/ccie_lab_locations.png)
 *Source: https://www.cisco.com/c/en/us/training-events/training-certifications/certifications/expert/ccie-lab-exam-locations.html*
 
 Note in the table above that there are the so-called Mobile Labs. As the name suggests, these are temporary labs that occur in certain locations. At the time of writing this post (January 2024), I noticed that there are some dates when the lab will be in Brazil in April 2024. However, when checking through the scheduling tool, I did not find available slots. The downside of Mobile Labs is that slots tend to fill up quickly. You can check the dates of the Mobile Labs here: https://learningnetwork.cisco.com/s/mobile-lab-scheduler
 
 For logistical reasons, I chose to take the lab at a fixed location and scheduled my exam at the infamous **Cisco's Building 5** in **Richardson, Texas**.
 
-![Cisco Building 5, Richardson TX](Richardson_Building_5.jpg)
+![Cisco Building 5, Richardson TX](/journey-to-ccie/Richardson_Building_5.jpg)
 *Cisco Building 5 - Richardson, Texas - December 2022*
 
 By doing it this way, I didn't have any difficulty in finding availability for the LAB schedule. What needs to be considered here are the travel costs. Weigh all the items and decide what's most suitable for your case.
 
 Continuing, the CCIE LAB lasts for 8 hours and is divided into 2 modules:
 
-![CCIE Lab Modules](labexam-modules.png)
+![CCIE Lab Modules](/journey-to-ccie/labexam-modules.png)
 *CCIE Lab Modules*
 
 To pass, you need to achieve a minimum score in each of the modules as well as an overall minimum score (pass score). It's not enough to get the maximum score in one module and fall below the minimum in the other: in this condition, you won't pass.
 
 The minimum score values are not disclosed. The important thing is to understand that this is the scoring format of the exam:
 
-![CCIE Lab Modules](labexam-scoreevaluation.png)
+![CCIE Lab Modules](/journey-to-ccie/labexam-scoreevaluation.png)
 *CCIE Score Evaluation*
 
 Another critical detail is that there is **no partial scoring**. For example: let's say in a certain task you configured everything correctly but used a different ACL name than what the question asked for. In this case, you won't get any points for that question. This is one of the factors that makes the exam so difficult: attention to details is essential.
