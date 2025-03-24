@@ -20,7 +20,9 @@ This post is a summary of OSPF that I compiled during my CCIE journey, gathering
 
 # OSPFv2
 
-## OSPF packet header
+## OSPFv2 Packet Header
+
+![OSPFv2 Packet Header](packet_header.png)
 
 ------
 
