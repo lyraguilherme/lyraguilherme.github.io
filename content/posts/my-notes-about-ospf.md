@@ -201,22 +201,27 @@ Has to be applied on the device that is doing the translation into Type 5 LSA
 
 ---
 
-# Inter-Area OSPF is Distance Vector / OSPF Loop Prevention
+# Inter-Area OSPF is Distance Vector (OSPF Loop Prevention)
 
-Source: https://www.networkworld.com/article/2348778/my-favorite-interview-question.html
+> **_Source:_** https://www.networkworld.com/article/2348778/my-favorite-interview-question.html
 
-Why does OSPF require all traffic between non-backbone areas to pass through a backbone area (area 0)?
-Comparing  three fundamental concepts of link state protocols, concepts that even  most OSPF beginners understand, easily derives the answer to the  question. 
+**Why does OSPF require all traffic between non-backbone areas to pass through a backbone area (area 0)?**
 
-The first concept is this:
-Every  link state router floods information about itself, its links, and its  neighbors to every other router. From this flooded information each  router builds an identical link state database. Each router then independently runs a shortest-path-first calculation on its database – a local calculation using distributed information – to derive a shortest-path tree. This tree is a sort of map of the shortest path to every other router.
-One of the advantages of link state protocols is that the link state database provides a “view” of the entire network, preventing most routing loops. This is in contrast to distance vector  protocols, in which route information is passed hop-by-hop through the network and a calculation is performed at each hop – a distributed  calculation using local information. Each router along a route is dependent on the router before it to perform its calculations correctly and then correctly pass along the results. When a router advertises the prefixes it learns to its neighbors it’s basically  saying, “I know how to reach these destinations.” And because each distance vector router knows only what its neighbors tell it, and has no “view” of the network beyond the neighbors, the protocol is vulnerable to loops.
+Comparing  three fundamental concepts of link state protocols, concepts that even most OSPF beginners understand, easily derives the answer to the above question. 
 
-The second concept is this:
-When link state domains grow large, the flooding and the resulting size of the link  state database becomes a scaling problem. The problem is remedied by breaking the routing domain into areas: That first concept is modified so that flooding occurs only within the boundaries of an area, and the resulting link state database contains only information from the routers in the area. This, in turn, means that each router’s calculated shortest-path tree only describes the path to other routers within the area.
+**The first concept:**
 
-The third concept is this:
-OSPF  areas are connected by one or more Area Border Routers (the other main  link state protocol, IS-IS, connects areas somewhat differently) which maintain a separate link state database and calculate a separate shortest-path tree for each of their connected areas. So an ABR by definition is a member of two or more areas. It advertises the prefixes it learns in one area to its other areas by flooding Type 3 LSAs into the areas that basically say, “I know how to reach these destinations.”
+Every link state router floods information about itself, its links, and its neighbors to every other router. From this flooded information each  router builds an identical link state database. Each router then independently runs a shortest-path-first calculation on its database – a local calculation using distributed information – to derive a shortest-path tree. This tree is a sort of map of the shortest path to every other router.
+
+One of the advantages of link state protocols is that the link state database provides a “view” of the entire network, preventing most routing loops. This is in contrast to distance vector protocols, in which route information is passed hop-by-hop through the network and a calculation is performed at each hop – a distributed calculation using local information. Each router along a route is dependent on the router before it to perform its calculations correctly and then correctly pass along the results. When a router advertises the prefixes it learns to its neighbors it’s basically saying, “I know how to reach these destinations.” And because each distance vector router knows only what its neighbors tell it, and has no “view” of the network beyond the neighbors, the protocol is vulnerable to loops.
+
+**The second concept:**
+
+When link state domains grow large, the flooding and the resulting size of the link state database becomes a scaling problem. The problem is remedied by breaking the routing domain into areas: That first concept is modified so that flooding occurs only within the boundaries of an area, and the resulting link state database contains only information from the routers in the area. This, in turn, means that each router’s calculated shortest-path tree only describes the path to other routers within the area.
+
+**The third concept:**
+
+OSPF areas are connected by one or more Area Border Routers (the other main  link state protocol, IS-IS, connects areas somewhat differently) which maintain a separate link state database and calculate a separate shortest-path tree for each of their connected areas. So an ABR by definition is a member of two or more areas. It advertises the prefixes it learns in one area to its other areas by flooding Type 3 LSAs into the areas that basically say, “I know how to reach these destinations.”
 Wait a minute – what that last concept described is not link state, it’s distance vector. The routers in an area cannot “see” past the ABR, and  rely on the ABR to correctly tell them what prefixes it can reach. The SPF calculation within an area derives a shortest-path tree that depicts  all prefixes beyond the ABR as leaf subnets connected to the ABR at some specified cost.
 
 And that leads us to the answer to the question:
