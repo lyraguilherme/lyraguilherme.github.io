@@ -20,11 +20,24 @@ This post is a summary of OSPF that I compiled during my CCIE journey, gathering
 
 # OSPFv2
 
+OSPFv2 is documented under **RFC 2328**, which states the following:
+
+OSPF routes IP packets based solely on the destination IP address found in the IP packet header.  IP packets are routed "as is" -- they are not encapsulated in any further protocol headers as they transit the Autonomous System.  OSPF is a dynamic routing protocol. It quickly detects topological changes in the AS (such as router interface failures) and calculates new loop-free routes after a period of convergence. 
+
+This period of convergence is short and involves a minimum of routing traffic.
+
+In a link-state routing protocol, each router maintains a database describing the Autonomous System's topology.  This database is referred to as the link-state database. Each participating router has an identical database.  Each individual piece of this database is a particular router's local state (e.g., the router's usable interfaces and reachable neighbors). 
+
+The router distributes its local state throughout the Autonomous System by flooding.
+
+
 ## OSPFv2 Header
 
 ![OSPFv2 Packet Header](/my-notes-about-ospf/packet_header.png)
 
+
 ------
+
 
 ## Multicast Groups
 
@@ -40,7 +53,9 @@ This post is a summary of OSPF that I compiled during my CCIE journey, gathering
 | FF02::5         | OSPFv3 Routers              |
 | FF02::6         | OSPFv3 Designated Routers   |
 
+
 ------
+
 
 ## Timers
 | Interval   | Broadcast | Non-Broadcast  | Point-to-Point  | Point-to-Multipoint  | Point-to-Multipoint Non-Broadcast |
@@ -50,7 +65,9 @@ This post is a summary of OSPF that I compiled during my CCIE journey, gathering
 | Wait       |           |                | 40              | 90                   |                                   |
 | Retransmit | 5         | 5              | 5               | 5                    | 5                                 |
 
+
 ------
+
 
 ## OSPFv2 LSA Types
 
@@ -114,7 +131,9 @@ This post is a summary of OSPF that I compiled during my CCIE journey, gathering
   - Similar to Type 5 LSAs but scoped only within the **originating NSSA**.  
   - Not flooded beyond the NSSA; may be **translated to Type 5** by the ABR for propagation beyond the NSSA.
 
+
 ------
+
 
 ## Down Bit
 - The down bit helps prevent routing loops between MP-BGP and OSPF when LSA Type 3 are used, but not when External Routes are announced.
@@ -138,7 +157,9 @@ Note:
 ## Routing Bit
 - The routing bit is not a part of the LSA itself. Routing Bit is an internal maintenance bit used by IOS indicating that the route to the destination advertised by this LSA is valid. So when you see "Routing Bit Set on this LSA," it means that the route to this destination is in the routing table.
 
----
+
+------
+
 
 ## Demand Circuit
 - Per RFC 1793, Extending OSPF to Support Demand Circuits,  “OSPF Hellos and the refresh of OSPF routing information are suppressed on demand circuits, allowing the underlying data-link connections to be closed when not carrying application traffic.”  This feature allows low-speed and pay-per-use links, such as analog dial and ISDN, to run OSPF without the need for periodic hellos and LSA flooding. Periodic hellos are only suppressed for point-to-point and point-to-multipoint OSPF network types. 
@@ -175,7 +196,9 @@ If you shut OSPF on the interface level with the ip ospf shutdown command, it wi
 - Send hello packets with the DR/BDR set to 0.0.0.0 and an empty neighbor list. This will trigger other OSPF router to fall back to init state
 - Stop sending/receiving OSPF packets
 
----
+
+------
+
 
 ## OSPF Filtering
 
@@ -199,7 +222,9 @@ Has to be applied on the device that is doing the translation into Type 5 LSA
 - summary-address 10.0.0.0 255.255.255.0 not-advertise
 - summary-address 10.0.0.0 255.255.255.0 nssa-only
 
----
+
+------
+
 
 # Inter-Area OSPF is Distance Vector (OSPF Loop Prevention)
 
@@ -226,7 +251,3 @@ Wait a minute – what that last concept described is not link state, it’s dis
 
 And that leads us to the answer to the question:
 Because inter-area OSPF is distance vector, it is vulnerable to routing loops. It avoids loops by mandating a loop-free inter-area topology, in which traffic from one area can only reach another area through area 0. 
-
-
-
----
