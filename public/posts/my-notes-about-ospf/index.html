@@ -152,7 +152,8 @@ OSPF routes IP packets based solely on the destination IP address found in the I
                     <a href="#ospfv3" aria-label="OSPFv3">OSPFv3</a><ul>
                         
                 <li>
-                    <a href="#ospfv3-packet-header" aria-label="OSPFv3 Packet Header">OSPFv3 Packet Header</a></li>
+                    <a href="#ospfv3-packet-header" aria-label="OSPFv3 Packet Header">OSPFv3 Packet Header</a></li></ul>
+                </li>
                 <li>
                     <a href="#multicast-groups" aria-label="Multicast Groups">Multicast Groups</a><ul>
                         
@@ -180,6 +181,9 @@ OSPF routes IP packets based solely on the destination IP address found in the I
                     <a href="#lsa-type-7--nssa-external-lsa" aria-label="LSA Type 7 – NSSA External LSA">LSA Type 7 – NSSA External LSA</a></li></ul>
                 </li>
                 <li>
+                    <a href="#ospf-options" aria-label="OSPF Options">OSPF Options</a><ul>
+                        
+                <li>
                     <a href="#down-bit" aria-label="Down Bit">Down Bit</a></li>
                 <li>
                     <a href="#n-bit" aria-label="N Bit">N Bit</a></li>
@@ -194,7 +198,8 @@ OSPF routes IP packets based solely on the destination IP address found in the I
                 <li>
                     <a href="#stub-router-feature" aria-label="Stub Router Feature">Stub Router Feature</a></li>
                 <li>
-                    <a href="#ospf-graceful-shutdown" aria-label="OSPF Graceful Shutdown">OSPF Graceful Shutdown</a></li>
+                    <a href="#ospf-graceful-shutdown" aria-label="OSPF Graceful Shutdown">OSPF Graceful Shutdown</a></li></ul>
+                </li>
                 <li>
                     <a href="#ospf-filtering" aria-label="OSPF Filtering">OSPF Filtering</a><ul>
                         
@@ -204,7 +209,6 @@ OSPF routes IP packets based solely on the destination IP address found in the I
                     <a href="#inter-area-routes" aria-label="Inter Area Routes">Inter Area Routes</a></li>
                 <li>
                     <a href="#external-routes-lsa-type-57" aria-label="External Routes (LSA Type 5/7)">External Routes (LSA Type 5/7)</a></li></ul>
-                </li></ul>
                 </li>
                 <li>
                     <a href="#inter-area-ospf-is-distance-vector-ospf-loop-prevention" aria-label="Inter-Area OSPF is Distance Vector (OSPF Loop Prevention)">Inter-Area OSPF is Distance Vector (OSPF Loop Prevention)</a>
@@ -264,8 +268,8 @@ in OSPF for IPv6.</p></blockquote>
 <p><img loading="lazy" src="/my-notes-about-ospf/packet_header_ospfv3.png" alt="OSPFv3 Packet Header"  />
 </p>
 <hr>
-<h2 id="multicast-groups">Multicast Groups<a hidden class="anchor" aria-hidden="true" href="#multicast-groups">#</a></h2>
-<h3 id="ospfv2-multicast-groups">OSPFv2 Multicast groups<a hidden class="anchor" aria-hidden="true" href="#ospfv2-multicast-groups">#</a></h3>
+<h1 id="multicast-groups">Multicast Groups<a hidden class="anchor" aria-hidden="true" href="#multicast-groups">#</a></h1>
+<h2 id="ospfv2-multicast-groups">OSPFv2 Multicast groups<a hidden class="anchor" aria-hidden="true" href="#ospfv2-multicast-groups">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -284,7 +288,7 @@ in OSPF for IPv6.</p></blockquote>
       </tr>
   </tbody>
 </table>
-<h3 id="ospfv3-multicast-groups">OSPFv3 Multicast groups<a hidden class="anchor" aria-hidden="true" href="#ospfv3-multicast-groups">#</a></h3>
+<h2 id="ospfv3-multicast-groups">OSPFv3 Multicast groups<a hidden class="anchor" aria-hidden="true" href="#ospfv3-multicast-groups">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -304,7 +308,7 @@ in OSPF for IPv6.</p></blockquote>
   </tbody>
 </table>
 <hr>
-<h2 id="timers">Timers<a hidden class="anchor" aria-hidden="true" href="#timers">#</a></h2>
+<h1 id="timers">Timers<a hidden class="anchor" aria-hidden="true" href="#timers">#</a></h1>
 <table>
   <thead>
       <tr>
@@ -352,8 +356,8 @@ in OSPF for IPv6.</p></blockquote>
   </tbody>
 </table>
 <hr>
-<h2 id="ospfv2-lsa-types">OSPFv2 LSA Types<a hidden class="anchor" aria-hidden="true" href="#ospfv2-lsa-types">#</a></h2>
-<h3 id="lsa-type-1--router-lsa">LSA Type 1 – Router LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-1--router-lsa">#</a></h3>
+<h1 id="ospfv2-lsa-types">OSPFv2 LSA Types<a hidden class="anchor" aria-hidden="true" href="#ospfv2-lsa-types">#</a></h1>
+<h2 id="lsa-type-1--router-lsa">LSA Type 1 – Router LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-1--router-lsa">#</a></h2>
 <ul>
 <li><strong>Route Type:</strong> Intra-Area</li>
 <li><strong>CLI Command:</strong><br>
@@ -365,7 +369,7 @@ in OSPF for IPv6.</p></blockquote>
 </ul>
 </li>
 </ul>
-<h3 id="lsa-type-2--network-lsa">LSA Type 2 – Network LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-2--network-lsa">#</a></h3>
+<h2 id="lsa-type-2--network-lsa">LSA Type 2 – Network LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-2--network-lsa">#</a></h2>
 <ul>
 <li><strong>Route Type:</strong> Intra-Area</li>
 <li><strong>CLI Command:</strong><br>
@@ -379,7 +383,7 @@ in OSPF for IPv6.</p></blockquote>
 </ul>
 </li>
 </ul>
-<h3 id="lsa-type-3--network-summary-lsa">LSA Type 3 – Network Summary LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-3--network-summary-lsa">#</a></h3>
+<h2 id="lsa-type-3--network-summary-lsa">LSA Type 3 – Network Summary LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-3--network-summary-lsa">#</a></h2>
 <ul>
 <li><strong>Route Type:</strong> Inter-Area</li>
 <li><strong>CLI Command:</strong><br>
@@ -394,7 +398,7 @@ in OSPF for IPv6.</p></blockquote>
 </ul>
 </li>
 </ul>
-<h3 id="lsa-type-4--asbr-summary-lsa">LSA Type 4 – ASBR Summary LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-4--asbr-summary-lsa">#</a></h3>
+<h2 id="lsa-type-4--asbr-summary-lsa">LSA Type 4 – ASBR Summary LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-4--asbr-summary-lsa">#</a></h2>
 <ul>
 <li><strong>Route Type:</strong> Inter-Area</li>
 <li><strong>CLI Commands:</strong><br>
@@ -408,7 +412,7 @@ in OSPF for IPv6.</p></blockquote>
 </ul>
 </li>
 </ul>
-<h3 id="lsa-type-5--external-lsa">LSA Type 5 – External LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-5--external-lsa">#</a></h3>
+<h2 id="lsa-type-5--external-lsa">LSA Type 5 – External LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-5--external-lsa">#</a></h2>
 <ul>
 <li><strong>Route Type:</strong> External Routes (E1/E2)</li>
 <li><strong>CLI Commands:</strong><br>
@@ -423,7 +427,7 @@ in OSPF for IPv6.</p></blockquote>
 </ul>
 </li>
 </ul>
-<h3 id="lsa-type-7--nssa-external-lsa">LSA Type 7 – NSSA External LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-7--nssa-external-lsa">#</a></h3>
+<h2 id="lsa-type-7--nssa-external-lsa">LSA Type 7 – NSSA External LSA<a hidden class="anchor" aria-hidden="true" href="#lsa-type-7--nssa-external-lsa">#</a></h2>
 <ul>
 <li><strong>Route Type:</strong> External Routes (N1/N2)</li>
 <li><strong>CLI Commands:</strong><br>
@@ -438,6 +442,7 @@ in OSPF for IPv6.</p></blockquote>
 </li>
 </ul>
 <hr>
+<h1 id="ospf-options">OSPF Options<a hidden class="anchor" aria-hidden="true" href="#ospf-options">#</a></h1>
 <h2 id="down-bit">Down Bit<a hidden class="anchor" aria-hidden="true" href="#down-bit">#</a></h2>
 <ul>
 <li>The down bit helps prevent routing loops between MP-BGP and OSPF when LSA Type 3 are used, but not when External Routes are announced.</li>
@@ -456,7 +461,7 @@ in OSPF for IPv6.</p></blockquote>
 <li>The P-bit is not set only when the NSSA ASBR and NSSA ABR are the same router for the area.</li>
 <li>This P-bit is automatically set by the NSSA ABR (also the Forwarding Address (FA) is copied from Type 7 LSA).</li>
 </ul>
-<p>Note:</p>
+<p><strong>Note:</strong></p>
 <ul>
 <li>If a router is attached to another AS and is also an NSSA ABR, it may originate a both a Type 5 and a Type 7 LSA for the same network.</li>
 <li>The Type 5 LSA will be flooded to the backbone and the Type 7 will be flooded into the NSSA. If this is the case, the P-bit must be reset (P=0) in the Type 7 LSA so the Type 7 LSA isn’t again translated into a Type 5 LSA by another NSSA ABR.</li>
@@ -507,15 +512,15 @@ max-metric router-lsa on-startup wait-for-bgp</li>
 <li>Stop sending/receiving OSPF packets</li>
 </ul>
 <hr>
-<h2 id="ospf-filtering">OSPF Filtering<a hidden class="anchor" aria-hidden="true" href="#ospf-filtering">#</a></h2>
-<h3 id="ospf-rib-filtering">OSPF RIB Filtering<a hidden class="anchor" aria-hidden="true" href="#ospf-rib-filtering">#</a></h3>
+<h1 id="ospf-filtering">OSPF Filtering<a hidden class="anchor" aria-hidden="true" href="#ospf-filtering">#</a></h1>
+<h2 id="ospf-rib-filtering">OSPF RIB Filtering<a hidden class="anchor" aria-hidden="true" href="#ospf-rib-filtering">#</a></h2>
 <ul>
 <li>distribute-list with ACL</li>
 <li>distribute-list with route-map</li>
 <li>Administrative Distance</li>
 <li>RIB filtering does not stop the flooding of LSAs within the area</li>
 </ul>
-<h3 id="inter-area-routes">Inter Area Routes<a hidden class="anchor" aria-hidden="true" href="#inter-area-routes">#</a></h3>
+<h2 id="inter-area-routes">Inter Area Routes<a hidden class="anchor" aria-hidden="true" href="#inter-area-routes">#</a></h2>
 <ul>
 <li>area X range 10.0.0.0 not-advertise
 <ul>
@@ -533,7 +538,7 @@ max-metric router-lsa on-startup wait-for-bgp</li>
 </ul>
 </li>
 </ul>
-<h3 id="external-routes-lsa-type-57">External Routes (LSA Type 5/7)<a hidden class="anchor" aria-hidden="true" href="#external-routes-lsa-type-57">#</a></h3>
+<h2 id="external-routes-lsa-type-57">External Routes (LSA Type 5/7)<a hidden class="anchor" aria-hidden="true" href="#external-routes-lsa-type-57">#</a></h2>
 <p>Effective to filter when going between areas
 Has to be applied on the device that is doing the translation into Type 5 LSA</p>
 <ul>
@@ -542,6 +547,7 @@ Has to be applied on the device that is doing the translation into Type 5 LSA</p
 </ul>
 <hr>
 <h1 id="inter-area-ospf-is-distance-vector-ospf-loop-prevention">Inter-Area OSPF is Distance Vector (OSPF Loop Prevention)<a hidden class="anchor" aria-hidden="true" href="#inter-area-ospf-is-distance-vector-ospf-loop-prevention">#</a></h1>
+<p>The content below is from an amazing post from <strong>Jeff Doyle</strong>, available on the link below, where Jeff gets into details about OSPF&rsquo;s behavior with Intra-Area deployments.</p>
 <blockquote>
 <p><strong><em>Source:</em></strong> <a href="https://www.networkworld.com/article/2348778/my-favorite-interview-question.html">https://www.networkworld.com/article/2348778/my-favorite-interview-question.html</a></p></blockquote>
 <p><strong>Why does OSPF require all traffic between non-backbone areas to pass through a backbone area (area 0)?</strong></p>

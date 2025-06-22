@@ -77,15 +77,15 @@ Abstract:
 
 ------
 
-## Multicast Groups
+# Multicast Groups
 
-### OSPFv2 Multicast groups
+## OSPFv2 Multicast groups
 | Multicast Group | Description      |
 |-----------------|------------------|
 | 224.0.0.5       | All OSPF Routers |
 | 224.0.0.6       | All DR Routers   |
 
-### OSPFv3 Multicast groups
+## OSPFv3 Multicast groups
 | Multicast Group | Description                 |
 |-----------------|-----------------------------|
 | FF02::5         | OSPFv3 Routers              |
@@ -95,7 +95,7 @@ Abstract:
 ------
 
 
-## Timers
+# Timers
 | Interval   | Broadcast | Non-Broadcast  | Point-to-Point  | Point-to-Multipoint  | Point-to-Multipoint Non-Broadcast |
 |------------|-----------|----------------|-----------------|----------------------|-----------------------------------|
 | Hello      | 10        | 30             | 10              | 30                   | 30                                |
@@ -107,9 +107,9 @@ Abstract:
 ------
 
 
-## OSPFv2 LSA Types
+# OSPFv2 LSA Types
 
-### LSA Type 1 – Router LSA
+## LSA Type 1 – Router LSA
 - **Route Type:** Intra-Area  
 - **CLI Command:**  
   `show ip ospf database router`  
@@ -117,7 +117,7 @@ Abstract:
   - Each router within an area floods a Type 1 Router LSA to other routers in the same area.  
   - This LSA describes all of the router’s interfaces, neighbor relationships, and metrics.
 
-### LSA Type 2 – Network LSA
+## LSA Type 2 – Network LSA
 - **Route Type:** Intra-Area  
 - **CLI Command:**  
   `show ip ospf database network`  
@@ -127,7 +127,7 @@ Abstract:
   - Lists all routers connected to the network segment, including the DR itself.  
   - Like Type 1 LSAs, Type 2 LSAs are flooded only within the originating area.
 
-### LSA Type 3 – Network Summary LSA
+## LSA Type 3 – Network Summary LSA
 - **Route Type:** Inter-Area  
 - **CLI Command:**  
   `show ip ospf database summary`  
@@ -138,7 +138,7 @@ Abstract:
   - ABRs also advertise routes from their own areas **into the backbone (Area 0)** using Type 3 LSAs.  
   - Can also be used to advertise **default routes** internal to the OSPF autonomous system.
 
-### LSA Type 4 – ASBR Summary LSA
+## LSA Type 4 – ASBR Summary LSA
 - **Route Type:** Inter-Area  
 - **CLI Commands:**  
   `show ip ospf database asbr-summary`  
@@ -148,7 +148,7 @@ Abstract:
   - Similar to Type 3 LSAs but specifically advertises routes to **ASBRs**.  
   - The destination is always a **host address** representing the ASBR router itself.
 
-### LSA Type 5 – External LSA
+## LSA Type 5 – External LSA
 - **Route Type:** External Routes (E1/E2)  
 - **CLI Commands:**  
   `show ip ospf database external`  
@@ -159,7 +159,7 @@ Abstract:
   - Can also advertise **default routes** from outside the OSPF domain.  
   - Flooded throughout the **entire OSPF domain**.
 
-### LSA Type 7 – NSSA External LSA
+## LSA Type 7 – NSSA External LSA
 - **Route Type:** External Routes (N1/N2)  
 - **CLI Commands:**  
   `show ip ospf database external`  
@@ -172,6 +172,7 @@ Abstract:
 
 ------
 
+# OSPF Options
 
 ## Down Bit
 - The down bit helps prevent routing loops between MP-BGP and OSPF when LSA Type 3 are used, but not when External Routes are announced.
@@ -188,7 +189,7 @@ Abstract:
 - The P-bit is not set only when the NSSA ASBR and NSSA ABR are the same router for the area. 
 - This P-bit is automatically set by the NSSA ABR (also the Forwarding Address (FA) is copied from Type 7 LSA). 
 
-Note:
+**Note:**
 - If a router is attached to another AS and is also an NSSA ABR, it may originate a both a Type 5 and a Type 7 LSA for the same network. 
 - The Type 5 LSA will be flooded to the backbone and the Type 7 will be flooded into the NSSA. If this is the case, the P-bit must be reset (P=0) in the Type 7 LSA so the Type 7 LSA isn’t again translated into a Type 5 LSA by another NSSA ABR.
 
@@ -238,15 +239,15 @@ If you shut OSPF on the interface level with the ip ospf shutdown command, it wi
 ------
 
 
-## OSPF Filtering
+# OSPF Filtering
 
-### OSPF RIB Filtering
+## OSPF RIB Filtering
 - distribute-list with ACL
 - distribute-list with route-map
 - Administrative Distance
 - RIB filtering does not stop the flooding of LSAs within the area
 
-### Inter Area Routes
+## Inter Area Routes
 - area X range 10.0.0.0 not-advertise
 	- Only effective when ABR is translating from Type 1 LSA to a Type 3 LSA (learn from INTRA Area and advertise INTER Area)
 - area X filter-list prefix XXX in
@@ -254,7 +255,7 @@ If you shut OSPF on the interface level with the ip ospf shutdown command, it wi
 - area X filter-list prefix XXX out
 	- prevent routes from being advertised FROM the specified area
 
-### External Routes (LSA Type 5/7)
+## External Routes (LSA Type 5/7)
 Effective to filter when going between areas
 Has to be applied on the device that is doing the translation into Type 5 LSA
 - summary-address 10.0.0.0 255.255.255.0 not-advertise
@@ -265,6 +266,8 @@ Has to be applied on the device that is doing the translation into Type 5 LSA
 
 
 # Inter-Area OSPF is Distance Vector (OSPF Loop Prevention)
+
+The content below is from an amazing post from **Jeff Doyle**, available on the link below, where Jeff gets into details about OSPF's behavior with Intra-Area deployments.
 
 > **_Source:_** https://www.networkworld.com/article/2348778/my-favorite-interview-question.html
 
