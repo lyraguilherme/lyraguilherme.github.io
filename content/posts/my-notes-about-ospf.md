@@ -267,7 +267,7 @@ Has to be applied on the device that is doing the translation into Type 5 LSA
 
 # Inter-Area OSPF is Distance Vector (OSPF Loop Prevention)
 
-The content below is from an amazing post by **Jeff Doyle**, available on the link below, where Jeff gets into details about OSPF's behavior with Intra-Area deployments.
+The content below is from an amazing post byy **Jeff Doyle**, available on the link below, where Jeff gets into details about OSPF's behavior with Intra-Area deployments.
 
 > **_Source:_** https://www.networkworld.com/article/2348778/my-favorite-interview-question.html
 
