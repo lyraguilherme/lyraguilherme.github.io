@@ -14,6 +14,7 @@ params:
       url: https://linkedin.com/in/guilhermelv
     - name: GitHub
       url: https://github.com/lyraguilherme
+  ShowPostNavLinks: true
 
 languages:
   en:
