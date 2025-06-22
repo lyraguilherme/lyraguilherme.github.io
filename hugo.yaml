@@ -7,7 +7,6 @@ params:
   homeInfoParams:
     title: "Welcome"
     content: "A blog about networking, automation and technology-related stuff"
-    ShowBreadCrumbs: true
   social: true
   socialIcons:
     - name: Linkedin
@@ -15,6 +14,8 @@ params:
     - name: GitHub
       url: https://github.com/lyraguilherme
   ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
 
 languages:
   en:
