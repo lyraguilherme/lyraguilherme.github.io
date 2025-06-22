@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Automating AWS site-to-site VPNs with Terraform | Guilherme Lyra</title>
+<meta name="keywords" content="Automation, AWS, IaC, Terraform, VPN">
+<meta name="description" content="Introduction
+In this post, I&rsquo;ll walk you through how to use Terraform to set up a VPN site-to-site connection on AWS, leveraging Infrastructure as Code (IaC) to make the process quicker, easier, and fully repeatable.
+For the examples below, we’ll build a cloud infrastructure using a Virtual Private Gateway (VGW). In a future post, we’ll explore using a Transit Gateway (TGW) for more complex setups.
+I’m running everything on a MacBook, but you can easily replicate these steps on a Linux jump host or any similar environment.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/terraform-aws-vpn/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/terraform-aws-vpn/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Guilherme Lyra (Alt + H)">Guilherme Lyra</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                    <li>
+                        <a href="http://localhost:1313/pt-br/" title="Português"
+                            aria-label="Português">Pt-Br</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="All posts">
+                    <span>All posts</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Automating AWS site-to-site VPNs with Terraform
+    </h1>
+    <div class="post-meta"><span title='2024-10-06 18:00:00 -0300 -03'>October 6, 2024</span>
+
+</div>
+  </header> 
+<figure class="entry-cover"><img loading="eager" src="http://localhost:1313/terraform-aws-vpn/awsterraform1.png" alt="Automating AWS site-to-site VPNs with Terraform">
+        <p>Automating AWS site-to-site VPNs with Terraform</p>
+</figure><div class="toc">
+    <details  open>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#introduction" aria-label="Introduction">Introduction</a></li>
+                <li>
+                    <a href="#preparation" aria-label="Preparation">Preparation</a><ul>
+                        
+                <li>
+                    <a href="#aws-identity-and-access-management-iam" aria-label="AWS Identity and Access Management (IAM)">AWS Identity and Access Management (IAM)</a></li>
+                <li>
+                    <a href="#installing-aws-cli" aria-label="Installing AWS CLI">Installing AWS CLI</a></li>
+                <li>
+                    <a href="#setting-up-aws-cli-profiles" aria-label="Setting up AWS CLI profiles">Setting up AWS CLI profiles</a></li></ul>
+                </li>
+                <li>
+                    <a href="#diving-into-automation" aria-label="Diving into Automation">Diving into Automation</a><ul>
+                        
+                <li>
+                    <a href="#terraform-configuration" aria-label="Terraform configuration">Terraform configuration</a></li>
+                <li>
+                    <a href="#initializing-the-terraform-configuration" aria-label="Initializing the Terraform Configuration">Initializing the Terraform Configuration</a></li>
+                <li>
+                    <a href="#planning-the-changes" aria-label="Planning the changes">Planning the changes</a></li>
+                <li>
+                    <a href="#applying-the-changes" aria-label="Applying the changes">Applying the changes</a></li>
+                <li>
+                    <a href="#viewing-terraform-outputs" aria-label="Viewing Terraform Outputs">Viewing Terraform Outputs</a></li>
+                <li>
+                    <a href="#terraform-destroy" aria-label="Terraform Destroy">Terraform Destroy</a></li></ul>
+                </li>
+                <li>
+                    <a href="#configuring-our-vpn-peer-cisco-router" aria-label="Configuring our VPN peer (Cisco Router)">Configuring our VPN peer (Cisco Router)</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h1>
+<p>In this post, I&rsquo;ll walk you through how to use Terraform to set up a VPN site-to-site connection on AWS, leveraging Infrastructure as Code (IaC) to make the process quicker, easier, and fully repeatable.</p>
+<p>For the examples below, we’ll build a cloud infrastructure using a Virtual Private Gateway (VGW). In a future post, we’ll explore using a Transit Gateway (TGW) for more complex setups.</p>
+<p>I’m running everything on a MacBook, but you can easily replicate these steps on a Linux jump host or any similar environment.</p>
+<h1 id="preparation">Preparation<a hidden class="anchor" aria-hidden="true" href="#preparation">#</a></h1>
+<h2 id="aws-identity-and-access-management-iam">AWS Identity and Access Management (IAM)<a hidden class="anchor" aria-hidden="true" href="#aws-identity-and-access-management-iam">#</a></h2>
+<p>If you don&rsquo;t have one yet, the first step is to create an Access Key. This will allow you to authenticate and interact with AWS services through the CLI.</p>
+<p>For this example, we’ll create a restrictive policy that only grants access to the specific resources needed, following the principle of least privilege.</p>
+<ol>
+<li>Access the AWS console and go to IAM.</li>
+<li>Under Access Management, go to Policies and click Create Policy.</li>
+<li>I named my policy <code>custom_policy_vpn_only</code></li>
+<li>In the policy editor, select JSON and copy/paste the JSON below:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Version&#34;</span>: <span style="color:#e6db74">&#34;2012-10-17&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;Statement&#34;</span>: [
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Effect&#34;</span>: <span style="color:#e6db74">&#34;Allow&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Action&#34;</span>: [
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:CreateVpnGateway&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:CreateCustomerGateway&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:CreateVpnConnection&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:CreateVpnConnectionRoute&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:DeleteVpnGateway&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:DeleteCustomerGateway&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:DeleteVpnConnection&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:DeleteVpnConnectionRoute&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:DescribeVpnGateways&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:DescribeCustomerGateways&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:DescribeVpnConnections&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:AttachVpnGateway&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:DetachVpnGateway&#34;</span>,
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;ec2:CreateTags&#34;</span>
+</span></span><span style="display:flex;"><span>            ],
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;Resource&#34;</span>: <span style="color:#e6db74">&#34;*&#34;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ol start="4">
+<li>Go back to the Access management menu, go to <em><strong>Users</strong></em> and click <em><strong>Create user</strong></em></li>
+<li>Define the username as you wish. I created a user named &ldquo;networkops&rdquo;&quot;</li>
+<li>On Set permissions, select Attach policies directly and select the policy we created before (use the search to make it easier to find the desired policy)</li>
+<li>Once the user is created, click on the username and on the Summary page, click &ldquo;Create access key&rdquo;</li>
+<li>For the Use case, select &ldquo;Other&rdquo;</li>
+</ol>
+<p>Save your access key and secret access key</p>
+<h2 id="installing-aws-cli">Installing AWS CLI<a hidden class="anchor" aria-hidden="true" href="#installing-aws-cli">#</a></h2>
+<p>The first step is to install AWS CLI.</p>
+<p>The procedure described below is available here: <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">AWS Docs</a></p>
+<p>Download the file using the curl command. The -o option specifies the file name that the downloaded package is written to.
+In this example, the file is written to <code>AWSCLIV2.pkg</code> in the current folder.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>curl <span style="color:#e6db74">&#34;https://awscli.amazonaws.com/AWSCLIV2.pkg&#34;</span> -o <span style="color:#e6db74">&#34;AWSCLIV2.pkg&#34;</span>
+</span></span></code></pre></div><p>Run the standard macOS installer program, specifying the downloaded .pkg file as the source. Use the -pkg parameter to specify the name of the package to install, and the -target / parameter for which drive to install the package to. The files are installed to /usr/local/aws-cli, and a symlink is automatically created in /usr/local/bin. You must include sudo on the command to grant write permissions to those folders.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo installer -pkg ./AWSCLIV2.pkg -target /
+</span></span></code></pre></div><p>To verify that the shell can find and run the aws command in your $PATH, use the following commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>which aws
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>aws --version
+</span></span></code></pre></div><h2 id="setting-up-aws-cli-profiles">Setting up AWS CLI profiles<a hidden class="anchor" aria-hidden="true" href="#setting-up-aws-cli-profiles">#</a></h2>
+<p>Using AWS CLI profiles allows us to easily manage multiple sets of credentials, improving security and simplifying access to different AWS accounts and regions. This makes automating workflows and switching contexts more efficient and secure.</p>
+<p>In this example we&rsquo;re going to set up a profile called <em><strong>terraform-vpn</strong></em>, for lab purposes only.</p>
+<p>Creating the profile:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>aws configure --profile terraform-vpn
+</span></span></code></pre></div><p>You will be prompted to enter your AWS credentials and configuration settings:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>AWS Access Key ID <span style="color:#f92672">[</span>None<span style="color:#f92672">]</span>: &lt;your access key id&gt;
+</span></span><span style="display:flex;"><span>AWS Secret Access Key <span style="color:#f92672">[</span>None<span style="color:#f92672">]</span>: &lt;your access key id&gt;
+</span></span><span style="display:flex;"><span>Default region name <span style="color:#f92672">[</span>None<span style="color:#f92672">]</span>: &lt;your aws region&gt;
+</span></span><span style="display:flex;"><span>Default output format <span style="color:#f92672">[</span>None<span style="color:#f92672">]</span>: &lt;I suggest using JSON as the output format&gt;
+</span></span></code></pre></div><p>Verify that the configuration was successful:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>aws sts get-caller-identity --profile terraform-vpn
+</span></span></code></pre></div><p>This command should return information about your AWS account, confirming that your credentials are working correctly.</p>
+<h1 id="diving-into-automation">Diving into Automation<a hidden class="anchor" aria-hidden="true" href="#diving-into-automation">#</a></h1>
+<p><img loading="lazy" src="neom-n7SdozgzvyA-unsplash.jpg" alt="Diving into automation"  />
+</p>
+<p>Photo by <a href="https://unsplash.com/@neom?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">NEOM</a> on <a href="https://unsplash.com/photos/a-person-swimming-in-a-deep-blue-ocean-n7SdozgzvyA?utm_content=creditCopyText&amp;utm_medium=referral&amp;utm_source=unsplash">Unsplash</a></p>
+<h2 id="terraform-configuration">Terraform configuration<a hidden class="anchor" aria-hidden="true" href="#terraform-configuration">#</a></h2>
+<p>I&rsquo;m considering you already have Terraform installed. If you don&rsquo;t, the process is quite simple and there&rsquo;s a ton of content on the Internet on how to do it.</p>
+<p>First, we&rsquo;re going to create a <code>main.cf</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>terraform <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  required_version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&gt;= 0.12&#34;</span>
+</span></span><span style="display:flex;"><span>  required_providers <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    aws <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      source  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hashicorp/aws&#34;</span>
+</span></span><span style="display:flex;"><span>      version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;~&gt; 3.0&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>provider <span style="color:#e6db74">&#34;aws&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  region  <span style="color:#f92672">=</span> var.aws_region
+</span></span><span style="display:flex;"><span>  profile <span style="color:#f92672">=</span> var.aws_profile
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create a Virtual Private Gateway (VGW)</span>
+</span></span><span style="display:flex;"><span>resource <span style="color:#e6db74">&#34;aws_vpn_gateway&#34;</span> <span style="color:#e6db74">&#34;vgw&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  vpc_id <span style="color:#f92672">=</span> var.vpc_id
+</span></span><span style="display:flex;"><span>  tags <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    Name <span style="color:#f92672">=</span> var.vgw_name_tag
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create a Customer Gateway (CGW)</span>
+</span></span><span style="display:flex;"><span>resource <span style="color:#e6db74">&#34;aws_customer_gateway&#34;</span> <span style="color:#e6db74">&#34;cgw&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  bgp_asn    <span style="color:#f92672">=</span> var.bgp_asn
+</span></span><span style="display:flex;"><span>  ip_address <span style="color:#f92672">=</span> var.vpn_peer_ip
+</span></span><span style="display:flex;"><span>  type       <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ipsec.1&#34;</span>
+</span></span><span style="display:flex;"><span>  tags <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    Name <span style="color:#f92672">=</span> var.cgw_name_tag
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create a VPN Connection with BGP (dynamic routing)</span>
+</span></span><span style="display:flex;"><span>resource <span style="color:#e6db74">&#34;aws_vpn_connection&#34;</span> <span style="color:#e6db74">&#34;vpn_connection&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  customer_gateway_id <span style="color:#f92672">=</span> aws_customer_gateway.cgw.id
+</span></span><span style="display:flex;"><span>  vpn_gateway_id      <span style="color:#f92672">=</span> aws_vpn_gateway.vgw.id
+</span></span><span style="display:flex;"><span>  type                <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ipsec.1&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># BGP will be used so this must be set to false, or removed from the project</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If you&#39;re using static routes, set this to true</span>
+</span></span><span style="display:flex;"><span>  static_routes_only <span style="color:#f92672">=</span> false
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  tags <span style="color:#f92672">=</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    Name <span style="color:#f92672">=</span> var.vpn_connection_name_tag
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>Now that we have a main.tf, we need to create two more files:</p>
+<p><code>variables.tf</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>variable <span style="color:#e6db74">&#34;aws_profile&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AWS CLI profile to use&#34;</span>
+</span></span><span style="display:flex;"><span>  type        <span style="color:#f92672">=</span> string
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>variable <span style="color:#e6db74">&#34;aws_region&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AWS CLI profile to use&#34;</span>
+</span></span><span style="display:flex;"><span>  type        <span style="color:#f92672">=</span> string
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>variable <span style="color:#e6db74">&#34;vpc_id&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AWS region to use&#34;</span>
+</span></span><span style="display:flex;"><span>  type        <span style="color:#f92672">=</span> string
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>variable <span style="color:#e6db74">&#34;vpn_peer_ip&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Public IP address of the on-premises VPN peer&#34;</span>
+</span></span><span style="display:flex;"><span>  type        <span style="color:#f92672">=</span> string
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>variable <span style="color:#e6db74">&#34;bgp_asn&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;BGP Autonomous System Number for the Customer Gateway&#34;</span>
+</span></span><span style="display:flex;"><span>  type        <span style="color:#f92672">=</span> number
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>variable <span style="color:#e6db74">&#34;vgw_name_tag&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Name tag for the Virtual Private Gateway&#34;</span>
+</span></span><span style="display:flex;"><span>  type        <span style="color:#f92672">=</span> string
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>variable <span style="color:#e6db74">&#34;cgw_name_tag&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Name tag for the Customer Gateway&#34;</span>
+</span></span><span style="display:flex;"><span>  type        <span style="color:#f92672">=</span> string
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>variable <span style="color:#e6db74">&#34;vpn_connection_name_tag&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Name tag for the VPN Connection&#34;</span>
+</span></span><span style="display:flex;"><span>  type        <span style="color:#f92672">=</span> string
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>And, lastly, an <code>outputs.tf</code> file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>output <span style="color:#e6db74">&#34;vpn_connection_id&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;VPN ID&#34;</span>
+</span></span><span style="display:flex;"><span>  value       <span style="color:#f92672">=</span> aws_vpn_connection.vpn_connection.id
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output <span style="color:#e6db74">&#34;tunnel1_inside_cidr&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Inside CIDR block for tunnel 1&#34;</span>
+</span></span><span style="display:flex;"><span>  value       <span style="color:#f92672">=</span> aws_vpn_connection.vpn_connection.tunnel1_inside_cidr
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output <span style="color:#e6db74">&#34;tunnel1_aws_bgp_ip&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AWS BGP peer IP for tunnel 1&#34;</span>
+</span></span><span style="display:flex;"><span>  value       <span style="color:#f92672">=</span> aws_vpn_connection.vpn_connection.tunnel1_vgw_inside_address
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output <span style="color:#e6db74">&#34;tunnel1_customer_bgp_ip&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Customer gateway BGP peer IP for tunnel 1&#34;</span>
+</span></span><span style="display:flex;"><span>  value       <span style="color:#f92672">=</span> aws_vpn_connection.vpn_connection.tunnel1_cgw_inside_address
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output <span style="color:#e6db74">&#34;tunnel1_aws_public_ip&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AWS public IP address for tunnel 1&#34;</span>
+</span></span><span style="display:flex;"><span>  value       <span style="color:#f92672">=</span> aws_vpn_connection.vpn_connection.tunnel1_address
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output <span style="color:#e6db74">&#34;tunnel2_inside_cidr&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Inside CIDR block for tunnel 2&#34;</span>
+</span></span><span style="display:flex;"><span>  value       <span style="color:#f92672">=</span> aws_vpn_connection.vpn_connection.tunnel2_inside_cidr
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output <span style="color:#e6db74">&#34;tunnel2_aws_bgp_ip&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AWS BGP peer IP for tunnel 2&#34;</span>
+</span></span><span style="display:flex;"><span>  value       <span style="color:#f92672">=</span> aws_vpn_connection.vpn_connection.tunnel2_vgw_inside_address
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output <span style="color:#e6db74">&#34;tunnel2_customer_bgp_ip&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Customer gateway BGP peer IP for tunnel 2&#34;</span>
+</span></span><span style="display:flex;"><span>  value       <span style="color:#f92672">=</span> aws_vpn_connection.vpn_connection.tunnel2_cgw_inside_address
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output <span style="color:#e6db74">&#34;tunnel2_aws_public_ip&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;AWS public IP address for tunnel 2&#34;</span>
+</span></span><span style="display:flex;"><span>  value       <span style="color:#f92672">=</span> aws_vpn_connection.vpn_connection.tunnel2_address
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output <span style="color:#e6db74">&#34;tunnel1_preshared_key&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Preshared key for tunnel 1&#34;</span>
+</span></span><span style="display:flex;"><span>  value       <span style="color:#f92672">=</span> aws_vpn_connection.vpn_connection.tunnel1_preshared_key
+</span></span><span style="display:flex;"><span>  sensitive   <span style="color:#f92672">=</span> true
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output <span style="color:#e6db74">&#34;tunnel2_preshared_key&#34;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Preshared key for tunnel 2&#34;</span>
+</span></span><span style="display:flex;"><span>  value       <span style="color:#f92672">=</span> aws_vpn_connection.vpn_connection.tunnel2_preshared_key
+</span></span><span style="display:flex;"><span>  sensitive   <span style="color:#f92672">=</span> true
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>At this point, your Terraform configuration should have the following structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>├── main.tf
+</span></span><span style="display:flex;"><span>├── outputs.tf
+</span></span><span style="display:flex;"><span>└── variables.tf
+</span></span></code></pre></div><h2 id="initializing-the-terraform-configuration">Initializing the Terraform Configuration<a hidden class="anchor" aria-hidden="true" href="#initializing-the-terraform-configuration">#</a></h2>
+<p>To initialize Terraform and download required providers:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>terraform init
+</span></span></code></pre></div><h2 id="planning-the-changes">Planning the changes<a hidden class="anchor" aria-hidden="true" href="#planning-the-changes">#</a></h2>
+<p>To preview the changes that Terraform will apply, we will use the <code>terraform plan</code> command, setting all the variables.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>terraform plan <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;aws_profile=terraform-vpn&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;aws_region=your_aws_region&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vpc_id=your_vpc_id&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vpn_peer_ip=your_on_prem_peer_public_ip&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bgp_asn=your_on_prem_bgp_asn&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vgw_name_tag=my-vpn-gateway&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cgw_name_tag=my-customer-gateway&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vpn_connection_name_tag=my-vpn-connection&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -out<span style="color:#f92672">=</span>vpn_to_onprem
+</span></span></code></pre></div><p>This command will generate a detailed execution plan, and the resulting changes will be saved in a file named <code>vpn_to_onprem</code>. Feel free to modify this file name as needed, depending on your preferences or environment.</p>
+<h2 id="applying-the-changes">Applying the changes<a hidden class="anchor" aria-hidden="true" href="#applying-the-changes">#</a></h2>
+<p>Apply the planned changes to provision the infrastructure based on the output file generated by terraform plan:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>terraform apply <span style="color:#e6db74">&#34;vpn_to_onprem&#34;</span>
+</span></span></code></pre></div><p>Once the command finishes running, Terraform will display some of the outputs defined in the <code>outputs.tf</code> file. However, you&rsquo;ll notice that sensitive information, such as pre-shared keys (PSKs), is not shown directly in the output for security reasons.</p>
+<h2 id="viewing-terraform-outputs">Viewing Terraform Outputs<a hidden class="anchor" aria-hidden="true" href="#viewing-terraform-outputs">#</a></h2>
+<p>As mentioned above, the outputs defined in the <code>outputs.tf</code> file are automatically provided by Terraform and stored in the <code>terraform.tfstate</code> file. To view all outputs, including sensitive data, you have two options:</p>
+<p><em><strong>Option 1</strong></em>: Use the JSON flag
+You can retrieve all outputs in JSON format, which will include sensitive information without redaction:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>terraform output -json
+</span></span></code></pre></div><p><em><strong>Option 2</strong></em>: Manually Inspect the State File
+Open the <code>terraform.tfstate</code> file and manually search for the sensitive data. This file contains the full configuration, including sensitive details like PSKs and IP addresses. Note that handling this file requires caution as it contains critical information.</p>
+<h2 id="terraform-destroy">Terraform Destroy<a hidden class="anchor" aria-hidden="true" href="#terraform-destroy">#</a></h2>
+<p>One of Terraform&rsquo;s key benefits is how easily changes can be reverted with the <code>terraform destroy</code> command.</p>
+<p>If you need to revert the changes we previously applied, use the following syntax:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>terraform destroy <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;aws_profile=terraform-vpn&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;aws_region=your_aws_region&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vpc_id=your_vpc_id&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vpn_peer_ip=your_on_prem_peer_public_ip&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bgp_asn=your_on_prem_bgp_asn&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vgw_name_tag=my-vpn-gateway&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cgw_name_tag=my-customer-gateway&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  -var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vpn_connection_name_tag=my-vpn-connection&#34;</span> <span style="color:#ae81ff">\
+</span></span></span></code></pre></div><h1 id="configuring-our-vpn-peer-cisco-router">Configuring our VPN peer (Cisco Router)<a hidden class="anchor" aria-hidden="true" href="#configuring-our-vpn-peer-cisco-router">#</a></h1>
+<p>To wrap up, below is a Python script I created. This script generates the VPN and BGP configuration for a Cisco router based on Terraform outputs. Please use with caution and always double-check before applying it in a production environment.</p>
+<p><em><strong>Key points:</strong></em></p>
+<ul>
+<li>AWS uses by default BGP ASN 64512</li>
+<li>On my lab environment I&rsquo;m using BGP ASN 65000 on the VPN peer</li>
+</ul>
+<p>Both of the settings mentioned above are hardcoded on the script. Change as needed.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> subprocess
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_terraform_outputs</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Get the Terraform output in JSON format</span>
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> subprocess<span style="color:#f92672">.</span>run(
+</span></span><span style="display:flex;"><span>            [<span style="color:#e6db74">&#34;terraform&#34;</span>, <span style="color:#e6db74">&#34;output&#34;</span>, <span style="color:#e6db74">&#34;-json&#34;</span>],
+</span></span><span style="display:flex;"><span>            capture_output<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>            text<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>,
+</span></span><span style="display:flex;"><span>            check<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> json<span style="color:#f92672">.</span>loads(result<span style="color:#f92672">.</span>stdout)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> subprocess<span style="color:#f92672">.</span>CalledProcessError <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Error: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_cisco_config</span>(outputs):
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Sets variables based on Terraform outputs</span>
+</span></span><span style="display:flex;"><span>    tunnel1_aws_bgp_ip <span style="color:#f92672">=</span> outputs<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;tunnel1_aws_bgp_ip&#34;</span>, {})<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>    tunnel2_aws_bgp_ip <span style="color:#f92672">=</span> outputs<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;tunnel2_aws_bgp_ip&#34;</span>, {})<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>    tunnel1_customer_bgp_ip <span style="color:#f92672">=</span> outputs<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;tunnel1_customer_bgp_ip&#34;</span>, {})<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>    tunnel2_customer_bgp_ip <span style="color:#f92672">=</span> outputs<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;tunnel2_customer_bgp_ip&#34;</span>, {})<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)    
+</span></span><span style="display:flex;"><span>    tunnel1_aws_public_ip <span style="color:#f92672">=</span> outputs<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;tunnel1_aws_public_ip&#34;</span>, {})<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>    tunnel2_aws_public_ip <span style="color:#f92672">=</span> outputs<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;tunnel2_aws_public_ip&#34;</span>, {})<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)    
+</span></span><span style="display:flex;"><span>    tunnel1_preshared_key <span style="color:#f92672">=</span> outputs<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;tunnel1_preshared_key&#34;</span>, {})<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>    tunnel2_preshared_key <span style="color:#f92672">=</span> outputs<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;tunnel2_preshared_key&#34;</span>, {})<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;value&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Cisco config block</span>
+</span></span><span style="display:flex;"><span>    config <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    !!! DOUBLE-CHECK BEFORE APPLYING IN PRODUCTION !!!
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    crypto isakmp policy 1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        encryption aes 128
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        authentication pre-share
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        group 2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        lifetime 28800
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        hash sha
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    crypto keyring aws_vpn_keyring1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        pre-shared-key address </span><span style="color:#e6db74">{</span>tunnel1_aws_public_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> key </span><span style="color:#e6db74">{</span>tunnel1_preshared_key<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    crypto keyring aws_vpn_keyring2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        pre-shared-key address </span><span style="color:#e6db74">{</span>tunnel2_aws_public_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> key </span><span style="color:#e6db74">{</span>tunnel2_preshared_key<span style="color:#e6db74">}</span><span style="color:#e6db74">        
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    crypto isakmp profile aws_vpn_isakmp_profile1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        match identity address </span><span style="color:#e6db74">{</span>tunnel1_aws_public_ip<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        keyring aws_vpn_keyring1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    crypto isakmp profile aws_vpn_isakmp_profile2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        match identity address </span><span style="color:#e6db74">{</span>tunnel2_aws_public_ip<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        keyring aws_vpn_keyring2        
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    crypto ipsec transform-set aws_vpn_transform_set esp-aes 128 esp-sha-hmac
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        mode tunnel
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    crypto ipsec profile aws_vpn_ipsec_profile
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        set pfs group2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        set security-association lifetime seconds 3600
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        set transform-set aws_vpn_transform_set
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    interface Tunnel1
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        ip address </span><span style="color:#e6db74">{</span>tunnel1_customer_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> 255.255.255.252
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        ip tcp adjust-mss 1360
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        ip virtual-reassembly
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        tunnel source &lt;your tunnel source ip/interface&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        tunnel destination </span><span style="color:#e6db74">{</span>tunnel1_aws_public_ip<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        tunnel mode ipsec ipv4
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        tunnel protection ipsec profile aws_vpn_ipsec_profile
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        no shutdown
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        exit
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    interface Tunnel2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        ip address </span><span style="color:#e6db74">{</span>tunnel2_customer_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> 255.255.255.252
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        ip tcp adjust-mss 1360
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        ip virtual-reassembly
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        tunnel source &lt;your tunnel source ip/interface&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        tunnel destination </span><span style="color:#e6db74">{</span>tunnel2_aws_public_ip<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        tunnel mode ipsec ipv4
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        tunnel protection ipsec profile aws_vpn_ipsec_profile
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        no shutdown
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        exit        
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    router bgp 65000
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        neighbor </span><span style="color:#e6db74">{</span>tunnel1_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> remote-as 64512
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        neighbor </span><span style="color:#e6db74">{</span>tunnel1_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> activate
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        neighbor </span><span style="color:#e6db74">{</span>tunnel1_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> timers 10 30 30
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        neighbor </span><span style="color:#e6db74">{</span>tunnel2_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> remote-as 64512
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        neighbor </span><span style="color:#e6db74">{</span>tunnel2_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> activate
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        neighbor </span><span style="color:#e6db74">{</span>tunnel2_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> timers 10 30 30
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        address-family ipv4 unicast
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            neighbor </span><span style="color:#e6db74">{</span>tunnel1_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> remote-as 64512
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            neighbor </span><span style="color:#e6db74">{</span>tunnel1_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> timers 10 30 30
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            neighbor </span><span style="color:#e6db74">{</span>tunnel1_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> activate
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            neighbor </span><span style="color:#e6db74">{</span>tunnel1_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> soft-reconfiguration inbound
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            neighbor </span><span style="color:#e6db74">{</span>tunnel2_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> remote-as 64512
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            neighbor </span><span style="color:#e6db74">{</span>tunnel2_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> timers 10 30 30
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            neighbor </span><span style="color:#e6db74">{</span>tunnel2_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> activate
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            neighbor </span><span style="color:#e6db74">{</span>tunnel2_aws_bgp_ip<span style="color:#e6db74">}</span><span style="color:#e6db74"> soft-reconfiguration inbound
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        end
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    !!! DOUBLE-CHECK BEFORE APPLYING IN PRODUCTION !!!
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (config)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    outputs <span style="color:#f92672">=</span> get_terraform_outputs()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> outputs:
+</span></span><span style="display:flex;"><span>        cisco_config <span style="color:#f92672">=</span> generate_cisco_config(outputs)
+</span></span><span style="display:flex;"><span>        print(cisco_config)
+</span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/automation/">Automation</a></li>
+      <li><a href="http://localhost:1313/tags/aws/">AWS</a></li>
+      <li><a href="http://localhost:1313/tags/iac/">IaC</a></li>
+      <li><a href="http://localhost:1313/tags/terraform/">Terraform</a></li>
+      <li><a href="http://localhost:1313/tags/vpn/">VPN</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="http://localhost:1313/">Guilherme Lyra</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
