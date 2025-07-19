@@ -45,6 +45,8 @@ pip install rich
 ```
 
 ## Running the script
+- Save the full Fortigate config in the same folder as the script
+- Run the script using the example syntax below
 
 **Usage:**
 ```bash
