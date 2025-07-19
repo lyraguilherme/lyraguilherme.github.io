@@ -36,6 +36,10 @@ The output clearly shows which local/remote subnets are used in each VPN — per
 
 # Using the script
 
+The full code is available on my GitHub:
+https://github.com/lyraguilherme/networkscripts/tree/main/fortigate_vpn_parser
+
+
 ## Installing requirements
 
 - Make sure you're running Python 3.7+
