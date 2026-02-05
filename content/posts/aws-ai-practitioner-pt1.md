@@ -109,5 +109,3 @@ Deployment is not the end. MLOps applies **DevOps** principles to ML systems to 
 * **AWS Tool:** **Amazon SageMaker Model Monitor** (Automatically detects data drift and model quality issues in production).
 
 ---
-
-*In Part 2, we'll cover Generative AI fundamentals, foundation models, and AWS AI managed services like Amazon Bedrock.*
