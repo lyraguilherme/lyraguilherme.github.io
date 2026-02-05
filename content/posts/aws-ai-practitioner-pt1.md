@@ -5,7 +5,7 @@ draft: false
 ShowToC: true
 TocOpen: true
 cover:
-    image: /aws-ai-practitioner/cover.jpg
+    image: /aws-ai-practitioner/cover.png
     alt: 'AWS AI Practitioner - Study Notes #1'
     caption: 'AWS AI Practitioner - Study Notes #1'
 ---
