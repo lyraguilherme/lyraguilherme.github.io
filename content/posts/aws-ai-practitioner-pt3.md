@@ -1,6 +1,6 @@
 ---
 title: 'AWS AI Practitioner - Study Notes #3'
-date: 2026-03-07T05:30:00-03:00
+date: 2026-03-07T05:35:00-03:00
 draft: false
 ShowToC: true
 TocOpen: true
