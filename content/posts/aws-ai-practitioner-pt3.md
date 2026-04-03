@@ -184,22 +184,22 @@ After selecting a model, you need to measure how well it performs. The exam test
 
 **For Text Generation / Summarization:**
 * **ROUGE (Recall-Oriented Understudy for Gisting Evaluation):** Compares the model's output to a reference text by measuring overlap of n-grams (words or phrases). High ROUGE = the model captured the key content from the reference.
-* * Use case: Evaluating a summarization model. If the model's summary contains most of the important phrases from the original text, it will have a high ROUGE score.
+    * Use case: Evaluating a summarization model. If the model's summary contains most of the important phrases from the original text, it will have a high ROUGE score.
 * **BLEU (Bilingual Evaluation Understudy):** Originally designed for machine translation. Measures how many n-grams in the model's output match the reference. High BLEU = the generated text closely matches the expected translation.
-* * Use case: Evaluating a language translation model. If the model produces accurate and fluent translations, it should have a high BLEU score.
+    * Use case: Evaluating a language translation model. If the model produces accurate and fluent translations, it should have a high BLEU score.
 * **BERTScore:** Uses embeddings to compare semantic similarity between generated and reference text, rather than exact word matching. More forgiving of paraphrasing than ROUGE or BLEU.
-* * Use case: Evaluating a chatbot’s response generation. If the model generates responses that are semantically similar to the user’s input, it should have a high BERTScore.
+    * Use case: Evaluating a chatbot’s response generation. If the model generates responses that are semantically similar to the user’s input, it should have a high BERTScore.
 
 **For Classification Tasks:**
 The same metrics from traditional ML apply:
 * **Accuracy:** Overall percentage of correct predictions.
-* * Use case: Evaluating a spam detection model. If the model accurately identifies 90% of spam emails as such, it has an accuracy score of 0.9.
+    * Use case: Evaluating a spam detection model. If the model accurately identifies 90% of spam emails as such, it has an accuracy score of 0.9.
 * **Precision:** Of all positive predictions, how many were actually correct? (Important when false positives are costly).
-* * Use case: Evaluating a fraud detection model. If the model flags 100 transactions as fraudulent, but only 80 are actually fraudulent, the precision is 0.8.
+    * Use case: Evaluating a fraud detection model. If the model flags 100 transactions as fraudulent, but only 80 are actually fraudulent, the precision is 0.8.
 * **Recall (Sensitivity):** Of all actual positives, how many did the model catch? (Important when false negatives are costly).
-* * Use case: Evaluating a medical diagnosis model. If there are 100 patients with a disease and the model correctly identifies 90 of them, the recall is 0.9.
+    * Use case: Evaluating a medical diagnosis model. If there are 100 patients with a disease and the model correctly identifies 90 of them, the recall is 0.9.
 * **F1-Score:** The harmonic mean of Precision and Recall, useful when you need a balance between both.
-* * Use case: Evaluating a sentiment analysis model. If the model has a precision of 0.8 and a recall of 0.9, the F1-Score would be approximately 0.85, indicating good overall performance.
+    * Use case: Evaluating a sentiment analysis model. If the model has a precision of 0.8 and a recall of 0.9, the F1-Score would be approximately 0.85, indicating good overall performance.
 
 **Human Evaluation:**
 * **Key Concept:** Automated metrics don't capture everything. Human evaluation is used to judge qualities like **helpfulness, harmlessness, and honesty** — especially for open-ended generation where there's no single "correct" answer.
