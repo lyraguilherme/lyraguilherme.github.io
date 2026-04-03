@@ -201,6 +201,12 @@ The same metrics from traditional ML apply:
 * **F1-Score:** The harmonic mean of Precision and Recall, useful when you need a balance between both.
     * Use case: Evaluating a sentiment analysis model. If the model has a precision of 0.8 and a recall of 0.9, the F1-Score would be approximately 0.85, indicating good overall performance.
 
+**For Regression / Forecasting Tasks:**
+* **MAE (Mean Absolute Error):** Measures the average magnitude of errors between predicted and actual values, without considering direction. Lower MAE = more accurate predictions.
+    * Use case: Evaluating a demand forecasting model. If the model predicts daily sales within an average of 5 units of the actual values, the MAE is 5.
+* **MAPE (Mean Absolute Percentage Error):** Expresses prediction error as a percentage of the actual values, making it easier to interpret across different scales. Lower MAPE = more accurate predictions.
+    * Use case: Evaluating a resource capacity planning model. If the model's predictions are off by an average of 10% from actual usage, the MAPE is 10%.
+
 **Human Evaluation:**
 * **Key Concept:** Automated metrics don't capture everything. Human evaluation is used to judge qualities like **helpfulness, harmlessness, and honesty** — especially for open-ended generation where there's no single "correct" answer.
 * **AWS Tool:** **Amazon Bedrock Model Evaluation** (Allows you to run automatic and human-based evaluations on FMs directly within Bedrock).
