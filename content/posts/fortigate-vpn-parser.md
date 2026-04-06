@@ -6,6 +6,10 @@ cover:
     image: /fortigate-vpn-parser/fg-vpn-cover.png
     alt: 'Fortigate VPN Parser'
     caption: 'Fortigate VPN Parser'
+tags:
+ - Automation
+ - VPN
+ - Fortinet
 ---
 
 When you're handed a Fortigate backup config and need to document dozens of IPsec VPNs — but have no access to the device — manual parsing becomes a pain.

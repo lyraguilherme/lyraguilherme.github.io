@@ -8,6 +8,9 @@ cover:
     image: /journey-to-ccie/CCIE-66666.jpeg
     alt: 'Guilherme Lyra, CCIE #66666'
     caption: 'Guilherme Lyra, CCIE #66666'
+tags:
+   - CCIE
+   - Cisco
 ---
 
 ## My journey

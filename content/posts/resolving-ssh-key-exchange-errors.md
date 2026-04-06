@@ -6,6 +6,9 @@ cover:
     image: /resolving-ssh-key-exchange-errors/key-exchange.png
     alt: 'Resolving SSH Key Exchange Errors'
     caption: 'Resolving SSH Key Exchange Errors'
+tags:
+ - Automation
+ - SSH
 ---
 
 In this post, I’ll walk you through a few simple steps to resolve SSH Key Exchange and ensure smooth SSH connections.

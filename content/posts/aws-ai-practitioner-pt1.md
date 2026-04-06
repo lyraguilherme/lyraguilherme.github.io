@@ -8,6 +8,9 @@ cover:
     image: /aws-ai-practitioner/cover.png
     alt: 'AWS AI Practitioner - Study Notes #1'
     caption: 'AWS AI Practitioner - Study Notes #1'
+tags:
+ - AI Practitioner
+ - AWS
 ---
 
 These are my personal study notes for the **AWS Certified AI Practitioner (AIF-C01)** exam. In this first part, we cover the **Machine Learning Workflow** — from data preparation to deployment and MLOps. The goal is to understand how each stage of the pipeline connects and which AWS services are relevant at each step.
