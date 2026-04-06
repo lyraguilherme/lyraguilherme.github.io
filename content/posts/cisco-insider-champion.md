@@ -6,6 +6,9 @@ cover:
     image: /cisco-insider-champion/cisco-insider-champion-badge.png
     alt: 'Cisco Insider Champion'
     caption: 'Cisco Insider Champion'
+tags:
+ - Cisco
+ - Cisco Champion
 ---
 
 I'm now a member of the **Cisco Insider Champion** group!

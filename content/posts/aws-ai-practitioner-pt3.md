@@ -8,6 +8,9 @@ cover:
     image: /aws-ai-practitioner/cover-pt3.png
     alt: 'AWS AI Practitioner - Study Notes #3'
     caption: 'AWS AI Practitioner - Study Notes #3'
+tags:
+ - AI Practitioner
+ - AWS
 ---
 
 These are my personal study notes for the **AWS Certified AI Practitioner (AIF-C01)** exam. This part covers **Generative AI** and AWS pre-built AI/ML services.

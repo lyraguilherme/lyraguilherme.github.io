@@ -8,6 +8,9 @@ cover:
     image: /routing-friends-automation-handson/routing-friends.png
     alt: 'Routing Friends - Network Automation'
     caption: 'Routing Friends - Network Automation'
+tags:
+ - Automation
+ - Cisco
 ---
 
 We are back with another exciting episode of Routing Friends! This time, we are going to talk about network automation and work in a practical laboratory with specific tools/frameworks to carry out operations with automation!

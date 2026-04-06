@@ -6,6 +6,9 @@ cover:
     image: https://img.youtube.com/vi/xtTHjDv1r-M/hqdefault.jpg
     alt: 'Cisco Community Live Event - Cisco SD-WAN'
     caption: 'Cisco Community Live Event - Cisco SD-WAN'
+tags:
+ - Cisco
+ - SD-WAN
 ---
 
 In November 2020 I had the honor of being invited by Cisco Community to present a live event about **Cisco SD-WAN (Viptela)**. The event had more than 300 participants, from 9 different countries.

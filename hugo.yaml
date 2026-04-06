@@ -42,10 +42,18 @@ languages:
     weight: 10
     menus:
       main:
-        - identifier: Archives
-          name: "All posts"
-          url: /archives/
+        - identifier: Posts
+          name: "Posts"
+          url: /posts/
           weight: 10
+        - identifier: Archives
+          name: "Archive"
+          url: /archives/
+          weight: 20
+        - identifier: Tags
+          name: "Tags"
+          url: /tags/
+          weight: 30
   pt-br:
     disabled: false
     languageName: "Português"
@@ -53,10 +61,18 @@ languages:
     weight: 20
     menus:
       main:
+        - identifier: Posts
+          name: "Posts"
+          url: /posts/
+          weight: 10
         - identifier: Arquivos
           name: "Todos os posts"
           url: /arquivos/
-          weight: 10
+          weight: 20
+        - identifier: Tags
+          name: "Tags"
+          url: /tags/
+          weight: 30
 
 module:
   mounts:

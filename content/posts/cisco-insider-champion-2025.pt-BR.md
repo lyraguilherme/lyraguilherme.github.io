@@ -6,6 +6,9 @@ cover:
     image: /cisco-insider-champion-2025/cisco-insider-champion-2025-badge.png
     alt: 'Cisco Insider Champion'
     caption: 'Cisco Insider Champion'
+tags:
+ - Cisco
+ - Cisco Champion
 ---
 
 Pelo segundo ano consecutivo, fui selecionado como Cisco Insider Champion!

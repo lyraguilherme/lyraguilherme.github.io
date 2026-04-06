@@ -8,6 +8,9 @@ cover:
     image: /aws-ai-practitioner/cover-pt2.png
     alt: 'AWS AI Practitioner - Study Notes #2'
     caption: 'AWS AI Practitioner - Study Notes #2'
+tags:
+ - AI Practitioner
+ - AWS
 ---
 
 These are my personal study notes for the **AWS Certified AI Practitioner (AIF-C01)** exam. This part covers **Neural Networks** and **Deep Learning** — the foundational concepts behind modern **Generative AI**.

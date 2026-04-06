@@ -6,6 +6,9 @@ cover:
     image: /ios-xe-telemetry/mdt_dashboard.jpeg
     alt: 'Model-Driven Telemetry'
     caption: 'Cisco IOS XE Model-Driven Telemetry'
+tags:
+- Automation
+- Cisco
 ---
 
 In this post we're going to explore some Cisco IOS XE capabilities such as **Streaming Telemetry** and **Guestshell**.

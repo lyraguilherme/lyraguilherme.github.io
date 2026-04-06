@@ -8,6 +8,9 @@ cover:
     image: /my-notes-about-ospf/ospf_cover.png
     alt: 'My notes about OSPF'
     caption: 'My notes about OSPF'
+tags:
+   - CCIE
+   - Cisco
 ---
 
 # Introduction
