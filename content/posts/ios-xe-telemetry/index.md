@@ -174,23 +174,12 @@ sudo systemctl start telegraf
 
 Now that **InfluxDB** is running, let's use the browser to open the GUI at **http://<your_guestshell_ip>:8086**
 
-![InfluxDB Get Started](/ios-xe-telemetry/image_1.png)
-*Click GET STARTED and (1) set up an account, (2) create a bucket and (3) create an API Token for Telegraf*
-
-![InfluxDB Initial User Setup](/ios-xe-telemetry/image_2.png)
-*Click CONFIGURE LATER*
-
-![InfluxDB Getting Started](/ios-xe-telemetry/image_3.png)
-*Expand the left-side menu and click LOAD DATA*
-
-![InfluxDB Load Data](/ios-xe-telemetry/image_4.png)
-*Go to API TOKENS and click GENERATE API TOKEN*
-
-![InfluxDB Custom API Token](/ios-xe-telemetry/image_5.png)
-*Give it read+write permissions under bucket named telegraf and click GENERATE*
-
-![InfluxDB Telegraf API Token](/ios-xe-telemetry/image_6.png)
-*API Token will be used on Telegraf config*
+1. Click **GET STARTED** and set up an account, create a bucket and create an API Token for Telegraf
+2. Click **CONFIGURE LATER**
+3. Expand the left-side menu and click **LOAD DATA**
+4. Go to **API TOKENS** and click **GENERATE API TOKEN**
+5. Give it read+write permissions under bucket named telegraf and click **GENERATE**
+6. Copy the API Token — it will be used on Telegraf config
 
 Now, we need to go back and edit **/etc/telegraf/telegraf.conf** once again to include the API token:
 
@@ -283,15 +272,13 @@ If you saw my **QoS monitoring** post on LinkedIn, then take a closer look at th
 
 After configuring the **Telemetry Subscriptions** on IOS XE, let's go back to the **InfluxDB** dashboard and check if data is being received:
 
-![InfluxDB Data Explorer](/ios-xe-telemetry/image_10.png)
-*Check if MDT streams are being received*
+<!-- TODO: add screenshot of InfluxDB Data Explorer showing MDT streams being received -->
 
 Notice that **Telegraf** is now receiving **Telemetry Streams** from the router. From this point on, you can create a dashboard on **Telegraf** or even use **Grafana** to monitor everything you want.
 
 So, going back to my **QoS monitoring** post, this is the configuration I used to create those nice graphs:
 
-![InfluxDB Data Explorer](/ios-xe-telemetry/image_11.jpg)
-*Selecting the desired data*
+<!-- TODO: add screenshot of selecting desired data in InfluxDB Data Explorer -->
 
 1. On the 1st filter, search for **diffserv**
 2. On the 2nd filter, search for **rate**
@@ -301,14 +288,7 @@ So, going back to my **QoS monitoring** post, this is the configuration I used t
 
 If you want to add this specific graph to a dashboard, just click save as (top right of the screen) and create a new dashboard with your new graph:
 
-![InfluxDB Data Explorer](/ios-xe-telemetry/image_12.jpg)
-*Adding the graph to a new dashboard*
-
-![InfluxDB Data Explorer](/ios-xe-telemetry/image_13.jpg)
-*Some of the available options*
-
-![InfluxDB MDT Dashboard](/ios-xe-telemetry/image_14.png)
-*Dashboard example with inbound and outbound QoS traffic statistics*
+<!-- TODO: add screenshots of dashboard creation and final QoS dashboard -->
 
 ## Conclusion ##
 

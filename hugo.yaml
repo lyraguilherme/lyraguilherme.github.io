@@ -38,7 +38,7 @@ params:
   enableSearch: true
   enableCodeCopy: true
   enableImageLazyLoading: true
-  enableImageWebp: true
+  enableImageWebp: false
 
   header:
     layout: "basic"
