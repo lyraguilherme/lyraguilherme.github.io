@@ -1,0 +1,25 @@
+/* Custom table styles */
+.prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    overflow-x: auto;
+    display: block;
+}
+
+.prose table th,
+.prose table td {
+    padding: 10px 14px;
+    border: 1px solid var(--color-neutral-300);
+    line-height: 1.5;
+}
+
+.prose table th {
+    font-weight: 600;
+    text-align: start;
+}
+
+.dark .prose table th,
+.dark .prose table td {
+    border-color: var(--color-neutral-600);
+}
