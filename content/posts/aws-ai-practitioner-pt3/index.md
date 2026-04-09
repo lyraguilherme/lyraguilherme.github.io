@@ -188,6 +188,11 @@ Choosing the right FM for a use case is a common exam scenario. You won't always
 ### Evaluation Metrics for FMs
 After selecting a model, you need to measure how well it performs. The exam tests these metrics:
 
+**For Language Models (General Quality):**
+* **Perplexity:** Measures how "surprised" a language model is by a given text. Technically, it's the exponential of the average negative log-likelihood of the tokens. In simpler terms: a low perplexity means the model found the text predictable and easy to generate, while a high perplexity means the text was unexpected or confusing to the model.
+    * Use case: Comparing two LLMs on the same dataset. Model A has a perplexity of 15 and Model B has a perplexity of 45 — Model A is better at predicting the text, suggesting it has a stronger understanding of the language patterns in that dataset.
+    * **Key Concept:** Perplexity is useful for comparing models on the same data, but a low perplexity alone doesn't guarantee good outputs — a model could be very "confident" while still producing unhelpful responses. That's why it's used alongside other metrics.
+
 **For Text Generation / Summarization:**
 * **ROUGE (Recall-Oriented Understudy for Gisting Evaluation):** Compares the model's output to a reference text by measuring overlap of n-grams (words or phrases). High ROUGE = the model captured the key content from the reference.
     * Use case: Evaluating a summarization model. If the model's summary contains most of the important phrases from the original text, it will have a high ROUGE score.
@@ -197,6 +202,20 @@ After selecting a model, you need to measure how well it performs. The exam test
     * Use case: Evaluating a chatbot’s response generation. If the model generates responses that are semantically similar to the user’s input, it should have a high BERTScore.
 
 **For Classification Tasks:**
+Classification metrics are built on the **Confusion Matrix** — a table that breaks down every prediction into four categories:
+
+|  | **Predicted Positive** | **Predicted Negative** |
+|---|---|---|
+| **Actually Positive** | True Positive (TP) | False Negative (FN) |
+| **Actually Negative** | False Positive (FP) | True Negative (TN) |
+
+* **True Positive (TP):** The model correctly predicted positive. Example: flagged a fraudulent transaction that was actually fraud.
+* **False Positive (FP):** The model incorrectly predicted positive. Example: flagged a legitimate transaction as fraud (a false alarm).
+* **True Negative (TN):** The model correctly predicted negative. Example: let a legitimate transaction through.
+* **False Negative (FN):** The model incorrectly predicted negative. Example: missed a fraudulent transaction (the dangerous one).
+
+**Key Concept:** Every classification metric below is just a different way of slicing this matrix. Understanding the confusion matrix makes all of them intuitive — Precision focuses on the left column (how reliable are your positive predictions?), Recall focuses on the top row (how many actual positives did you catch?).
+
 The same metrics from traditional ML apply:
 * **Accuracy:** Overall percentage of correct predictions.
     * Use case: Evaluating a spam detection model. If the model accurately identifies 90% of spam emails as such, it has an accuracy score of 0.9.
@@ -232,6 +251,7 @@ The same metrics from traditional ML apply:
 | **RMSE** | Regression | Square root of MSE (same unit as data) | Same as MSE, but you need the error in interpretable units |
 | **MAE** | Regression | Average absolute error | You want a simple, intuitive error measure that treats all errors equally |
 | **MAPE** | Regression | Average error as a percentage | You need to compare accuracy across different scales or datasets |
+| **Perplexity** | Language Models | How "surprised" the model is by text | Comparing language models on the same dataset |
 | **ROUGE** | Text Generation | N-gram overlap with reference text | Evaluating summarization quality |
 | **BLEU** | Text Generation | N-gram match with reference translation | Evaluating translation quality |
 | **BERTScore** | Text Generation | Semantic similarity via embeddings | Evaluating meaning preservation (tolerates paraphrasing) |

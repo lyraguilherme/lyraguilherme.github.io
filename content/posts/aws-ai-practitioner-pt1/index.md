@@ -20,13 +20,30 @@ Before touching data or algorithms, you must define the **value** of the project
 
 ## 2. ML Problem Framing
 Translating the business goal into a specific Machine Learning task.
+
+### Data Types
+Understanding your data type determines which services, storage, and algorithms are appropriate.
+* **Structured Data:** Organized in rows and columns with a clear schema — like spreadsheets, relational databases, or CSV files. Each field has a defined type and meaning. Examples: sales records, customer databases, sensor readings.
+* **Unstructured Data:** No predefined format or schema — raw content that doesn't fit neatly into tables. Examples: images, videos, audio files, emails, social media posts, PDF documents.
+* **Semi-Structured Data:** Has some organizational structure (like tags or keys) but doesn't follow a strict tabular schema. Examples: JSON, XML, log files.
+
+**Key Concept:** Most real-world AI projects deal with a mix of all three. Structured data works well with traditional ML algorithms (like XGBoost or Linear Regression). Unstructured data typically requires Deep Learning (like CNNs for images or Transformers for text).
+
+### Problem Definition
 * **Target Variable:** What specifically are we predicting? (e.g., "Will this user click?" or "What will the house price be?").
 * **Learning Type:**
     * **Supervised:** Using labeled historical data (e.g., Spam vs. Not Spam).
     * **Unsupervised:** Finding hidden structures in unlabeled data (e.g., Customer Segmentation).
     * **Reinforcement Learning:** An agent learns by interacting with an environment and receiving rewards or penalties (e.g., AWS DeepRacer, game-playing AI).
     * **Semi-Supervised:** A mix of a small amount of labeled data and a large amount of unlabeled data.
-* **Task Type:** Classification (categories), Regression (numbers), or Clustering (groups).
+* **Task Type:**
+    * **Classification:** Predicting a category (e.g., Spam vs. Not Spam, cat vs. dog).
+    * **Regression:** Predicting a continuous number (e.g., house price, temperature tomorrow).
+    * **Clustering:** Discovering natural groupings in unlabeled data (e.g., customer segments).
+    * **Anomaly Detection:** Identifying data points that deviate significantly from normal patterns. Unlike classification, you typically have very few (or zero) examples of the "abnormal" class — the model learns what "normal" looks like and flags anything that doesn't fit.
+        * Use case: A network security system that monitors server traffic patterns. The model learns the baseline of normal traffic and flags sudden spikes, unusual access patterns, or connections from unexpected locations as potential intrusions.
+        * Use case: Manufacturing quality control. A model trained on images of non-defective products flags any product that looks different — scratches, dents, or misalignments — without needing examples of every possible defect type.
+        * **AWS Tool:** **Amazon Lookout for Metrics** (Automatically detects anomalies in business metrics like revenue drops, traffic spikes, or conversion rate changes) and **Amazon Lookout for Equipment** (Detects abnormal equipment behavior using sensor data to enable predictive maintenance).
 
 ## 3. Common ML Algorithms
 Now that you know the task types, the next step is understanding which algorithms solve each one. You don't need to know the math — but you do need to know **which algorithm to pick for a given problem**.
