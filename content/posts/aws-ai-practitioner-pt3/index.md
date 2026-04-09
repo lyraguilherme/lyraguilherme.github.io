@@ -206,12 +206,35 @@ The same metrics from traditional ML apply:
     * Use case: Evaluating a medical diagnosis model. If there are 100 patients with a disease and the model correctly identifies 90 of them, the recall is 0.9.
 * **F1-Score:** The harmonic mean of Precision and Recall, useful when you need a balance between both.
     * Use case: Evaluating a sentiment analysis model. If the model has a precision of 0.8 and a recall of 0.9, the F1-Score would be approximately 0.85, indicating good overall performance.
+* **AUC-ROC (Area Under the Receiver Operating Characteristic Curve):** Measures the model's ability to distinguish between classes across all classification thresholds. A score of 1.0 means perfect separation; 0.5 means no better than random guessing.
+    * Use case: Evaluating a customer churn prediction model. A high AUC-ROC (e.g., 0.92) means the model reliably ranks customers who will churn higher than those who won't — regardless of the specific probability threshold you choose for triggering a retention campaign.
 
 **For Regression / Forecasting Tasks:**
-* **MAE (Mean Absolute Error):** Measures the average magnitude of errors between predicted and actual values, without considering direction. Lower MAE = more accurate predictions.
+* **MSE (Mean Squared Error):** Measures the average of the squared differences between predicted and actual values. Squaring the errors penalizes large mistakes more heavily than small ones. Lower MSE = more accurate predictions.
+    * Use case: Evaluating a house price prediction model. If the model's predictions are consistently close to actual sale prices, the MSE will be low. A single wildly wrong prediction (e.g., predicting $200K for a $500K house) will spike the MSE significantly because the error is squared.
+* **RMSE (Root Mean Squared Error):** The square root of MSE, bringing the error back to the same unit as the original values — making it easier to interpret. Lower RMSE = more accurate predictions.
+    * Use case: Evaluating a temperature forecasting model. An RMSE of 2.5 means the model's predictions are off by an average of about 2.5 degrees — directly interpretable in the same unit as the data, unlike MSE.
+* **MAE (Mean Absolute Error):** Measures the average magnitude of errors between predicted and actual values, without considering direction. Unlike MSE/RMSE, it treats all errors equally regardless of size. Lower MAE = more accurate predictions.
     * Use case: Evaluating a demand forecasting model. If the model predicts daily sales within an average of 5 units of the actual values, the MAE is 5.
 * **MAPE (Mean Absolute Percentage Error):** Expresses prediction error as a percentage of the actual values, making it easier to interpret across different scales. Lower MAPE = more accurate predictions.
     * Use case: Evaluating a resource capacity planning model. If the model's predictions are off by an average of 10% from actual usage, the MAPE is 10%.
+
+### Metrics Comparison
+
+| Metric | Task Type | What It Measures | Use When |
+|---|---|---|---|
+| **Accuracy** | Classification | Overall correct predictions | Classes are balanced and all errors are equally bad |
+| **Precision** | Classification | Correctness of positive predictions | False positives are costly (e.g., fraud alerts annoying legitimate users) |
+| **Recall** | Classification | Coverage of actual positives | False negatives are costly (e.g., missing a disease diagnosis) |
+| **F1-Score** | Classification | Balance of Precision and Recall | You need a single number that balances both, especially with imbalanced classes |
+| **AUC-ROC** | Classification | Class separation across all thresholds | You want to evaluate overall model quality before choosing a specific threshold |
+| **MSE** | Regression | Average squared error | You want to heavily penalize large prediction errors |
+| **RMSE** | Regression | Square root of MSE (same unit as data) | Same as MSE, but you need the error in interpretable units |
+| **MAE** | Regression | Average absolute error | You want a simple, intuitive error measure that treats all errors equally |
+| **MAPE** | Regression | Average error as a percentage | You need to compare accuracy across different scales or datasets |
+| **ROUGE** | Text Generation | N-gram overlap with reference text | Evaluating summarization quality |
+| **BLEU** | Text Generation | N-gram match with reference translation | Evaluating translation quality |
+| **BERTScore** | Text Generation | Semantic similarity via embeddings | Evaluating meaning preservation (tolerates paraphrasing) |
 
 **Human Evaluation:**
 * **Key Concept:** Automated metrics don't capture everything. Human evaluation is used to judge qualities like **helpfulness, harmlessness, and honesty** — especially for open-ended generation where there's no single "correct" answer.
