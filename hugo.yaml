@@ -46,7 +46,7 @@ params:
 
   footer:
     showCopyright: true
-    showThemeAttribution: false
+    showThemeAttribution: true
     showAppearanceSwitcher: false
     showScrollToTop: true
 
