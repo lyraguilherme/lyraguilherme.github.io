@@ -145,7 +145,12 @@ RAG combines an FM with an **external knowledge base** to ground its responses i
 * **Key Concept:** RAG reduces hallucinations by giving the model **real data to reference** instead of relying solely on its training. It does not modify or retrain the model.
 * **When to use it:** You need the model to answer questions using **current, proprietary, or domain-specific data** without the cost of retraining.
 * **Embeddings:** RAG relies on **vector embeddings** — numerical representations of text that capture semantic meaning. Similar concepts are stored close together in vector space, enabling the system to find relevant documents for a query.
-* **AWS Tool:** **Amazon Bedrock Knowledge Bases** (Connects FMs to your data sources like S3, databases, or web crawlers to enable RAG workflows).
+* **Vector Databases:** Embeddings need to be stored somewhere they can be efficiently searched. A vector database is optimized for storing and querying high-dimensional vectors using similarity search (e.g., "find the 5 most similar documents to this query").
+    * **Amazon OpenSearch Serverless:** A fully managed option that supports vector search natively — commonly used as the backing store for Bedrock Knowledge Bases.
+    * **Amazon Aurora (with pgvector):** PostgreSQL-compatible database with vector search capabilities — useful when you want to combine vector search with traditional relational data.
+    * **Pinecone, Redis, FAISS:** Third-party or open-source options that can also be integrated.
+* **Chunking:** Before embedding, documents are split into smaller segments (chunks). The chunking strategy affects retrieval quality — too large and the context is diluted, too small and you lose meaning. Bedrock Knowledge Bases handles chunking automatically, but you can configure the chunk size.
+* **AWS Tool:** **Amazon Bedrock Knowledge Bases** (Connects FMs to your data sources like S3, databases, or web crawlers to enable RAG workflows. Handles document ingestion, chunking, embedding, and vector storage).
 
 ### Fine-Tuning
 Fine-tuning takes a pre-trained FM and performs **additional training on a smaller, task-specific dataset** to change its behavior, tone, or domain expertise.
@@ -219,10 +224,21 @@ Now let's tie everything back to the AWS ecosystem — the exam will test you on
 The **central, fully managed service** for building Generative AI applications on AWS. Think of it as the "one-stop shop" for Foundation Models.
 * **Access to Multiple FMs:** Provides API access to models from Anthropic (Claude), Amazon (Titan), Meta (Llama), AI21 Labs, Cohere, Stability AI, and others — without managing infrastructure.
 * **Bedrock Knowledge Bases:** Enables RAG by connecting FMs to your data sources.
-* **Bedrock Agents:** Allows FMs to execute multi-step tasks by calling APIs and interacting with external systems.
+* **Bedrock Agents:** Allows FMs to plan and execute multi-step tasks autonomously by calling APIs and interacting with external systems.
+    * **How it works:** You define **Action Groups** — sets of API operations the agent can invoke (e.g., "look up order status," "create a support ticket"). The FM reasons about the user's request, decides which actions to call and in what order, and orchestrates the full workflow.
+    * **Knowledge Base Integration:** Agents can query Bedrock Knowledge Bases to retrieve context before responding, combining RAG with action execution.
+    * **Use case:** A customer service agent that can look up an order, check the shipping status via an API, and then generate a personalized response — all from a single user message.
+* **Bedrock Flows:** A visual tool for building **multi-step generative AI workflows** by chaining prompts, models, knowledge bases, and custom logic together.
+    * **How it works:** You design a flow as a sequence of nodes — each node can invoke a model, retrieve from a knowledge base, apply a condition, or call a Lambda function. The output of one node feeds into the next.
+    * **When to use it:** You need to orchestrate complex pipelines (e.g., "classify the input → retrieve relevant docs → generate a response → apply guardrails") without writing custom orchestration code.
 * **Bedrock Guardrails:** Defines safety policies to filter harmful content, block sensitive topics, and control model behavior.
 * **Custom Model Training:** Fine-tune or continue pre-training supported FMs with your own data.
-* **Key Concept:** Bedrock is **serverless** — you don't manage any infrastructure. You pay per API call. If a question asks about the easiest way to access multiple FMs, the answer is Bedrock.
+* **Model Invocation Logging:** Records all prompts and responses sent to and from Bedrock models. Logs can be stored in **Amazon S3** (for long-term storage and analysis) or **Amazon CloudWatch Logs** (for real-time monitoring and alerting). This is critical for auditing, debugging, and compliance.
+* **Pricing Models:**
+    * **On-Demand:** Pay per input/output token with no commitment. Best for variable or unpredictable workloads.
+    * **Provisioned Throughput:** Reserve a fixed amount of model capacity for a commitment period. Best for steady, high-volume workloads where you need guaranteed performance and predictable costs.
+    * **Batch Inference:** Submit large sets of prompts as a batch job at a lower per-token cost. Best for non-time-sensitive bulk processing (e.g., classifying thousands of documents overnight).
+* **Key Concept:** Bedrock is **serverless** — you don't manage any infrastructure. If a question asks about the easiest way to access multiple FMs, the answer is Bedrock.
 
 ### Amazon Titan
 Amazon's own family of Foundation Models, available through Bedrock:
@@ -246,7 +262,25 @@ AWS's AI-powered assistant, available in multiple flavors:
 A **no-code playground** for experimenting with Generative AI applications. You can build and share simple FM-powered apps in a browser without writing any code or having an AWS account.
 * **When to use it:** Prototyping, learning, and experimenting with Generative AI concepts.
 
-## 8. AWS AI/ML Application Services
+## 8. Optimizing FM Performance and Cost
+Deploying Foundation Models in production requires balancing quality, speed, and cost. The exam tests your understanding of the tradeoffs and techniques available.
+
+### Latency Optimization
+* **Use a Smaller Model:** Not every task needs the largest FM. A smaller, faster model may be sufficient for simple classification or extraction tasks — and will respond in a fraction of the time.
+* **Model Distillation:** Training a smaller "student" model to mimic the behavior of a larger "teacher" model. The student model is faster and cheaper to run while retaining much of the teacher's quality.
+* **Quantization:** Reducing the numerical precision of model weights (e.g., from 32-bit to 8-bit). This makes the model smaller and faster at inference, with a small tradeoff in output quality.
+* **Prompt Caching:** Reusing the processed representation of common prompt prefixes (like long system prompts) across multiple requests. This avoids redundant computation and reduces both latency and cost for repetitive workloads.
+* **Provisioned Throughput:** Reserving dedicated capacity to guarantee consistent response times under load.
+
+### Cost Optimization
+* **Right-Size the Model:** Match model capability to task complexity. Using a large FM for a simple task wastes money.
+* **Batch Inference:** Process non-urgent requests in bulk at reduced per-token pricing.
+* **Caching Responses:** For identical or near-identical queries, cache the model's response instead of invoking the FM again.
+* **Max Tokens:** Set appropriate output length limits to avoid paying for unnecessary token generation.
+
+**Key Concept:** The exam often presents scenarios where you must choose between models or deployment options based on **latency, cost, or throughput requirements**. Always match the solution to the workload pattern.
+
+## 9. AWS AI/ML Application Services
 Not every AI problem needs a Foundation Model. AWS offers a set of **pre-built, task-specific AI services** that are ready to use out of the box — no ML expertise required. The exam frequently tests which service to pick for a given scenario.
 
 ### Vision

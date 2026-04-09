@@ -66,7 +66,17 @@ Representing data graphically to identify patterns, trends, and anomalies before
 * **Correlation:** Identifying how variables relate to one another (e.g., "Temperature" vs. "Ice Cream Sales").
 * **AWS Tool:** **Amazon QuickSight** (The primary cloud-native BI service used for creating dashboards and visualizing ML insights).
 
-## 8. Training, Evaluation & Deployment
+## 8. Transfer Learning
+Transfer Learning is a technique where a model trained on one task is **reused as the starting point** for a different but related task — instead of training from scratch.
+
+* **How it works:** A model pre-trained on a massive general dataset (e.g., millions of images or billions of words) already understands low-level patterns like edges, shapes, or grammar. You take this pre-trained model and adapt it to your specific problem using a much smaller dataset.
+* **Why it matters:** Training a model from scratch requires enormous amounts of data and compute. Transfer Learning lets you achieve strong results with a fraction of both.
+* **Connection to Foundation Models:** This is the exact principle behind Foundation Models — a large base model is pre-trained once, then adapted (via fine-tuning or prompt engineering) for many downstream tasks.
+* **Example:** Instead of training an image classifier from scratch with millions of labeled photos, you start with a model pre-trained on ImageNet and fine-tune it with just a few hundred images of your specific product — getting high accuracy much faster.
+
+**Key Concept:** Transfer Learning is what makes modern AI practical. Without it, every new task would require training from zero — making most projects too expensive and slow.
+
+## 9. Training, Evaluation & Deployment
 Once data is prepped, the model-building phase begins.
 
 ### Data Splitting
@@ -100,11 +110,32 @@ Testing the trained model to measure how well it generalizes to new data.
 * Hosting the model on an endpoint (**Inference**) so applications can make real-world predictions.
 * **AWS Tool:** **Amazon SageMaker** (The comprehensive, end-to-end platform for the entire ML lifecycle).
 
-## 9. MLOps (Machine Learning Operations)
+## 10. MLOps (Machine Learning Operations)
 Deployment is not the end. MLOps applies **DevOps** principles to ML systems to ensure reliability and scalability.
 * **Continuous Integration/Continuous Delivery (CI/CD):** Automating the training and deployment pipelines.
 * **Monitoring:** Watching for **Model Drift** (model quality degrades over time) or **Data Drift** (real-world data distribution changes compared to training data).
 * **Retraining:** Automatically triggering new training runs when performance drops below a threshold.
 * **AWS Tool:** **Amazon SageMaker Model Monitor** (Automatically detects data drift and model quality issues in production).
+
+## 11. No-Code ML with Amazon SageMaker Canvas
+Not every ML project requires writing code. **Amazon SageMaker Canvas** provides a **visual, no-code interface** that enables business analysts and non-technical users to build ML models.
+
+* **How it works:** You import your data (from S3, Redshift, or local files), select a target column, and Canvas automatically builds, trains, and evaluates multiple models — then picks the best one.
+* **Supported Tasks:** Classification, regression, time-series forecasting, and natural language processing — all without writing a single line of code.
+* **When to use it:** Business teams need to generate predictions or forecasts but don't have ML engineering resources.
+
+**Key Concept:** SageMaker Canvas is the **no-code counterpart to SageMaker Studio**. If the exam describes a business analyst who needs to build a model without coding, Canvas is the answer.
+
+## 12. Reinforcement Learning from Human Feedback (RLHF)
+RLHF is the training technique that bridges the gap between a raw pre-trained language model and the helpful, safe assistant that end users interact with.
+
+* **The Problem:** A language model trained only to predict the next word can produce outputs that are technically fluent but unhelpful, harmful, or misaligned with human expectations.
+* **How it works:**
+    1. **Supervised Fine-Tuning (SFT):** The model is first fine-tuned on examples of high-quality, human-written responses.
+    2. **Reward Model Training:** Human evaluators rank multiple model outputs for the same prompt. These rankings are used to train a separate **reward model** that scores how "good" a response is.
+    3. **Reinforcement Learning:** The language model is further trained using the reward model as a guide — it learns to generate responses that score higher on the reward model's criteria (helpfulness, harmlessness, honesty).
+* **Why it matters:** RLHF is how models like Claude are aligned to follow instructions, refuse harmful requests, and produce useful responses — not just statistically likely text.
+
+**Key Concept:** RLHF is the standard technique for **aligning** Foundation Models with human values and expectations. The exam may ask about it in the context of how LLMs are made safe and useful after pre-training.
 
 ---

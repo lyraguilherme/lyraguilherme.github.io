@@ -126,6 +126,7 @@ Training data and inference data often contain sensitive information. Protecting
 * **No Training on Your Data:** By default, AWS does not use your prompts, completions, or fine-tuning data to train or improve base models. Your data stays yours.
 * **Data Isolation:** Each customer's data is logically isolated. Fine-tuned model weights and Knowledge Base data are private to your AWS account.
 * **Opt-Out by Default:** Unlike some consumer AI tools, Bedrock does not require you to opt out of data sharing — it's already off.
+* **Custom Model Encryption:** When you create a fine-tuned or continued pre-training custom model in Bedrock, you can encrypt the model artifacts with a **customer-managed KMS key** — giving you full control over the encryption key lifecycle (rotation, access policies, and revocation).
 
 ## 3. Identity and Access Management (IAM)
 Controlling **who** can access AI services and **what** they can do is fundamental.
@@ -168,6 +169,12 @@ Managing AI models in production requires the same discipline as managing produc
 ### Model Cards
 * Structured documentation that describes a model's intended use, limitations, evaluation results, and ethical considerations.
 * **Purpose:** Model Cards ensure that anyone using or evaluating the model understands its scope and constraints — not just the team that built it.
+
+### AWS AI Service Cards
+* AWS-published transparency documents for **pre-built AI services** (Rekognition, Textract, Comprehend, etc.) — distinct from SageMaker Model Cards, which are for your own custom models.
+* **What they contain:** Intended use cases, design choices, performance benchmarks across demographics, and known limitations for each AWS AI service.
+* **Purpose:** Help customers evaluate whether a pre-built AI service is appropriate for their specific use case — especially in scenarios with fairness or safety implications.
+* **Key Concept:** If the exam asks about transparency documentation for **AWS-managed AI services**, the answer is AI Service Cards. If it asks about documentation for **your own models**, the answer is SageMaker Model Cards.
 
 ### SageMaker Pipelines
 * A CI/CD service for ML that automates the end-to-end workflow — from data processing to training, evaluation, and deployment.
