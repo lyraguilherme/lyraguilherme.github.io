@@ -82,9 +82,9 @@ params:
 languages:
   en:
     disabled: false
-    languageName: "English"
-    languageCode: en-US
-    languageDirection: ltr
+    label: "English"
+    locale: en-US
+    direction: ltr
     weight: 10
     title: "Guilherme Lyra"
     params:
@@ -130,9 +130,9 @@ languages:
 
   pt-br:
     disabled: false
-    languageName: "Português"
-    languageCode: pt-BR
-    languageDirection: ltr
+    label: "Português"
+    locale: pt-BR
+    direction: ltr
     weight: 20
     title: "Guilherme Lyra"
     params:
