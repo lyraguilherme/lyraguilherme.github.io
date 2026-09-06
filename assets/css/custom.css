@@ -23,3 +23,59 @@
 .dark .prose table td {
     border-color: var(--color-neutral-600);
 }
+
+/* Remove the backticks Tailwind Typography injects around inline code.
+   The plugin adds content:"`" via ::before and ::after on .prose code.
+   custom.css is concatenated after main.css, so an equal-specificity
+   rule here wins. Delete this block to restore the default look. */
+.prose code::before,
+.prose code::after {
+    content: none;
+}
+
+/* Widen the article column. Congo applies Tailwind's max-w-prose (65ch)
+   to the article header, body and footer. 65ch suits paragraphs but is
+   too narrow for the wide tables and terminal output in the notes posts.
+   Redefining the utility keeps header, body and footer aligned.
+   Restore the default by deleting this block or setting 65ch. */
+.max-w-prose {
+    max-width: 90ch;
+}
+
+/* Fluid page container. Congo caps the page at max-w-7xl (1280px) and adds
+   8rem of padding each side at desktop, which leaves roughly 700px of text
+   once the 352px table of contents is subtracted. These two rules let the
+   container and its padding scale with the viewport instead.
+   Restore the theme default by deleting this block. */
+.max-w-7xl {
+    max-width: clamp(80rem, 94vw, 95rem);
+}
+
+@media (min-width: 1024px) {
+    .lg\:px-32 {
+        padding-left: clamp(2rem, 4vw, 8rem);
+        padding-right: clamp(2rem, 4vw, 8rem);
+    }
+}
+
+/* Wide-content layout. Only applies at lg and up, where Congo turns the
+   article section into a flex row. Below that the TOC stacks above the body
+   and both rules are skipped. Delete this block to restore theme behaviour. */
+@media (min-width: 1024px) {
+    /* One width for the whole content column, so prose, tables, code blocks
+       and diagrams all share the same left and right edge. 100ch is about
+       134 characters per line in this font, since 1ch is the width of "0"
+       and runs roughly a third wider than the average character. */
+    section.prose > .grow {
+        max-width: 100ch;
+    }
+
+    /* Keep the TOC on the right edge. The content column is a fixed 100ch, so
+       without this the leftover space would sit to the right of the TOC
+       instead of between them. The gutter is at least the page padding and
+       grows to absorb whatever is left over. */
+    section.prose > [class*="order-last"] {
+        padding-inline-start: clamp(2rem, 4vw, 8rem);
+        margin-inline-start: auto;
+    }
+}
