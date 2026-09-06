@@ -25,6 +25,9 @@ privacy:
     privacyEnhanced: true
 
 markup:
+  tableOfContents:
+    startLevel: 1
+    endLevel: 2
   highlight:
     noClasses: false
   goldmark:
