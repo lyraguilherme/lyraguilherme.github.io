@@ -32,7 +32,7 @@ Three properties define it:
 
 | Property | Mechanism | Consequence |
 |---|---|---|
-| Loop-free across domains | `AS_PATH`: a router rejects any path containing its own ASN | Loop prevention is topology-independent and requires no flooding |
+| Loop-free across domains | `AS_PATH`: a router rejects by default any path containing its own ASN | Loop prevention is topology-independent and requires no flooding |
 | Policy-first | Attributes are set, matched, and rewritten by local policy at every hop | Path selection is an administrative decision, not a metric computation |
 | Incremental and reliable | TCP transport, and only changes are advertised after the initial table exchange | Steady-state overhead is near zero, and convergence is slow by design |
 
@@ -75,7 +75,7 @@ Two things in that are worth noticing, because the older definition gets repeate
 **4-byte ASNs (RFC 6793).** A speaker advertises capability code 65 in its OPEN to signal 4-byte support. Between two NEW speakers, `AS_PATH` (type 2) carries 4-byte values directly. When a NEW speaker must traverse an OLD (2-byte-only) speaker:
 
 - The NEW speaker places `AS_TRANS` (23456) in `AS_PATH` for any ASN that does not fit in 2 bytes.
-- The full 4-byte path is carried in parallel in `AS4_PATH` (type 17), an **optional transitive** attribute that the OLD speaker propagates without understanding.
+- The full 4-byte path is carried alongside it in `AS4_PATH` (type 17), an **optional transitive** attribute that the OLD speaker propagates without understanding. It is not a straight copy: `AS_CONFED_SEQUENCE` and `AS_CONFED_SET` are invalid in `AS4_PATH` and MUST NOT appear there, and the attribute is omitted entirely when every ASN in the path fits in 2 bytes.
 - `AGGREGATOR` (type 7) is shadowed the same way by `AS4_AGGREGATOR` (type 18).
 - The receiving NEW speaker reconstructs the real path by merging `AS4_PATH` into the tail of `AS_PATH`.
 - `AS_TRANS` is not a real AS. Seeing 23456 in a path means a 2-byte-only speaker is on the path.
@@ -121,8 +121,8 @@ The session type is derived, not configured: if the local ASN and the `remote-as
 |---|---|---|
 | Peer ASN | Different | Same |
 | `AS_PATH` on advertise | Local ASN prepended | Unchanged |
-| `NEXT_HOP` on advertise | Set to the local address facing the peer | Unchanged (policy can override) |
-| `LOCAL_PREF` | Not sent, stripped on receipt | Mandatory on every UPDATE |
+| `NEXT_HOP` on advertise | Normally the local address facing the peer, with a third-party exception on shared media | Unchanged (policy can override) |
+| `LOCAL_PREF` | MUST NOT be sent, MUST be ignored if received | Mandatory on every UPDATE |
 | `MED` | Sent to the directly adjacent AS, not propagated further by default | Propagated within the AS |
 | Default IP TTL | 1 | 255 |
 | Prefix Re-advertisement | Everything, unless a policy to filter is in place | Never to another iBGP peer (**split-horizon rule**) |
@@ -174,7 +174,7 @@ TTL is **decremented** by each forwarding router. It is never incremented.
 - **eBGP default TTL 1.** Packets cannot survive a router hop, so the peer must be directly connected. This is a reachability constraint, not a policy or advertisement constraint.
 - **iBGP default TTL 255.** The opposite assumption. An iBGP peer may be directly connected, but it can equally sit any number of hops away, because the session follows the IGP rather than a single link and loopback-to-loopback peering is common. Starting at the maximum covers both cases, which is why there is no `ibgp-multihop` command.
 - **`neighbor X ebgp-multihop [n]`** raises the sent TTL to `n` *(default 255 when no value given)*, permitting a peer several hops away. Required for loopback-to-loopback eBGP and for peering across an intermediate device. It exists only for eBGP, since iBGP already starts at 255.
-- **GTSM, RFC 5082** (`neighbor X ttl-security hops N`) inverts the check: send with TTL 255 and **accept only if the received TTL is ≥ 255 − N**. An off-path attacker cannot forge a packet arriving with a high enough TTL, so this cheaply defeats remote spoofing of the session. It is mutually exclusive with `ebgp-multihop` on IOS, so configure one or the other.
+- **GTSM, RFC 5082** (`neighbor X ttl-security hops N`) inverts the check: send with TTL 255 and **accept only if the received TTL is ≥ 255 − N**. Engineering a packet that arrives with a high enough TTL from an arbitrary location is difficult but, as RFC 5082 says itself, not impossible. GTSM raises the cost of remote spoofing sharply and constrains where an attacker must sit. It does nothing about an on-path or adjacent attacker and it is not a substitute for authentication. It is mutually exclusive with `ebgp-multihop` on IOS, so configure one or the other.
 
 ```
 ! Directly connected eBGP, hardened
@@ -359,7 +359,9 @@ The fixed part is only 10 bytes. Everything negotiated, every capability, lives 
 | 70 | Enhanced Route Refresh | RFC 7313 |
 | 71 | Long-Lived Graceful Restart | RFC 9494 |
 
-Capabilities are **not negotiated symmetrically by the protocol**. Each side simply announces what it supports. The sender of a feature is responsible for using it only when the peer announced support. A speaker that receives a capability it does not understand must ignore it, not reject the OPEN. Rejecting with OPEN Message Error subcode 7 (Unsupported Capability) is permitted only for capabilities the speaker requires.
+The baseline in RFC 5492 is mutual: a capability can be used on a peering only if **both** peers advertised it, and if either did not, it cannot be used. Individual capabilities then layer their own directional rules on top, which is why extended messages and add-path both talk about what a speaker may send to a peer that advertised support.
+
+A speaker that receives a capability it does not understand must ignore it, not reject the OPEN. Rejecting with OPEN Message Error subcode 7 (Unsupported Capability) is permitted only for capabilities the speaker requires.
 
 If a peer announces no Multiprotocol capability at all, IPv4 unicast is assumed by default.
 
@@ -401,11 +403,11 @@ Withdrawals come first on the wire, which is why a receiver processes them befor
 | Path Attributes | variable | See the Path Attributes section |
 | NLRI | variable | List of (prefix length, prefix) |
 
-**NLRI encoding.** Each prefix is one length byte giving the prefix length **in bits**, followed by the minimum number of bytes needed to hold that many bits, right-padded with zeros. `10.0.0.0/8` encodes as `08 0A` (2 bytes). `192.0.2.0/24` encodes as `18 C0 00 02` (4 bytes). A default route is a single `00` byte. This variable-length packing is why a full table fits in a manageable number of messages.
+**NLRI encoding.** Each prefix is one length byte giving the prefix length **in bits**, followed by the minimum number of bytes needed to hold that many bits. RFC 4271 says the value of the trailing bits is irrelevant, so zero padding is convention rather than requirement. `10.0.0.0/8` encodes as `08 0A` (2 bytes). `192.0.2.0/24` encodes as `18 C0 00 02` (4 bytes). A default route is a single `00` byte. This variable-length packing is why a full table fits in a manageable number of messages.
 
 An UPDATE with a nonzero Withdrawn Routes Length and no NLRI is a pure withdrawal. A completely empty UPDATE is the **End-of-RIB marker** (RFC 4724), signaling that the initial table transfer is complete, though that encoding only applies to IPv4 unicast. Every other address family signals End-of-RIB with an UPDATE carrying only an `MP_UNREACH_NLRI` attribute for that AFI/SAFI and no withdrawn routes in it.
 
-**Processing order** on receipt: apply withdrawals, then apply announcements, then run best-path for every affected prefix. A prefix that appears in both the withdrawal list and the NLRI list of the same UPDATE ends up announced.
+**Processing order** on receipt: apply withdrawals, then apply announcements, then run best-path for every affected prefix. RFC 4760 says the same prefix SHOULD NOT appear in more than one of the withdrawn, NLRI, `MP_REACH_NLRI` or `MP_UNREACH_NLRI` fields, and that the processing of an UPDATE in that form is **undefined**. Do not rely on a particular outcome.
 
 ## NOTIFICATION
 
@@ -433,16 +435,19 @@ Sent to report an error. **Sending or receiving a NOTIFICATION always terminates
 | 4 | Hold Timer Expired | |
 | 5 | Finite State Machine Error | |
 | 6 | Cease (RFC 4486) | 1 Maximum Prefixes Reached, 2 Administrative Shutdown, 3 Peer De-configured, 4 Administrative Reset, 5 Connection Rejected, 6 Other Configuration Change, 7 Connection Collision Resolution, 8 Out of Resources |
+| 7 | ROUTE-REFRESH Message Error (RFC 7313) | |
+| 8 | Send Hold Timer Expired (RFC 9687) | |
+| 9 | Loss of LSDB Synchronization (RFC 9815) | |
 
 Codes 4 and 5 are frequently misremembered in the other order. Hold Timer Expired is **4** and FSM Error is **5**.
 
-**Shutdown communication (RFC 8203, updated by RFC 9003)** allows a UTF-8 message of up to 255 bytes in the Data field of Cease subcodes 2 and 4, so an administrative shutdown or reset can carry a ticket reference into the peer's logs instead of appearing as an unexplained teardown. Support is implementation-dependent and it is distinct from graceful shutdown, which is a community rather than a message and is covered under Convergence and Resilience.
+**Shutdown communication (RFC 9003, which obsoletes RFC 8203)** allows a UTF-8 message in the Data field of Cease subcodes 2 and 4. Up to 255 bytes is permitted where the peer is known to support it, otherwise keep it to 128 bytes for compatibility with older RFC 8203 implementations. so an administrative shutdown or reset can carry a ticket reference into the peer's logs instead of appearing as an unexplained teardown. Support is implementation-dependent and it is distinct from graceful shutdown, which is a community rather than a message and is covered under Convergence and Resilience.
 
 ## KEEPALIVE
 
 A KEEPALIVE is just the 19-byte message header with the Type field set to 4. Nothing follows it, so the whole message is 19 bytes on the wire.
 
-Normally sent at **1/3 of the negotiated hold time**, which RFC 4271 gives as a reasonable value rather than a fixed requirement. With the IOS-XE default 180 second hold that is one every 60 seconds, which gives the session three chances to hear from the peer before the hold timer expires. Receiving any message resets that timer, not just a KEEPALIVE, so a busy session carrying UPDATEs may send very few keepalives.
+Normally sent at **1/3 of the negotiated hold time**, which RFC 4271 gives as a reasonable value rather than a fixed requirement. With the IOS-XE default 180 second hold that is one every 60 seconds, which is where the common intuition of "three missed keepalives" comes from. Treat that as a rule of thumb for the 60/180 defaults rather than protocol behavior, since implementations may jitter timers. Receiving any message resets that timer, not just a KEEPALIVE, so a busy session carrying UPDATEs may send very few keepalives.
 
 ## ROUTE-REFRESH
 
@@ -460,7 +465,7 @@ Path attributes are carried inside the UPDATE message, packed one after another 
 
 That is what **TLV** means: Type, Length, Value. Each attribute states what it is, how many bytes of value it carries, and then the value itself. A parser reads the type, reads the length, skips that many bytes, and lands exactly on the start of the next attribute.
 
-This is the mechanism behind the whole optional-attribute system. A speaker that has never heard of `LARGE_COMMUNITY` still knows where it ends, so it can step over it and keep parsing, and if the transitive bit is set, pass it along untouched. Without self-describing lengths, one unrecognized attribute would make the rest of the message unreadable.
+This is the mechanism behind the whole optional-attribute system. A speaker that has never heard of `LARGE_COMMUNITY` still knows where it ends, so it can step over it and keep parsing, and if the transitive bit is set, pass it along. Not quite untouched, though: RFC 4271 requires it to set the **Partial** bit when it propagates an optional transitive attribute it does not recognize. Without self-describing lengths, one unrecognized attribute would make the rest of the message unreadable.
 
 BGP's version puts a flags byte in front, so the layout is really flags, type, length, value:
 
@@ -565,7 +570,7 @@ A sequence of segments, each encoded as segment type (1 byte), segment length (1
 
 Confederation segments (RFC 5065) are invisible to path-length comparison and are stripped when the route leaves the confederation.
 
-**Loop prevention.** On receipt over eBGP, a speaker discards any path whose `AS_PATH` already contains its own ASN. `neighbor X allowas-in [n]` (Cisco-specific) relaxes this, permitting up to `n` occurrences, and it is required in hub-and-spoke L3VPN designs that reuse one ASN across many sites. `neighbor X as-override` (Cisco-specific) solves the same problem from the PE side by rewriting occurrences of the customer's ASN with the provider's before advertising.
+**Loop prevention.** On receipt over eBGP, a speaker discards any path whose `AS_PATH` already contains its own ASN. `neighbor X allowas-in [n]` (Cisco-specific) relaxes this, permitting up to `n` occurrences. It is one way to handle L3VPN sites that reuse a single customer ASN, alongside PE-side `as-override` or simply giving the sites distinct ASNs. `neighbor X as-override` (Cisco-specific) solves the same problem from the PE side by rewriting occurrences of the customer's ASN with the provider's before advertising.
 
 **Prepending.** Appending your own ASN several times lengthens the path so remote ASes prefer another entrance. It is the bluntest inbound traffic-engineering tool available and is only effective against ASes that reach step 5 of best path without an earlier decision. A transit provider that sets `LOCAL_PREF` on customer routes will ignore any amount of prepending.
 
@@ -612,7 +617,7 @@ Four bytes, **optional non-transitive**, lower is preferred. It is a hint to a n
 
 Rules that trip people up:
 
-- **Comparison is restricted.** By default MED is compared only between paths whose **immediately preceding ASN (the leftmost ASN in `AS_PATH`) is the same**. Paths from different neighboring ASes skip the MED step entirely.
+- **Comparison is restricted.** By default MED is compared only between paths whose **neighboring AS is the same**. That is the leftmost ASN in `AS_PATH` in the ordinary case. Inside a confederation, leading `AS_CONFED_SEQUENCE` and `AS_CONFED_SET` segments are skipped and the neighbor AS is taken from the first real `AS_SEQUENCE`, or treated as the local AS if the path never left the confederation. Paths from different neighboring ASes skip the MED step entirely.
 - **Propagation is one hop.** A router does not send a received MED on to its own eBGP peers. It does propagate MED across iBGP.
 - **Missing MED.** RFC 4271 says treat a missing MED as 0, the best possible value. `bgp bestpath med missing-as-worst` (Cisco-specific) inverts this to 4294967295, which is usually what the operator actually wants.
 - **Non-determinism.** Because MED is only comparable within groups, the outcome can depend on the order in which paths were received. `bgp deterministic-med` (Cisco-specific) groups paths by neighboring AS before comparing and should be enabled on every router. It is off by default for backward compatibility.
@@ -636,7 +641,7 @@ MED is a request, not an instruction. Many providers strip inbound MED at the ed
 
 Four bytes, higher is preferred, **default 100** on IOS-XE. Well-known discretionary. It is the primary tool for steering **outbound** traffic, because it applies uniformly across the AS: set it once at the edge and every iBGP speaker inherits the same preference.
 
-It must never appear on a true eBGP session. A speaker receiving `LOCAL_PREF` from an eBGP peer discards it. On confederation-internal eBGP sessions it **is** carried, which is one of the defining differences between a confederation and a real inter-AS boundary.
+RFC 4271 puts it as two separate rules: a speaker MUST NOT include the attribute in UPDATEs to external peers, and MUST ignore it if one arrives from an external peer. On confederation-internal eBGP sessions it **is** carried, which is one of the defining differences between a confederation and a real inter-AS boundary.
 
 ```
 route-map FROM-PRIMARY-TRANSIT permit 10
@@ -650,7 +655,7 @@ router bgp 65001
 
 ## ATOMIC_AGGREGATE (6)
 
-A **zero-length** well-known discretionary attribute. It is set by a speaker that advertises an aggregate whose `AS_PATH` does not include all the ASNs of the component routes, which happens whenever `as-set` is not used.
+A **zero-length** well-known discretionary attribute. The trigger in RFC 4271 is information loss: if an aggregate excludes at least some of the ASNs that were present in the component routes' `AS_PATH`, the speaker SHOULD attach `ATOMIC_AGGREGATE`. Dropping `AS_SET` is the usual way that loss happens, but the rule is about the lost ASNs rather than about which keyword was typed.
 
 Its meaning is a restriction on the receiver: **do not deaggregate, and do not make the NLRI more specific**. It carries no information about which routes were aggregated. RFC 4271 is careful about the strength of the two rules here: a receiver **MUST NOT** make the NLRI more specific, but only **SHOULD NOT** remove the attribute when propagating.
 
@@ -667,12 +672,13 @@ Four bytes, optional transitive, conventionally written `ASN:value` with a 2-byt
 | Value | Name | Effect | Reference |
 |---|---|---|---|
 | 65535:0 (`0xFFFF0000`) | `GRACEFUL_SHUTDOWN` | Depreference this path, the link is going down for maintenance | RFC 8326 |
-| 65535:666 (`0xFFFF029A`) | `BLACKHOLE` | Discard traffic to this prefix | RFC 7999 |
+| 65535:666 (`0xFFFF029A`) | `BLACKHOLE` | Request that traffic to this prefix be discarded. The receiver must accept it under policy | RFC 7999 |
 | 65535:65281 (`0xFFFFFF01`) | `NO_EXPORT` | Do not advertise outside the AS (or outside the confederation) | RFC 1997 |
 | 65535:65282 (`0xFFFFFF02`) | `NO_ADVERTISE` | Do not advertise to **any** peer | RFC 1997 |
 | 65535:65283 (`0xFFFFFF03`) | `NO_EXPORT_SUBCONFED` (`local-AS`) | Do not advertise outside the local sub-AS | RFC 1997 |
 | 65535:65284 | `NOPEER` | Do not advertise to bilateral peers | RFC 3765 |
 | 65535:6 (`0xFFFF0006`) | `LLGR_STALE` | Route retained past graceful restart, treat as least preferred | RFC 9494 |
+| 65535:7 (`0xFFFF0007`) | `NO_LLGR` | Do not retain this route under LLGR | RFC 9494 |
 
 `NO_EXPORT` is 65281 and `NO_ADVERTISE` is 65282. Getting these the wrong way round is a classic exam error: `NO_EXPORT` is the **weaker** of the two and the lower number.
 
@@ -705,7 +711,9 @@ So a Route Target written `65001:100` is type `0x0002`. **Route Target and Route
 
 Twelve bytes: Global Administrator (4) : Local Data Part 1 (4) : Local Data Part 2 (4), written `65001:1:200`. RFC 8092.
 
-Standard communities cannot express a 4-byte ASN in the global part, which broke community-based policy for every operator holding a 4-byte ASN. Large communities fix it and add a second local field, typically used as (function, parameter). Any network with a 4-byte ASN should be using them.
+A standard community is 4 bytes split as 2-byte ASN and 2-byte value, so a 4-byte ASN does not fit in the global part. Large communities fix that and add a second local field, typically used as (function, parameter).
+
+This only bites when **you** are the one being identified. Tagging routes with your own 4-byte ASN is impossible with standard communities, and operators used to hold a spare 2-byte ASN purely to have something that fit. Consuming a provider's scheme is unaffected, because a community like `64500:120` carries **their** 2-byte ASN in the global part no matter how large yours is. Inter-AS signaling also needs the far end to understand large communities, so check before designing around them.
 
 ```
 ip bgp-community new-format
@@ -818,9 +826,9 @@ An oscillating session that keeps returning to Idle points at hold timer expiry 
 
 ## Optional FSM features
 
-- **DelayOpen**: pause before sending OPEN so the peer's inbound connection can win the collision, reducing pointless resets during simultaneous start.
+- **DelayOpen**: hold off sending OPEN for a configured time after TCP comes up, which gives the remote peer the chance to send the first OPEN. It is not the collision-resolution mechanism, which is the separate procedure comparing BGP Identifiers.
 - **PassiveTcpEstablishment** (`neighbor X transport connection-mode passive`): never initiate, only listen. Useful when only one side has a fixed address.
-- **DampPeerOscillations / IdleHoldTimer**: exponentially back off reconnection attempts for a flapping peer. IOS-XE does this implicitly for repeatedly failing sessions.
+- **DampPeerOscillations / IdleHoldTimer**: an optional RFC 4271 mechanism to back off reconnection attempts for a flapping peer. Whether and how a given platform implements it is release-specific, so check rather than assume.
 
 ------
 
@@ -861,11 +869,11 @@ Given two candidate paths, compare in order and stop at the first difference:
 | 1 | **WEIGHT** | Highest | Cisco-specific, never advertised. 32768 for locally originated, 0 for learned. Local to one router |
 | 2 | **LOCAL_PREF** | Highest | Default 100. AS-wide |
 | 3 | **Locally originated** | Local | `network` or `redistribute` beats `aggregate-address` |
-| 4 | **AIGP** | Lowest | RFC 7311. Only if present (placement is Cisco-specific) |
+| 4 | **AIGP** | Lowest | RFC 7311. Compared as AIGP plus the IGP metric to the next hop, not the raw attribute. Only if present, and the placement is Cisco-specific |
 | 5 | **AS_PATH length** | Shortest | `AS_SET` counts 1, confed segments count 0. `bgp bestpath as-path ignore` disables |
 | 6 | **ORIGIN** | Lowest | IGP (0) < EGP (1) < INCOMPLETE (2) |
 | 7 | **MED** | Lowest | Only between paths from the same neighboring AS, unless `always-compare-med` |
-| 8 | **Path type** | eBGP > confed-eBGP > iBGP | |
+| 8 | **Path type** | eBGP over internal | RFC 5065 treats a confederation-learned path as **internal** here, so it does not sit in a middle tier |
 | 9 | **IGP metric to NEXT_HOP** | Lowest | "Hot potato" routing: hand traffic off at the nearest exit |
 | 10 | *(multipath check)* | | If multipath is enabled, paths equal to here are installed together, and selection continues to pick one "best" for advertisement |
 | 11 | **Oldest path** | Oldest | eBGP paths only. Stability heuristic: do not churn on an equally good newcomer. Skipped if `bgp bestpath compare-routerid` is set |
@@ -981,11 +989,11 @@ router bgp 65001
  bgp cluster-id 10.0.0.1
 ```
 
-**Shared versus unique cluster IDs.** Two reflectors serving the same set of clients may share a `CLUSTER_ID` or use their own. Sharing suppresses redundant reflected copies between the reflectors, saving memory but reducing path diversity. Using unique IDs (the more common modern choice) lets each client see both reflectors' selections, which is what add-path and BGP PIC need. Both are valid. What is invalid is expecting a shared ID to give you path diversity.
+**Shared versus unique cluster IDs.** RFC 4456 is specific about this: reflectors that are genuinely **in the same cluster** are configured with the same `CLUSTER_ID`, precisely so each can discard routes reflected by the other. Leaving them on their router-ID defaults does not give you one redundant cluster, it gives you two separate logical clusters serving the same clients. That is a legitimate design and it does leave more reflected alternatives in play, but describe it as what it is rather than as a tuning knob inside a single cluster. Path diversity for add-path or PIC comes from those mechanisms having an eligible backup, not from the cluster ID by itself.
 
 **A reflector does not modify `NEXT_HOP`, `AS_PATH`, `LOCAL_PREF`, or `MED` when reflecting.** Plain `next-hop-self` deliberately skips reflected routes, so configuring it on client sessions is harmless and simply has no effect on what gets reflected. `next-hop-self all` is the form that does rewrite reflected paths. That is occasionally what you want, but it changes how clients resolve the next hop and can pull traffic through the reflector itself, so it needs to be a deliberate design decision rather than a habit.
 
-**Suboptimal routing is inherent.** The reflector selects one best path using **its own** IGP distances and reflects that. A client on the far side of the network may have had a nearer exit available that it will now never see. Mitigations: place reflectors where their topological view resembles their clients' (or make them non-forwarding, in the topology but not the data path), use add-path, or use `bgp additional-paths select` to reflect a backup as well.
+**Suboptimal routing is inherent.** The reflector selects one best path using **its own** IGP distances and reflects that. A client on the far side of the network may have had a nearer exit available that it will now never see. Mitigations: place reflectors where their topological view resembles their clients', use add-path with matching select, send, receive and install settings, or deploy several diverse reflectors. Taking a reflector out of the data path is often operationally sensible but does not by itself align its IGP view with its clients' or stop paths being hidden.
 
 **Hierarchical reflection** works too: a client of one cluster can itself be a reflector for a lower tier. `CLUSTER_LIST` handles loop prevention across levels.
 
@@ -1010,7 +1018,7 @@ router bgp 65501                      ! the member AS number
 | `NEXT_HOP` | **Preserved** | Rewritten |
 | `LOCAL_PREF` | **Preserved** | Stripped |
 | `MED` | **Preserved** | Not propagated |
-| Best-path rank | Below true eBGP, above iBGP | Highest |
+| Best-path rank | Internal for the eBGP-versus-internal step (RFC 5065) | External |
 
 All `AS_CONFED_*` segments are stripped when a path leaves the confederation, so the member-AS numbers never escape. External ASes see `65001` in place of them, followed by whatever external `AS_SEQUENCE` the path had already accumulated before it entered.
 
@@ -1024,7 +1032,7 @@ Inside a member AS you still need a full mesh, or a route reflector. Confederati
 | Policy between groups | No AS-boundary semantics, it is all one AS. Per-neighbor route maps still work | Full eBGP-style policy per member AS |
 | Multi-vendor / multi-team boundaries | Weak | Strong |
 | Operational familiarity | Very high | Low, rarer in the field |
-| Path diversity control | Cluster IDs, add-path | Naturally better (confed-eBGP re-advertises) |
+| Path diversity control | Cluster IDs, add-path | Add-path. A Member-AS still exports only its selected path, so a confederation is not inherently more diverse |
 
 Route reflection is the default answer for almost every network. Confederations earn their complexity when distinct operational teams or acquired networks need real policy boundaries inside one public ASN.
 
@@ -1045,7 +1053,7 @@ It became obsolete once networks stopped redistributing BGP into their IGP and i
 | `ip prefix-list` | Prefix and prefix length | The correct tool for prefix filtering. Supports `ge`/`le` |
 | `ip as-path access-list` | `AS_PATH` regex | Applied to the string form of the path |
 | `ip community-list` | Communities | Standard (numbered/named, exact values) or expanded (regex) |
-| `route-map` | Anything, and the only tool that can **set** | Ordered, first-match-wins, implicit deny at the end |
+| `route-map` | Anything, and the general construct for both matching and **setting** | Ordered, first-match-wins with a `continue` exception, implicit deny at the end |
 | `neighbor X filter-list` | Applies an as-path list | |
 | `neighbor X prefix-list` | Applies a prefix list | Cannot be combined with `distribute-list` on the same peer/direction |
 
@@ -1113,15 +1121,20 @@ ip large-community-list standard LC-A  permit 4200000001:1:2001
 
 A **standard** list with two communities on one line requires **both**. Two separate `permit` lines are an OR. An **expanded** list takes a regex, which is how you match "any community from ASN 65001".
 
-Setting communities is additive or replacing, and the difference bites:
+Setting communities is additive or replacing, and the difference bites. These are three **separate** route maps, not three clauses of one. A clause with no `match` matches everything and stops processing, so writing them as sequences 10, 20 and 30 of a single map would leave 20 and 30 unreachable:
 
 ```
-route-map TAG permit 10
- set community 65001:100                    ! REPLACES all existing communities
-route-map TAG permit 20
- set community 65001:200 additive           ! appends
-route-map TAG permit 30
- set community none                         ! strips all
+! replaces every community already on the route
+route-map SET-ONLY permit 10
+ set community 65001:100
+
+! appends, keeping what is already there
+route-map ADD-ONE permit 10
+ set community 65001:200 additive
+
+! strips every community
+route-map STRIP-ALL permit 10
+ set community none
 ```
 
 To delete selectively:
@@ -1153,6 +1166,8 @@ router bgp 65001
   neighbor 198.51.100.2 route-map FROM-PEER in
 ```
 
+Read that example carefully, because it classifies rather than filters. Sequence 30 has no `match`, so every route that reached it is accepted with a lower `LOCAL_PREF` rather than dropped. A route matching sequence 10 also stops there and never reaches the AS-path deny at 20, so the two clauses cannot both apply to one route. If the goal is to reject rather than depreference, drop the final `permit` and let the implicit deny do the work, or apply a separate `filter-list`.
+
 A route map applied inbound changes the Loc-RIB. Applied outbound it changes what a specific peer sees. Changing a route map does not re-evaluate existing routes until a refresh happens, so see Applying policy changes without a reset.
 
 **Continue clauses** (`continue [seq]`) let one route map apply several sets, but they make policy hard to read and are rarely worth it.
@@ -1166,7 +1181,7 @@ router bgp 65001
   aggregate-address 203.0.112.0 255.255.252.0 summary-only
 ```
 
-`aggregate-address` only generates the aggregate if **at least one more-specific component exists in the BGP table**. This is a feature: the aggregate withdraws itself when the last component disappears, rather than black-holing.
+`aggregate-address` only generates the aggregate if **at least one more-specific component exists in the BGP table**, so the aggregate withdraws itself when the last component disappears. That is useful, but it does not mean the aggregate is safe: it still covers address space for which no more-specific route may exist, and traffic to that space arrives and has nowhere to go. Pair it with an intentional discard route.
 
 | Option | Effect |
 |---|---|
@@ -1200,7 +1215,7 @@ router bgp 65001
   neighbor 198.51.100.6 advertise-map ADVERTISE-BACKUP non-exist-map WATCH-PRIMARY
 ```
 
-`non-exist-map`: advertise while the watched prefix is **absent**. `exist-map`: advertise while it is **present**. The check runs on a 60-second cycle, so this is a policy tool, not a convergence tool.
+`non-exist-map`: advertise while the watched prefix is **absent**. `exist-map`: advertise while it is **present**. The check runs on the BGP scanner cycle, 60 seconds by default and configurable, so this is a policy tool rather than a convergence tool.
 
 Do not confuse `advertise-map` here with the identically named `aggregate-address advertise-map`. They are unrelated features.
 
@@ -1223,12 +1238,12 @@ Never use `clear ip bgp *`. It resets every session and reconverges the whole ta
 
 | Method | What it does | Cost |
 |---|---|---|
-| **Route refresh** (`clear ip bgp X in`) | Asks the peer to resend its Adj-RIB-Out. Session stays up | None, this is the default and correct method |
+| **Route refresh** (`clear ip bgp X in`) | Asks the peer to resend its Adj-RIB-Out. Session stays up | The peer regenerates and retransmits, and you reprocess it, so not free. Still the correct method |
 | **Soft reconfiguration inbound** | Stores the unmodified Adj-RIB-In locally so policy can be re-applied without asking the peer | Significant memory, roughly doubles per-peer storage |
 | **Outbound soft** (`clear ip bgp X out`) | Re-runs outbound policy and re-advertises. Always available, never needs peer support | Low |
 | **Hard reset** (`clear ip bgp X`) | Tears the session down | Full reconvergence, so avoid |
 
-Route refresh is negotiated automatically (capability 2) and is supported by everything current. `soft-reconfiguration inbound` is only needed when the peer does not support refresh, or when you want to inspect what a peer actually sent you before your policy touched it:
+Route refresh is capability-negotiated (capability 2) and widely implemented. `soft-reconfiguration inbound` is only needed when the peer does not support refresh, or when you want to inspect what a peer actually sent you before your policy touched it:
 
 ```
 router bgp 65001
@@ -1251,7 +1266,7 @@ router bgp 65001
  neighbor 198.51.100.2 peer-group CUSTOMERS
 ```
 
-**Peer templates** (`template peer-session` / `template peer-policy`) supersede them, separating session parameters from policy and supporting inheritance.
+**Peer templates** (`template peer-session` / `template peer-policy`) are the newer model, separating session parameters from policy and supporting inheritance. Both models are supported, and a neighbor uses one or the other rather than a mix.
 
 **Update groups** are the modern reality: IOS-XE automatically groups peers with identical outbound policy and builds one update per group regardless of how you configured them. The performance argument for peer groups is therefore gone. They survive as a configuration convenience. Inspect the real grouping with `show ip bgp update-group`. If two peers you expected to share a group do not, some outbound policy differs between them.
 
@@ -1287,15 +1302,19 @@ route-map TRANSIT-OUT permit 10
  match ip address prefix-list OUR-SPACE
 !
 router bgp 65001
+ neighbor 198.51.100.2 remote-as 64500
+ neighbor 198.51.100.2 ttl-security hops 1
+ neighbor 198.51.100.2 maximum-prefix 1000000 90 restart 15
+ !
  address-family ipv4 unicast
-  neighbor 198.51.100.2 remote-as 64500
+  neighbor 198.51.100.2 activate
   neighbor 198.51.100.2 send-community both
-  neighbor 198.51.100.2 maximum-prefix 1000000 90 restart 15
   neighbor 198.51.100.2 filter-list 10 in
   neighbor 198.51.100.2 route-map TRANSIT-IN in
   neighbor 198.51.100.2 route-map TRANSIT-OUT out
-  neighbor 198.51.100.2 ttl-security hops 1
 ```
+
+Note where each command lives. `remote-as`, `ttl-security` and `maximum-prefix` describe the **session** and belong in router configuration mode. Policy and `activate` describe what the session carries for one address family and belong inside the `address-family` block. Putting a session command inside the address family is rejected, and forgetting `activate` leaves a session that comes up and carries nothing.
 
 Every eBGP session should have an inbound filter **and** an outbound filter. The outbound one is what stops you becoming an accidental transit provider.
 
@@ -1326,7 +1345,7 @@ Both are optional non-transitive. An UPDATE carrying `MP_REACH_NLRI` still carri
 | 2 | Multicast | RFC 4760 |
 | 5 | MCAST-VPN | RFC 6514 |
 | 71 | BGP-LS | RFC 9552 |
-| 73 | SR Policy | BGP SR Policy |
+| 73 | SR Policy | RFC 9830 |
 | 128 | MPLS-labeled VPN (VPNv4/VPNv6) | RFC 4364 |
 | 129 | Multicast VPN | |
 
@@ -1357,20 +1376,20 @@ router bgp 65001
  exit-address-family
 ```
 
-Note that `send-community extended` is mandatory for any VPN family: route targets are extended communities, and without it no route is ever imported anywhere.
+Note the `send-community extended` line. Route targets are extended communities, so in this IOS-XE VPNv4 design the RTs never reach the peer without it and nothing imports at the far end. Treat that as a property of this configuration rather than a protocol rule.
 
 ## IPv6
 
 IPv6 unicast is AFI 2 / SAFI 1 and behaves identically to IPv4 apart from encoding. Two details:
 
-- The `MP_REACH_NLRI` next-hop field for IPv6 may contain **two** addresses: a global unicast address followed by a link-local address (RFC 2545). The link-local one is only valid on a directly connected session.
+- The `MP_REACH_NLRI` next-hop field for IPv6 may contain **two** addresses: a global unicast address followed by a link-local address (RFC 2545). The link-local one is included if and only if the advertising speaker shares a common subnet with **both** the entity identified by the global next hop and the peer being advertised to. Length is 16 with a global address only, 32 when both are present.
 - BGP over an IPv6 session can carry IPv4 NLRI and vice versa. The two are independent choices.
 
 ## IPv4 over IPv6 next hops
 
 **RFC 8950** (obsoletes RFC 5549) lets IPv4 NLRI carry an **IPv6 next hop**, negotiated with the Extended Next Hop Encoding capability (code 5). This removes the need for IPv4 addressing on transit links entirely, since an IPv4 prefix can be reached through a next hop that only has an IPv6 address.
 
-The practical form of this is a session built over IPv6 transport that carries the IPv4 unicast family. The peering address is IPv6, so any IPv4 prefix learned across it arrives with an IPv6 next hop:
+Transport family, NLRI family and next-hop family are three separate choices. An IPv6 session does not by itself force an IPv6 next hop onto IPv4 NLRI. What makes that encoding legal is the receiver advertising capability 5 for the matching AFI/SAFI and next-hop AFI. The usual arrangement looks like this:
 
 ```
 router bgp 65001
@@ -1400,14 +1419,16 @@ These are two different objects that solve two different problems, and they are 
 
 | | Route Distinguisher | Route Target |
 |---|---|---|
-| **What it is** | An 8-byte value **prepended to the IPv4 prefix** to make a 12-byte VPNv4 NLRI | An **extended community** attached to the route |
+| **What it is** | An 8-byte value **prepended to the IPv4 prefix**, giving a 12-byte VPN-IPv4 address | An **extended community** attached to the route |
 | **Problem solved** | Two customers both using 10.0.0.0/8 must be distinguishable in one BGP table | Which VRFs should import this route |
 | **Part of** | The NLRI itself | The path attributes |
 | **Can a route have several?** | No, exactly one | Yes, any number |
-| **Changes best path?** | Yes: different RDs make different NLRI, so both are carried | No |
+| **Changes best path?** | No. Different RDs make different NLRI, so those routes never compete as alternatives for the same NLRI | No |
 | **Where configured** | `rd` under the VRF | `route-target import/export` under the VRF address family |
 
-An RD makes a prefix **unique**. An RT makes a prefix **importable**. An RD does not control distribution, and an RT does not create uniqueness.
+An RD makes a prefix **unique**. An RT makes a prefix **importable**. An RD does not control distribution, and an RT does not create uniqueness. RFC 4364 is blunt about the first: the purpose of the RD is *solely* to allow distinct routes to a common IPv4 prefix.
+
+One encoding detail worth knowing. What travels in BGP is not the 12-byte address on its own. SAFI 128 NLRI is an **MPLS-labeled** VPN-IPv4 address, variable length, carrying one or more label stack entries alongside the RD and the prefix. PE routers distribute labeled VPN-IPv4 routes, not bare ones.
 
 **RD formats:**
 
@@ -1446,7 +1467,7 @@ router bgp 65001
  exit-address-family
 ```
 
-The forwarding path is: CE sends to PE in the VRF, PE looks up in the VRF's RIB, imposes a **VPN label** (identifying the egress VRF or next hop) and a **transport label** (LDP or SR, identifying the egress PE), and forwards. The P routers only ever see the transport label and know nothing about VPN routes. This is why an MPLS core scales.
+The forwarding path is: CE sends to PE in the VRF, PE looks up in the VRF's RIB, imposes a **VPN label** (identifying the egress VRF or next hop) and a **transport label** (LDP or SR, identifying the egress PE), and forwards. Transit P routers act on the top transport label only and hold no VPN routes at all, which is what makes the core scale. Note that with penultimate-hop popping the last P router removes that transport label, so the egress PE receives the packet with the VPN label on top.
 
 ## Topologies through route targets
 
@@ -1459,7 +1480,7 @@ Because import and export are independent, RTs express arbitrary topologies:
 | **Extranet** | Site imports its own RT plus the partner's RT |
 | **Management VRF** | Every VRF additionally imports `RT:mgmt`, and the management VRF imports every VRF's RT |
 
-A hub-and-spoke hub usually needs two VRFs (one for the spoke-facing import, one for the hub-facing export) or the `allowas-in`/`as-override` treatment, because the hub re-advertises spoke routes and the spokes would otherwise reject them on `AS_PATH` loop detection.
+A hub-and-spoke hub usually needs two VRFs, one for the spoke-facing import and one for the hub-facing export, so that spoke traffic is forced through the hub. That is an RT and topology problem. Separately, if the sites share a customer ASN, the spokes would reject hub-re-advertised routes on `AS_PATH` loop detection, and that is what `as-override` or `allowas-in` fixes. The two solve different problems and are not alternatives to each other.
 
 ## Inter-VRF leaking
 
@@ -1487,7 +1508,7 @@ router bgp 64510
  neighbor 10.1.1.1 allowas-in 2
 ```
 
-`as-override` is the provider-side fix and is invisible to the customer. `allowas-in` is the customer-side fix and requires touching CE configuration, which is why providers usually prefer `as-override`.
+`as-override` is the provider-side fix and needs no CE-side configuration. It is not invisible, though: the CE receives and can display the rewritten `AS_PATH`, with the provider's ASN where its own used to be. `allowas-in` is the customer-side fix and requires touching CE configuration, which is why providers usually prefer `as-override`.
 
 OSPF as the PE-CE protocol uses two separate mechanisms that are often confused. The **DN bit** is the loop prevention signal: a PE sets it on LSAs sent toward a CE, and a PE that receives an LSA with the DN bit set will not redistribute it back into BGP. The **domain identifier** does something different, deciding whether a VPN route is rebuilt for the CE as an inter-area route or as an external one. Only the DN bit prevents loops.
 
@@ -1499,7 +1520,7 @@ OSPF as the PE-CE protocol uses two separate mechanisms that are often confused.
 
 ## What actually takes the time
 
-BGP convergence after a failure is the sum of four independent delays:
+BGP convergence after a failure involves four kinds of delay. They overlap and repeat rather than adding up in a neat series, but it is a useful way to see where the time goes:
 
 | Stage | Typical default | How to shorten |
 |---|---|---|
@@ -1508,31 +1529,29 @@ BGP convergence after a failure is the sum of four independent delays:
 | **RIB/FIB update** | Seconds for a full table | Hardware-dependent. PIC pre-programs the backup |
 | **Advertisement to peers** | Up to 30 s (`MinRouteAdvertisementInterval`) | `neighbor X advertisement-interval 0` |
 
-Detection dominates. Everything else is a rounding error until you have fixed detection.
+Detection usually dominates, and it is the first thing to fix. At full-table scale the decision and FIB work stop being negligible, which is what PIC addresses.
 
 ## BFD
 
-Bidirectional Forwarding Detection (RFC 5880) provides sub-second liveness detection independent of the routing protocol, using a lightweight hello in the forwarding plane. BGP registers as a client and tears the session down the instant BFD declares the path down.
+Bidirectional Forwarding Detection (RFC 5880) detects failure of the bidirectional forwarding path at negotiated intervals, independent of the routing protocol. BGP registers as a client and tears the session down when BFD declares the session Down.
 
 ```
 interface GigabitEthernet0/1
- bfd interval 50 min_rx 50 multiplier 3      ! 150 ms (50 * 3)
+ bfd interval 50 min_rx 50 multiplier 3      ! nominally 150 ms, subject to negotiation
 !
 router bgp 65001
  neighbor 198.51.100.2 fall-over bfd
 ```
 
-This is the correct answer to "make BGP converge faster," not aggressive keepalives. BFD detects in the data plane, so it catches failures that keep the TCP session nominally alive (a one-way fiber break, a transparent device in the middle). Use single-hop BFD for directly connected peers and multihop BFD for loopback-based sessions.
+This is the usual answer to "make BGP converge faster", rather than aggressive keepalives. Because BFD tests the forwarding path, it catches failures that leave the TCP session nominally alive, such as a one-way fiber break or a transparent device in the middle. Direct interface-down detection and `fall-over` next-hop tracking cover other cases. Use single-hop BFD for directly connected peers and multihop for loopback-based sessions.
 
 ## Next-hop tracking
 
-A BGP path is only usable while its next hop resolves. **Next-hop tracking** watches the RIB for changes affecting BGP next hops and re-runs best path immediately instead of waiting for a scan cycle:
+A BGP path is only usable while its next hop resolves. **Next-hop tracking** watches the RIB for changes affecting BGP next hops and re-runs best path on the change rather than waiting for the periodic scanner. It is on by default for IPv4 and VPNv4 on IOS-XE, so `bgp nexthop trigger enable` is normally redundant and only the delay is worth tuning:
 
 ```
 router bgp 65001
- bgp nexthop trigger enable
  bgp nexthop trigger delay 1                 ! seconds to dampen IGP churn
- bgp scan-time 60
 ```
 
 `bgp nexthop route-map <rm>` restricts which routes are allowed to resolve a BGP next hop. The standard hardening is to forbid a default route from resolving next hops, so that losing the IGP route to a PE does not silently leave every VPN prefix pointing at the default:
@@ -1551,8 +1570,8 @@ router bgp 65001
 
 Ordinary BGP convergence walks every affected prefix and rewrites its forwarding entry, so restoration time scales with table size: a million prefixes is a long walk. **PIC** restructures the FIB with a level of indirection, so that many prefixes share a pointer to a path-list, and a failure requires updating one path-list rather than a million prefixes.
 
-- **PIC Core**: the IGP path to an unchanged BGP next hop fails. Handled by the IGP's own fast reroute plus the shared indirection. Available essentially for free.
-- **PIC Edge**: the BGP next hop itself fails. Requires a **pre-installed backup path**, which requires the router to have received one, which requires either add-path from the route reflector or a second eBGP session.
+- **PIC Core**: the IGP path to an unchanged BGP next hop fails. The shared indirection means BGP does not have to touch every prefix, but the speed still depends on the forwarding architecture and on the IGP having a fast-reroute alternate. It is not free.
+- **PIC Edge**: the BGP next hop itself fails. Requires an eligible backup path already computed and installed. Add-path is one way to receive one. So are multiple peers or reflectors, best-external, or distinct RDs in an L3VPN.
 
 ```
 router bgp 65001
@@ -1560,7 +1579,7 @@ router bgp 65001
   bgp additional-paths install
 ```
 
-The dependency chain is the point: PIC Edge needs a backup path in the RIB, which needs path diversity, which needs add-path or unique cluster IDs. Enabling `bgp additional-paths install` on a router that only ever receives one path does nothing.
+The dependency chain is the point: PIC Edge needs a backup path in the RIB, which needs the router to have actually received a second path. Enabling `bgp additional-paths install` on a router that only ever receives one path does nothing.
 
 ## Graceful restart
 
@@ -1608,7 +1627,7 @@ Suppression is a local decision. It does not generate a NOTIFICATION and does no
  neighbor 198.51.100.6 maximum-prefix 100 80 warning-only
 ```
 
-Arguments: limit, warning threshold as a percentage, then one of `restart <minutes>` (tear down and retry automatically) or `warning-only` (log and keep accepting). With neither, the session goes down and stays down until manually cleared, which is the safest behavior for a customer session and the most disruptive for a transit session.
+Arguments: limit, warning threshold as a percentage, then one of `restart <minutes>` (tear down and retry automatically) or `warning-only` (log and keep accepting). With neither, the session goes down and stays down until manually cleared, which is the safest behavior for a customer session and the most disruptive for a transit session. Newer IOS-XE releases add `discard-extra`, which drops the excess without necessarily dropping the session, so check what your release offers.
 
 Exceeding the limit sends a Cease NOTIFICATION with subcode 1. Every eBGP session should have a limit, and a customer session should have a tight one.
 
@@ -1624,7 +1643,9 @@ router bgp 65001
  neighbor 198.51.100.2 route-map GSHUT out
 ```
 
-Both drain and shutdown are supported directly with `neighbor X shutdown graceful <seconds>`.
+IOS-XE also has `neighbor X shutdown graceful <seconds>`, which requires at least one of `community <value>` or `local-preference <value>` and drains before tearing the session down.
+
+One thing the community alone does not do is drain **your own** outbound traffic. Tagging your advertisements moves inbound traffic away only if the remote AS honors GSHUT. To move outbound traffic off the same session you also have to depreference what you learn across it, which is the initiator's half of the procedure in RFC 8326.
 
 ------
 
@@ -1664,7 +1685,7 @@ A mismatched MD5 key produces a session stuck below Established with TCP-level e
 
 ## What authentication does not do
 
-Session authentication proves the peer is who you configured. It says nothing about whether the routes that peer sends are legitimate. Every real BGP incident of the last two decades came from a correctly authenticated peer sending wrong routes. Filtering is the control that matters.
+Session authentication proves the peer is who you configured. It says nothing about whether the routes that peer sends are legitimate. Large routing incidents generally come from a legitimate, correctly authenticated peer announcing routes it should not. Filtering is the control that addresses that.
 
 ## Filtering
 
@@ -1715,7 +1736,7 @@ router bgp 65001
 
 ## Route servers
 
-At an IXP, a **route server (RFC 7947)** lets each participant hold one session instead of n. It is not an ordinary BGP speaker:
+At an IXP, a **route server (RFC 7947)** replaces a bilateral full mesh with one session per route server, and most exchanges run two for redundancy. Participants may still keep bilateral sessions alongside. It is not an ordinary BGP speaker:
 
 - It **does not insert its own ASN** into `AS_PATH`. The path a client sees is what the originating participant sent.
 - It **does not modify `NEXT_HOP`**, so traffic flows directly between participants over the IXP fabric rather than through the route server.
@@ -1880,7 +1901,7 @@ show bgp vpnv4 unicast all summary
 show ip cef 203.0.113.0/24 detail
 ```
 
-`show ip bgp <prefix> bestpath` states in words which step decided the selection, which is faster than comparing attributes by eye.
+`show ip bgp <prefix> bestpath` filters the output down to the selected path. It does not narrate which step decided the outcome, so you still compare attributes against the decision order yourself.
 
 Debug is a last resort on a production router with a full table. When it is unavoidable, scope it:
 
@@ -1939,11 +1960,11 @@ Flag bits: `0x80` Optional, `0x40` Transitive, `0x20` Partial, `0x10` Extended L
 1.  Highest WEIGHT                        (Cisco-specific, local to the router)
 2.  Highest LOCAL_PREF                    (default 100)
 3.  Locally originated
-4.  Lowest AIGP                           (if present)
+4.  Lowest AIGP + IGP metric              (if present)
 5.  Shortest AS_PATH                      (AS_SET = 1, confed = 0)
 6.  Lowest ORIGIN                         (IGP 0 < EGP 1 < INCOMPLETE 2)
 7.  Lowest MED                            (same neighboring AS only)
-8.  eBGP > confed-eBGP > iBGP
+8.  eBGP over internal            (confed counts as internal)
 9.  Lowest IGP metric to NEXT_HOP
 10. (multipath installed here)
 11. Oldest eBGP path
@@ -1962,6 +1983,9 @@ Flag bits: `0x80` Optional, `0x40` Transitive, `0x20` Partial, `0x10` Extended L
 | 4 | **Hold Timer Expired** |
 | 5 | **Finite State Machine Error** |
 | 6 | Cease |
+| 7 | ROUTE-REFRESH Message Error |
+| 8 | Send Hold Timer Expired |
+| 9 | Loss of LSDB Synchronization |
 
 ## Well-known communities
 
@@ -1974,10 +1998,11 @@ Flag bits: `0x80` Optional, `0x40` Transitive, `0x20` Partial, `0x10` Extended L
 | 65535:65283 | NO_EXPORT_SUBCONFED (local-AS) |
 | 65535:65284 | NOPEER |
 | 65535:6 | LLGR_STALE |
+| 65535:7 | NO_LLGR |
 
 ## Defaults
 
-| Item | RFC 4271 | IOS-XE |
+| Item | RFC 4271 suggested | IOS-XE default |
 |---|---|---|
 | Hold time | 90 s | 180 s |
 | Keepalive | 30 s | 60 s |
@@ -2091,6 +2116,7 @@ Facts that are easy to invert, listed with the correct value.
 - RFC 8950: IPv4 NLRI with IPv6 next hop (obsoletes 5549)
 - RFC 2545: BGP-4 multiprotocol extensions for IPv6
 - RFC 9552: BGP-LS (obsoletes 7752)
+- RFC 9830: Advertising SR Policies in BGP (SAFI 73)
 
 **Resilience**
 - RFC 4724: Graceful restart
@@ -2099,7 +2125,7 @@ Facts that are easy to invert, listed with the correct value.
 - RFC 5880 / 5881: BFD
 - RFC 2439: Route flap damping
 - RFC 4486: Cease subcodes
-- RFC 8203 / 9003: Shutdown communication
+- RFC 9003: Shutdown communication (obsoletes 8203)
 
 **Security**
 - RFC 2385: TCP MD5
