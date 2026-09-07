@@ -1274,9 +1274,9 @@ router bgp 65001
 
 **Update groups** are the modern reality: IOS-XE automatically groups peers with identical outbound policy and builds one update per group regardless of how you configured them. The performance argument for peer groups is therefore gone. They survive as a configuration convenience. Inspect the real grouping with `show ip bgp update-group`. If two peers you expected to share a group do not, some outbound policy differs between them.
 
-## A complete edge policy
+## Edge policy example with prefix-list filtering
 
-The bare minimum for an eBGP session with a transit provider:
+One worked example of an eBGP session toward a transit provider using prefix-list filtering. Cleaner options exist for some of these jobs (for example filtering on an empty `AS_PATH` and nothing else for originated routes). This is a teaching sketch that ties the earlier tools together, not a production checklist:
 
 ```
 ip prefix-list OUR-SPACE seq 5 permit 203.0.113.0/24
@@ -1723,7 +1723,7 @@ Session authentication proves the peer is who you configured. It says nothing ab
 
 Non-negotiable on every eBGP session:
 
-1. **Inbound prefix filtering.** From customers: an explicit list of exactly what they are authorized to announce. From peers: their prefixes and their customers'. From transit: bogon and length sanity filtering (see A complete edge policy).
+1. **Inbound prefix filtering.** From customers: an explicit list of exactly what they are authorized to announce. From peers: their prefixes and their customers'. From transit: bogon and length sanity filtering (see Edge policy example with prefix-list filtering).
 2. **Outbound prefix filtering.** Your prefixes and your customers'. This is what prevents you leaking a full table.
 3. **`AS_PATH` filtering.** Reject paths containing your own ASN, private ASNs from the public Internet, and (from a customer) anything longer than their expected topology.
 4. **`maximum-prefix`** as a backstop for when a filter is wrong.
