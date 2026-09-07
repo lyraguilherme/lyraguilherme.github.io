@@ -232,6 +232,8 @@ Both mechanisms remove configuration, not filtering. A listen range accepts conn
 
 ## Timers
 
+IOS-XE reference values unless noted. Compare against RFC 4271 recommendations in the middle column.
+
 | Timer | RFC 4271 recommendation | IOS-XE default | Configuration |
 |---|---|---|---|
 | ConnectRetry | 120 s | 120 s | `neighbor X timers connect <10-3600>` |
@@ -860,6 +862,8 @@ This is also why there are three different show commands. `received-routes` read
 
 ## Best path selection
 
+This is a **Cisco IOS-XE-oriented decision order** (verify against the release you run). RFC 4271 describes the Decision Process at a higher level; WEIGHT, where AIGP sits, the oldest-eBGP heuristic, multipath insertion, and several late tie-breaks are implementation-specific and can differ on other platforms.
+
 The next hop must be **resolvable in the routing table** before any comparison happens. A path with an inaccessible next hop is not a candidate. This is a precondition, not a step.
 
 Given two candidate paths, compare in order and stop at the first difference:
@@ -868,7 +872,7 @@ Given two candidate paths, compare in order and stop at the first difference:
 |---|---|---|---|
 | 1 | **WEIGHT** | Highest | Cisco-specific, never advertised. 32768 for locally originated, 0 for learned. Local to one router |
 | 2 | **LOCAL_PREF** | Highest | Default 100. AS-wide |
-| 3 | **Locally originated** | Local | `network` or `redistribute` beats `aggregate-address` |
+| 3 | **Locally originated** | Local | Locally originated preferred over learned. Exact ordering among local-origin mechanisms (`network`, `redistribute`, `aggregate-address`, and similar) is implementation-specific — verify on the platform |
 | 4 | **AIGP** | Lowest | RFC 7311. Compared as AIGP plus the IGP metric to the next hop, not the raw attribute. Only if present, and the placement is Cisco-specific |
 | 5 | **AS_PATH length** | Shortest | `AS_SET` counts 1, confed segments count 0. `bgp bestpath as-path ignore` disables |
 | 6 | **ORIGIN** | Lowest | IGP (0) < EGP (1) < INCOMPLETE (2) |
@@ -1484,31 +1488,59 @@ A hub-and-spoke hub usually needs two VRFs, one for the spoke-facing import and 
 
 ## Inter-VRF leaking
 
+Leaking is two independent steps. The RT import decides **which routes are candidates**, and the import map decides **which of those candidates are actually installed**. Both have to be configured. Here GREEN exports its routes and BLUE takes a filtered subset of them:
+
 ```
-vrf definition BLUE
+vrf definition GREEN
+ rd 192.0.2.1:200
  address-family ipv4
-  route-target import 65001:200          ! import selected routes from GREEN
-  import map LEAK-FROM-GREEN             ! and filter what gets imported
+  route-target export 65001:200
+  route-target import 65001:200
+ exit-address-family
+!
+vrf definition BLUE
+ rd 192.0.2.1:100
+ address-family ipv4
+  route-target export 65001:100
+  route-target import 65001:100
+  route-target import 65001:200         ! make GREEN's routes candidates
+  import map LEAK-FROM-GREEN            ! and filter which ones are installed
+ exit-address-family
+!
+ip prefix-list GREEN-SHARED seq 5 permit 10.20.0.0/16 le 24
+!
+route-map LEAK-FROM-GREEN permit 10
+ match ip address prefix-list GREEN-SHARED
 ```
 
-`import map` filters an RT-based import, it does not create one. For leaking without MP-BGP at all (a single-box case), IOS-XE also offers `route-replicate` (Cisco-specific).
+`import map` filters an RT-based import, it does not create one. Drop the `route-target import 65001:200` line and nothing leaks, however permissive the route-map is.
+
+The route-map carries the usual implicit deny at the end, and that applies to **every** route arriving through **every** import RT on the VRF, not just the ones from GREEN. So the moment you attach an import map, anything the map does not permit is discarded, including BLUE's own routes coming back from remote PEs through `65001:100`. If BLUE has its own VPN sites, the map needs a clause permitting those prefixes too.
+
+For leaking without MP-BGP at all (a single-box case), IOS-XE also offers `route-replicate` (Cisco-specific).
 
 ## PE-CE protocols and the loop problem
 
-If the CE runs BGP with the same ASN at multiple sites, each site rejects the other's routes because its own ASN is in the path. Two fixes, and they sit on opposite ends of the link:
+If the CE runs BGP with the same ASN at multiple sites, each site rejects the other's routes because its own ASN is in the path. There are two fixes, and they sit on opposite ends of the link. Configure one or the other, not both.
+
+**`as-override`, on the PE.** The PE rewrites the customer's ASN with its own in the `AS_PATH` before advertising toward the CE, so the ASN the CE loop-checks against is no longer there:
 
 ```
-! On the PE, rewrites the customer ASN with the provider's before advertising
 router bgp 65001
  address-family ipv4 vrf BLUE
   neighbor 10.1.1.2 as-override
+```
 
-! On the CE, accepts paths that already contain its own ASN
+This needs no CE-side configuration, which is why providers usually prefer it. It is not invisible, though: the CE receives and can display the rewritten `AS_PATH`, with the provider's ASN where its own used to be.
+
+**`allowas-in`, on the CE.** The CE keeps accepting paths that already contain its own ASN, up to the number of occurrences given:
+
+```
 router bgp 64510
  neighbor 10.1.1.1 allowas-in 2
 ```
 
-`as-override` is the provider-side fix and needs no CE-side configuration. It is not invisible, though: the CE receives and can display the rewritten `AS_PATH`, with the provider's ASN where its own used to be. `allowas-in` is the customer-side fix and requires touching CE configuration, which is why providers usually prefer `as-override`.
+This is the customer-side fix and requires touching CE configuration, which the provider may not control. Set the count no higher than the topology actually needs, since it is the loop check being relaxed.
 
 OSPF as the PE-CE protocol uses two separate mechanisms that are often confused. The **DN bit** is the loop prevention signal: a PE sets it on LSAs sent toward a CE, and a PE that receives an LSA with the DN bit set will not redistribute it back into BGP. The **domain identifier** does something different, deciding whether a VPN route is rebuilt for the CE as an inter-area route or as an external one. Only the DN bit prevents loops.
 
@@ -1863,9 +1895,13 @@ show policy-map control-plane input class <bgp-class>
 
 Watch the **drop** counters, not the transmit counters. A class that is passing traffic and dropping some is still breaking the session.
 
-A CoPP class for BGP should match TCP port 179 in both directions and be scoped to the addresses you actually peer with, so the class serves as a filter as well as a policer:
+A CoPP class for BGP should match TCP port 179 in both directions and be scoped to the addresses you actually peer with, so the class serves as a filter as well as a policer.
+
+**Diagnostic / counter-only sample — not protective CoPP.** Both `conform-action transmit` and `exceed-action transmit` mean the policer **never drops** BGP; it only keeps class counters visible while you troubleshoot. Do not copy this into production expecting protection.
 
 ```
+! DIAGNOSTIC / COUNTER-ONLY — not protective CoPP
+! conform + exceed both transmit = no drop; counters only
 ip access-list extended COPP-BGP
  permit tcp host 198.51.100.2 any eq bgp
  permit tcp host 198.51.100.2 eq bgp any
@@ -1881,7 +1917,7 @@ control-plane
  service-policy input COPP
 ```
 
-Setting `exceed-action transmit` on the BGP class while policing other classes is a deliberate choice. It keeps the counters visible for diagnosis without letting the policer take a session down. If you do drop on exceed, size the rate for a full table transfer rather than for steady state, because the two differ by orders of magnitude.
+For production, use a tested drop or rate policy sized for full-table bursts (orders of magnitude above steady state), and keep the ACL scoped to real peers. Platform defaults and recommended rates vary — verify on the target IOS-XE release rather than inventing a one-size policy here.
 
 ## Useful commands
 
@@ -1955,19 +1991,21 @@ Flag bits: `0x80` Optional, `0x40` Transitive, `0x20` Partial, `0x10` Extended L
 
 ## Best path order
 
+Cisco IOS-XE-oriented cheat sheet (verify release). Not a universal BGP algorithm — see Best path selection above.
+
 ```
 0.  Next hop must resolve                (precondition, not a step)
 1.  Highest WEIGHT                        (Cisco-specific, local to the router)
 2.  Highest LOCAL_PREF                    (default 100)
-3.  Locally originated
-4.  Lowest AIGP + IGP metric              (if present)
+3.  Locally originated                    (vs learned; local-origin tie-breaks are implementation-specific)
+4.  Lowest AIGP + IGP metric              (if present; placement Cisco-specific)
 5.  Shortest AS_PATH                      (AS_SET = 1, confed = 0)
 6.  Lowest ORIGIN                         (IGP 0 < EGP 1 < INCOMPLETE 2)
 7.  Lowest MED                            (same neighboring AS only)
-8.  eBGP over internal            (confed counts as internal)
+8.  eBGP over internal                    (confed counts as internal)
 9.  Lowest IGP metric to NEXT_HOP
 10. (multipath installed here)
-11. Oldest eBGP path
+11. Oldest eBGP path                      (stability heuristic; skipped if compare-routerid)
 12. Lowest router ID                      (ORIGINATOR_ID substituted)
 13. Shortest CLUSTER_LIST
 14. Lowest neighbor address
@@ -2001,6 +2039,8 @@ Flag bits: `0x80` Optional, `0x40` Transitive, `0x20` Partial, `0x10` Extended L
 | 65535:7 | NO_LLGR |
 
 ## Defaults
+
+IOS-XE reference values (verify release). RFC column is the protocol suggestion where one exists; blank or n/a means the RFC does not fix a number.
 
 | Item | RFC 4271 suggested | IOS-XE default |
 |---|---|---|
