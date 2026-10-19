@@ -172,6 +172,77 @@ Abstract:
 
 ------
 
+# OSPF Area Types
+
+| Area Type      | LSA 1/2 | LSA 3        | LSA 4 | LSA 5 | LSA 7 | Default Route                     | ASBR Allowed |
+|----------------|---------|--------------|-------|-------|-------|-----------------------------------|--------------|
+| Normal         | Yes     | Yes          | Yes   | Yes   | No    | Not automatic                     | Yes          |
+| Stub           | Yes     | Yes          | No    | No    | No    | Type 3 (O*IA) - automatic         | No           |
+| Totally Stub   | Yes     | Default only | No    | No    | No    | Type 3 (O*IA) - automatic         | No           |
+| NSSA           | Yes     | Yes          | No    | No    | Yes   | Type 7 (O*N2) - **not** automatic | Yes          |
+| Totally NSSA   | Yes     | Default only | No    | No    | Yes   | Type 3 (O*IA) - automatic         | Yes          |
+
+## Stub Area
+- **Blocked LSAs:** Type 4 and Type 5
+- **CLI Command:**  
+  `area X stub` (on **all** routers in the area)
+- **Description:**  
+  - The ABR stops flooding external routes into the area and replaces them with a **default route** (Type 3 LSA, 0.0.0.0/0, cost 1).
+  - Inter-area routes (Type 3) are still advertised into the area.
+  - No ASBR is allowed inside a stub area, so redistribution there doesn't work.
+  - The cost of the default route can be changed on the ABR with `area X default-cost <cost>`.
+
+## Totally Stub Area
+- **Blocked LSAs:** Type 3 (except the default route), Type 4 and Type 5
+- **CLI Command:**  
+  `area X stub no-summary` (ABR)  
+  `area X stub` (internal routers)
+- **Description:**  
+  - Cisco term. Same as a stub area, but the ABR also blocks the inter-area routes, leaving internal routers with only intra-area routes + a default route.
+  - The `no-summary` keyword is only needed on the ABR. The internal routers don't care, they just need to agree on the stub flag.
+
+## NSSA (Not-So-Stubby Area)
+- **Blocked LSAs:** Type 4 and Type 5
+- **CLI Command:**  
+  `area X nssa` (on **all** routers in the area)
+- **Description:**  
+  - Documented under **RFC 3101** (obsoletes RFC 1587).
+  - Same as a stub area, but allows an **ASBR inside the area**. Redistributed routes are flooded as **Type 7 LSAs** (N1/N2) within the NSSA.
+  - The NSSA ABR translates Type 7 into Type 5 LSAs (only if the P-bit is set) and floods them to the rest of the domain.
+  - The ABR does **not** generate a default route automatically. It has to be configured with `area X nssa default-information-originate` (Type 7, O*N2).
+  - On the NSSA ABR, the default route is generated unconditionally. On an NSSA ASBR (not ABR), it is only generated if a default route exists in the RIB.
+
+## Totally NSSA
+- **Blocked LSAs:** Type 3 (except the default route), Type 4 and Type 5
+- **CLI Command:**  
+  `area X nssa no-summary` (ABR)  
+  `area X nssa` (internal routers)
+- **Description:**  
+  - Same as an NSSA, but the ABR also blocks the inter-area routes.
+  - Here the ABR **does** generate a default route automatically, as a **Type 3 LSA** (O*IA), not as a Type 7.
+
+## Corner Cases and Gotchas
+- **Area 0** can never be a stub, totally stub, NSSA, or totally NSSA area.
+- **Virtual links** cannot transit a stub or NSSA area. The transit area must be a normal area.
+- All routers in the area must agree on the area type:
+  - Stub areas clear the **E-bit** (ExternalRoutingCapability) in the Hello options; NSSA sets the **N-bit** (see N Bit above).
+  - A mismatch prevents the adjacency. `debug ip ospf adj` shows "mismatched Stub/Transit area option bit".
+- **Suboptimal routing:** with multiple ABRs, each one injects its own default route. Internal routers pick the closest ABR, not the best path to the destination. Can be tuned with `area X default-cost` on each ABR.
+- **Totally NSSA with default-information-originate:** the ABR may originate both a Type 3 and a Type 7 default. The Type 3 (O*IA) wins.
+- **NSSA Translator election:** with multiple NSSA ABRs, only the one with the **highest Router ID** translates Type 7 into Type 5. Can be forced with `area X nssa translate type7 always`.
+- The translating ABR becomes the advertising router of the Type 5 LSA, so the rest of the domain sees it as an ASBR (`show ip ospf border-routers`).
+- **Forwarding Address (FA):**
+  - Type 7 LSAs always carry a non-zero FA (an OSPF-enabled interface of the NSSA ASBR, loopback preferred). The ABR copies the FA into the translated Type 5.
+  - If the FA is not reachable via an intra-area or inter-area route, the external route is **not installed** in the RIB. Classic gotcha when filtering or summarizing the ASBR's loopback with `area X range ... not-advertise` or `filter-list`.
+  - `area X nssa translate type7 suppress-fa` sets the FA to 0.0.0.0 in the translated Type 5, so the rest of the domain routes towards the ABR instead.
+  - When the ABR summarizes Type 7 routes with `summary-address`, the resulting Type 5 has FA 0.0.0.0.
+- **ABR + ASBR on the same router (NSSA):** `area X nssa no-redistribution` keeps the redistributed routes out of the NSSA (Type 5 only to the other areas, no Type 7 into the NSSA).
+- **OSPFv3** supports the same area types. The NSSA LSA is function code 7 (0x2007) and the default route in stub/totally stub areas is an Inter-Area-Prefix LSA (0x2003).
+- **Verification:** `show ip ospf` shows the area type, e.g. "It is a stub area, no summary LSA in this area" or "It is a NSSA area".
+
+
+------
+
 # OSPF Options
 
 ## Down Bit
