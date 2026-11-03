@@ -1,4 +1,4 @@
-# Sample workflow for building and deploying a Hugo site to GitHub Pages
+# Workflow for building and deploying Hugo site to GitHub Pages
 name: Deploy Hugo site to GitHub Pages
 
 on:
@@ -32,7 +32,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      HUGO_VERSION: 0.165.0
+      HUGO_VERSION: 0.169.0
       HUGO_ENVIRONMENT: production
       TZ: America/Los_Angeles
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
