@@ -87,13 +87,11 @@ flowchart LR
     HQR2 --- ISP
     B1R2 --- ISP
     B2R2 --- ISP
-    %% Internet links (the last four, 0-based indexes 19 to 22) in orange
-    linkStyle 19,20,21,22 stroke:#ea580c,stroke-width:4px
-    %% PE-CE links (0-based indexes 2, 3, 13 and 14) in blue
-    linkStyle 2,3,13,14 stroke:#2563eb,stroke-width:4px
+    %% PE-CE links (0-based indexes 2, 3, 13 and 14) and Internet links (19 to 22) in blue dashed
+    linkStyle 2,3,13,14,19,20,21,22 stroke:#2563eb,stroke-width:3px,stroke-dasharray:6 4
 {{< /mermaid >}}
 
-Thick blue lines are PE-CE links, thick orange lines are Internet links, and the thin lines are MPLS core and site LAN links.
+Blue dashed lines are the WAN links, toward the MPLS provider (PE-CE) and toward the ISP. The solid lines are MPLS core and site LAN links.
 
 ***Key points:***
 - HQ has two edge routers, each one connected to both the MPLS provider (PE1) and the Internet provider (ISP), plus an L3 switch
