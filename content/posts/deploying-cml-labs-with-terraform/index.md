@@ -19,7 +19,7 @@ Infrastructure as Code (IaC) has been part of the cloud world for years, and it'
 
 In this post, I'll walk you through how to use Terraform to deploy a complete Cisco Modeling Labs (CML) topology. The focus here is the deployment itself: creating the lab, the nodes, the links, injecting day-0 configs, and starting everything with a single ```terraform apply```.
 
-The topology we're building is an enterprise network with an HQ, two branches, an MPLS L3VPN provider, and an Internet provider. The MPLS core was designed to support RSVP, LFA, and MPLS TE, which I'll cover in future posts.
+The topology we're building is an enterprise network with an HQ, two branches, an MPLS L3VPN provider, and an Internet provider. The day-0 configs bring up the full set of lab technologies: MPLS TE tunnels with fast reroute, IS-IS LFA and remote LFA, Internet access with NAT, and a GRE overlay that takes over when a branch loses MPLS. I'll dig into each of them in future posts.
 
 You can easily replicate these steps on a Linux jump host or any similar environment.
 
@@ -99,8 +99,10 @@ Thick blue lines are PE-CE links, thick orange lines are Internet links, and the
 - HQ has two edge routers, each one connected to both the MPLS provider (PE1) and the Internet provider (ISP), plus an L3 switch
 - Each branch has two routers, RTR1 connected to MPLS and RTR2 connected to the Internet, plus an L3 switch
 - The MPLS core is a ring of four P routers (P1-P2-P4-P3) with a P1-P4 diagonal, which gives us multiple paths for traffic engineering and interesting LFA coverage
-- The provider runs IS-IS as IGP, with LDP, MPLS TE, and RSVP enabled on every core link
+- The provider runs IS-IS as IGP, with LDP, MPLS TE, and RSVP enabled on every core link, TE tunnels between the PEs, and LFA protecting the IGP
 - Each site runs OSPFv2 internally and eBGP as PE-CE protocol
+- The ISP sends a default route to the Internet-facing routers, which NAT their site traffic
+- MPLS is the primary WAN, and a GRE overlay over the Internet between the branches and HQ is the backup
 - That's 17 nodes and 23 links in total, and IOL is light enough to run all of them without much trouble
 
 ------
@@ -292,14 +294,15 @@ Because the map keys are the node labels, the links can reference nodes by name,
 Every node boots with a startup configuration loaded from ```configs/<NODE>.cfg``` through the ```file()``` function, as you can see in the ```cml2_node``` resource above. CML injects that config before the first boot, so the lab comes up with addressing and routing already in place.
 
 ***What's in the day-0 configs:***
-- P routers: IS-IS level-2 with wide metrics, LDP, MPLS TE extensions, and RSVP on every core link
-- PE routers: everything a P router has, plus VRF ```CUSTOMER```, iBGP VPNv4 full mesh between PE loopbacks, and eBGP to the CEs under the VRF
+- P routers: IS-IS level-2 with wide metrics, per-prefix and remote LFA, LDP, MPLS TE extensions, RSVP on every core link, and automatic FRR backup tunnels
+- PE routers: everything a P router has, plus VRF ```CUSTOMER```, iBGP VPNv4 full mesh between PE loopbacks, eBGP to the CEs under the VRF, and TE tunnels between PE1 and the other PEs (explicit paths with a dynamic fallback, autoroute, and fast reroute)
 - MPLS-facing CEs: OSPFv2 inside the site, eBGP to the PE advertising the site /16 summary, and BGP redistributed into OSPF
-- Internet-facing CEs: OSPFv2 inside the site
+- Internet-facing CEs: OSPFv2 inside the site, eBGP to the ISP receiving only a default route, and NAT overload on the Internet interface
+- Overlay: GRE tunnels from each branch RTR2 to both HQ routers, running eBGP as the backup WAN. Local preference and OSPF metrics keep MPLS as the preferred path
 - L3 switches: a transit VLAN toward both site routers, an SVI running OSPFv2, and a loopback simulating the users LAN
-- ISP: interface addressing only
+- ISP: eBGP to every Internet-facing CE, sending only a default route, and a loopback simulating an Internet destination
 
-Here's a short example from P1, showing the core features enabled on each core link:
+Here's a short example from P1, showing the core features enabled on each core link and the LFA configuration under IS-IS:
 
 ```
 interface Ethernet0/2
@@ -319,9 +322,11 @@ router isis CORE
  passive-interface Loopback0
  mpls traffic-eng router-id Loopback0
  mpls traffic-eng level-2
+ fast-reroute per-prefix level-2 all
+ fast-reroute remote-lfa level-2 mpls-ldp
 ```
 
-Notice there are no TE tunnels and no LFA configuration yet. That's on purpose, since those are exactly the topics I want to explore in the next posts.
+The full breakdown of every config, including the TE tunnels, NAT, and the failover knobs, is in the repository README.
 
 > **Note:** CML only applies the day-0 config at the node's first boot. If you edit a file under ```configs/``` after the lab is running, Terraform will replace (destroy and recreate) that node to apply the new config.
 
@@ -424,6 +429,17 @@ show ip ospf neighbor
 show ip route
 ```
 
+And a few more for the day-N technologies:
+
+```
+show mpls traffic-eng tunnels brief
+show isis fast-reroute summary
+show ip nat translations
+show ip bgp summary
+```
+
+To test the WAN failover, shut the PE-CE link on a branch (for example ```Ethernet0/1``` on BR1-RTR1) and run a traceroute from that branch switch to HQ. Traffic moves to the GRE overlay, and goes back to MPLS once the link is up again.
+
 
 ## Terraform destroy
 
@@ -442,7 +458,7 @@ Terraform stops the lab, wipes the nodes, and deletes it from CML. Running ```te
 A few things I ran into while building this project:
 
 - ***Config changes replace nodes:*** since day-0 configs are only applied at first boot, changing a config file recreates the node. Changing many configs at once on a running lab means a lot of nodes getting destroyed and recreated.
-- ***Partial applies:*** one of my applies failed halfway through while replacing running nodes. Terraform kept track of what had been created, and running ```terraform apply``` again finished the job.
+- ***Lifecycle errors on node replacement:*** with provider 0.10.1, any apply that replaces nodes on a running lab ends with ```Provider produced inconsistent result after apply``` on ```cml2_lifecycle```, complaining that an element of ```.nodes``` vanished or appeared. It's harmless. The nodes are replaced and started, and running ```terraform plan``` right after reports no changes.
 - ***Interface slots:*** if you don't set ```slot_a``` and ```slot_b```, CML uses the next free interface, which may not match your configs. I recommend always setting them.
 - ***Credentials:*** ```terraform.tfvars``` stores the password in plain text. Make sure it stays out of Git, and keep your state files local or on an encrypted backend.
 
@@ -450,11 +466,11 @@ A few things I ran into while building this project:
 
 # What's next
 
-With the lab deployed as code, we have a solid base to work on. In the next posts, I'll use this topology to explore:
+With the lab deployed as code, we have a solid base to work on. In the next posts, I'll use this topology to take a closer look at:
 
-- RSVP and MPLS TE tunnels
+- RSVP and MPLS TE tunnels, with fast reroute
 - LFA and remote LFA with IS-IS
-- Internet routing for the HQ and branches
+- Internet access and WAN failover over the GRE overlay
 
 ------
 
