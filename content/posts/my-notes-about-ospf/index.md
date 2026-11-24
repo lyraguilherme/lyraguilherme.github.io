@@ -310,6 +310,202 @@ If you shut OSPF on the interface level with the ip ospf shutdown command, it wi
 ------
 
 
+# OSPF Authentication
+
+OSPF authentication is **hop-by-hop**. It authenticates the packets exchanged between two neighbors on a link, not the LSAs themselves. An LSA is never signed by its originator, so any router holding a valid key (or a compromised neighbor) can still inject bogus LSAs, and the rest of the area will happily flood and use them. Authentication protects the adjacency, not the content of the LSDB.
+
+## OSPFv2 Authentication Types
+
+Documented under **RFC 2328, Appendix D**. The OSPFv2 packet header carries two fields for it: the 16-bit **AuType** and the 64-bit **Authentication** field.
+
+| AuType | Name            | Authentication Field                                     | Checksum                                         |
+|--------|-----------------|----------------------------------------------------------|--------------------------------------------------|
+| 0      | Null            | Not checked                                              | Computed over the packet, excluding the Auth field |
+| 1      | Simple Password | Up to 8 bytes of clear text password                     | Computed over the packet, excluding the Auth field |
+| 2      | Cryptographic   | Key ID, Auth Data Len and Cryptographic Sequence Number  | Not computed (set to 0)                          |
+
+- In RFC 1583 the authentication type was configured per area. RFC 2328 moved it to a per interface setting. Cisco kept both: the area command is just a shortcut that applies the type to every interface in the area.
+- Type 1 is not really security, it only prevents accidental adjacencies. The password travels in clear text in every single packet, so anyone running Wireshark on the segment can read it. `service password-encryption` only hides it in the running config.
+- Since the Authentication field is 64 bits, Type 1 passwords are limited to 8 characters. IOS truncates anything longer.
+
+## Cryptographic Authentication (Type 2)
+
+With Type 2, the 64-bit Authentication field is no longer the key itself. It is split like this:
+
+| Field                         | Size    | Description                                                              |
+|-------------------------------|---------|--------------------------------------------------------------------------|
+| 0x0000                        | 16 bits | Must be zero                                                             |
+| Key ID                        | 8 bits  | Identifies the key (and the algorithm) used to generate the digest        |
+| Auth Data Len                 | 8 bits  | Length of the digest appended to the packet (16 for MD5, 32 for SHA-256) |
+| Cryptographic Sequence Number | 32 bits | Non-decreasing value used for replay protection                          |
+
+- The digest is **appended to the end of the OSPF packet**. It is not counted in the OSPF header Packet Length field, but it is included in the IP packet length.
+- The Key ID is 8 bits, so only keys 0 to 255 can be used. Key chain keys with an ID above 255 are useless for OSPFv2.
+- The original RFC 2328 mechanism is **keyed MD5, not HMAC**. The secret key (padded to 16 bytes) is appended to the packet, the MD5 digest is calculated over everything, and the result is written over the key before the packet is sent.
+- **RFC 5709** adds HMAC-SHA-1, HMAC-SHA-256, HMAC-SHA-384 and HMAC-SHA-512. It uses the same AuType 2 and the same field layout, only the algorithm and the digest length change.
+- **Replay protection:** the receiver stores the last sequence number received from each neighbor and discards any packet with a **lower** value. An equal value is accepted, which makes it a weak protection against replay.
+- **RFC 7474** addresses the gaps of the original scheme. With a plain 32-bit counter, a rebooted router may restart from a lower value, and captured packets can be replayed. RFC 7474 extends the sequence number to 64 bits (a non-volatile boot count plus a counter) and includes the source IP address in the HMAC computation, so a packet captured on one link cannot be replayed on another.
+
+## Cisco IOS Configuration
+
+The authentication type can be set at the **area** level or at the **interface** level, and the **interface setting always wins**. The keys are always configured on the interface (or on the virtual link), never under the OSPF process.
+
+| Type   | Area Level                             | Interface Level                         | Key (Interface)                             |
+|--------|----------------------------------------|-----------------------------------------|---------------------------------------------|
+| Null   | Default                                | `ip ospf authentication null`           | n/a                                         |
+| Simple | `area X authentication`                | `ip ospf authentication`                | `ip ospf authentication-key <password>`     |
+| MD5    | `area X authentication message-digest` | `ip ospf authentication message-digest` | `ip ospf message-digest-key <id> md5 <key>` |
+
+**MD5, interface level:**
+
+```
+interface GigabitEthernet1
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 CISCO
+```
+
+**MD5, area level:**
+
+```
+router ospf 1
+ area 0 authentication message-digest
+!
+interface GigabitEthernet1
+ ip ospf message-digest-key 1 md5 CISCO
+```
+
+- `ip ospf authentication null` is the classic way to exclude a single interface from an area-wide authentication.
+- Both ends of the link must agree on the type, the Key ID and the key. The type can be set at the area level on one router and at the interface level on the other, what matters is what goes on the wire.
+
+**HMAC-SHA with a key chain:**
+
+```
+key chain OSPF-KC
+ key 1
+  key-string CISCO
+  cryptographic-algorithm hmac-sha-256
+!
+interface GigabitEthernet1
+ ip ospf authentication key-chain OSPF-KC
+```
+
+- The algorithm is defined per key inside the key chain, not in the OSPF command. Options are `md5`, `hmac-sha-1`, `hmac-sha-256`, `hmac-sha-384` and `hmac-sha-512`.
+- `ip ospf authentication key-chain` enables Type 2 and points to the keys in a single command.
+- Key chains also bring `send-lifetime` and `accept-lifetime`, which is how key rotation is done with this method. Make sure the clocks are in sync (NTP), otherwise the keys expire at different times on each side.
+
+## Key Rollover
+
+RFC 2328 allows multiple keys on the same interface so the key can be changed without dropping the adjacency. With `ip ospf message-digest-key` on IOS:
+
+- When a new key is added, the router starts sending **duplicate copies of every OSPF packet**, one per configured key, until it detects that all neighbors are using the **youngest key**.
+- The youngest key is the **most recently configured** one, not the one with the highest Key ID.
+- `show ip ospf interface` shows the state of the rollover:
+  - "Youngest key id is 2"
+  - "Rollover in progress, 1 neighbor(s) using the old key(s): key id 1"
+- Once all neighbors are on the new key, remove the old one with `no ip ospf message-digest-key 1`. Until then, the duplicate packets keep being sent.
+
+## Virtual Links
+
+- A virtual link is an interface in **area 0**. If area 0 authentication is enabled with `area 0 authentication`, the virtual link **inherits** it, and it needs its own key.
+- Classic CCIE gotcha: you enable `area 0 authentication message-digest` on the ABR, everything in area 0 comes up fine, and the virtual link goes down after the dead interval because there is no key configured on it.
+- The type and the key are configured on the virtual link itself, on both ends:
+
+```
+router ospf 1
+ area 1 virtual-link 2.2.2.2 authentication message-digest
+ area 1 virtual-link 2.2.2.2 message-digest-key 1 md5 CISCO
+```
+
+- Simple password and key chain work the same way: `area 1 virtual-link 2.2.2.2 authentication-key <password>` and `area 1 virtual-link 2.2.2.2 authentication key-chain <name>`.
+
+## Troubleshooting
+
+- Authentication is checked on every received packet, before any neighbor processing. On a mismatch the hellos are silently dropped, so the neighbor never shows up in `show ip ospf neighbor`.
+- Changing the authentication on a working adjacency does not drop it immediately. The neighbor goes down when the dead interval expires.
+- `debug ip ospf adj` shows the reason:
+  - "Mismatch Authentication type. Input packet specified type 0, we use type 2"
+  - "Mismatch Authentication Key - Clear Text"
+  - "Mismatch Authentication Key - Message Digest Key 1"
+- `show ip ospf` shows the type per area: "Area has simple password authentication" or "Area has message digest authentication".
+- `show ip ospf interface` shows "Simple password authentication enabled" or "Cryptographic authentication enabled", plus the youngest key.
+
+## OSPFv3 Authentication
+
+As stated in the RFC 5340 abstract above, OSPFv3 removed the AuType and Authentication fields from the packet header. There are two ways to authenticate OSPFv3: IPsec or the Authentication Trailer.
+
+## OSPFv3 with IPsec (RFC 4552)
+
+- Uses **AH** (authentication only) or **ESP** (authentication and/or encryption), in transport mode.
+- **Manual keying only.** IKE cannot be used because OSPF is multicast and every router on the link shares the same SA (one-to-many). The SPI and the keys are configured statically and must match on every router on the link.
+- No anti-replay protection, since manual SAs do not support it.
+- SPI range is 256 to 4294967295. Keys are in hex: 32 hex digits for MD5 and 40 for SHA-1.
+- Like OSPFv2, the interface setting overrides the area setting.
+
+**Traditional OSPFv3 (`ipv6 router ospf`):**
+
+```
+! Authentication only (AH)
+interface GigabitEthernet1
+ ipv6 ospf authentication ipsec spi 256 sha1 <40-hex-digit-key>
+!
+! Authentication and encryption (ESP)
+interface GigabitEthernet2
+ ipv6 ospf encryption ipsec spi 257 esp aes-cbc 128 <32-hex-digit-key> sha1 <40-hex-digit-key>
+!
+! Area wide
+ipv6 router ospf 1
+ area 0 authentication ipsec spi 500 sha1 <40-hex-digit-key>
+```
+
+**Address-family OSPFv3 (`router ospfv3`):**
+
+```
+interface GigabitEthernet1
+ ospfv3 authentication ipsec spi 256 sha1 <40-hex-digit-key>
+!
+router ospfv3 1
+ area 0 authentication ipsec spi 500 sha1 <40-hex-digit-key>
+```
+
+- Requires a crypto (k9) image.
+- An SPI can only be bound to one policy on the router. Reusing the same SPI with a different key on another interface is rejected.
+- `ipv6 ospf authentication null` (or `ospfv3 authentication null`) excludes an interface from an area-wide policy.
+- Mismatches **do not show up in the OSPF debugs**, because the packets are dropped by IPsec before they reach OSPF. Check `show ipv6 ospf interface` (look for "secure socket UP" and the error counter) and `show crypto ipsec policy`.
+
+## OSPFv3 Authentication Trailer (RFC 7166)
+
+- An alternative to IPsec that brings OSPFv2-style cryptographic authentication back to OSPFv3. Motivation: IPsec manual keying is painful to operate, it has no replay protection, and IPsec is not available on every platform.
+- An **Authentication Trailer** is appended after the OSPFv3 packet (same idea as the OSPFv2 digest). It carries the Authentication Type, the Security Association ID, a **64-bit Cryptographic Sequence Number** and the Authentication Data.
+- The **AT-bit** is set in the Options field of Hello and Database Description packets to tell the neighbor that the trailer is present.
+- Uses the HMAC-SHA family, and the source IPv6 address is included in the computation, which protects against replay across links.
+
+```
+key chain OSPFV3-KC
+ key 1
+  key-string CISCO
+  cryptographic-algorithm hmac-sha-256
+!
+interface GigabitEthernet1
+ ospfv3 authentication key-chain OSPFV3-KC
+!
+router ospfv3 1
+ area 0 authentication key-chain OSPFV3-KC
+```
+
+## Summary
+
+| Feature          | OSPFv2 Simple  | OSPFv2 Cryptographic         | OSPFv3 IPsec              | OSPFv3 Auth Trailer       |
+|------------------|----------------|------------------------------|---------------------------|---------------------------|
+| RFC              | 2328           | 2328 / 5709 / 7474           | 4552                      | 7166                      |
+| Algorithms       | None           | MD5, HMAC-SHA                | AH/ESP (MD5, SHA-1, AES)  | HMAC-SHA                  |
+| Encryption       | No             | No                           | Yes (ESP)                 | No                        |
+| Replay Protection| No             | 32-bit sequence (64 with 7474) | No                      | 64-bit sequence           |
+| Key Rotation     | No             | Key rollover / key chain     | Manual (change SPI)       | Key chain                 |
+
+
+------
+
+
 # OSPF Filtering
 
 ## OSPF RIB Filtering
