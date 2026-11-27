@@ -1,7 +1,7 @@
 ---
 title: 'My notes about NVIDIA NCA-AIIO'
 date: 2026-11-27T08:43:32-03:00
-draft: true
+draft: false
 tags:
    - NVIDIA
    - AI Infrastructure
